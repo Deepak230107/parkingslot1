@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Overview — ParkEase</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/overview.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div id="dashboard">
+        <!-- SIDEBAR -->
+        <aside class="d-sidebar">
+            <div class="d-logo-wrap">
+                <div class="d-logo-box">P</div>
+                <div class="d-logo-name">Park<span>Ease</span></div>
+            </div>
+            <nav class="d-nav">
+                <a href="overview.html" class="d-nav-item active" style="text-decoration:none;">
+                    <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <rect x="1" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor"
+                                stroke-width="1.5" />
+                            <rect x="8.5" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor"
+                                stroke-width="1.5" />
+                            <rect x="1" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor"
+                                stroke-width="1.5" />
+                            <rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg></span>
+                    Dashboard
+                </a>
+                <a href="dashboard.html" class="d-nav-item" style="text-decoration:none;">
+                    <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M4 7.5h7M4 5h4M4 10h5" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg></span>
+                    Allotment
+                    <span class="d-badge">3</span>
+                </a>
+                <a href="users.html" class="d-nav-item" style="text-decoration:none;">
+                    <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <circle cx="7.5" cy="5" r="2.8" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M2 13.5c0-2.8 2.5-4.8 5.5-4.8s5.5 2 5.5 4.8" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" />
+                        </svg></span>
+                    Users
+                </a>
+                <a href="payments.html" class="d-nav-item" style="text-decoration:none;">
+                    <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <rect x="1" y="3" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M5 7.5h5M7.5 5.5v4" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg></span>
+                    Payments
+                </a>
+                <a href="report.html" class="d-nav-item" style="text-decoration:none;">
+                    <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <path d="M3 2h9v11H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M5.5 6h4M5.5 8.5h4M5.5 11h2" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg></span>
+                    Report
+                </a>
+            </nav>
+            <div class="d-sidebar-bot">
+                <a href="settings.html" class="d-nav-item" style="text-decoration:none;">
+                    <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M3 3l1 1M11 11l1 1M11 3l-1 1M4 11l-1 1"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg></span>
+                    Settings
+                </a>
+                <a href="index.html" class="back-btn">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Back to Site
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="d-main">
+            <div class="d-topbar">
+                <div class="d-search">
+                    <span class="d-search-ico">🔍</span>
+                    <input type="text" placeholder="Search data..." />
+                </div>
+                <div class="d-topbar-r">
+                    <span class="d-date-lbl" id="dDateLbl"></span>
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="d-content">
+                <div class="d-overview-grid">
+                    <div class="d-card span-2">
+                        <div class="d-card-hdr">
+                            <h3 class="d-card-title">Revenue Overview</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-card">
+                        <div class="d-card-hdr">
+                            <h3 class="d-card-title">Recent Activity</h3>
+                        </div>
+                        <div class="d-activity-list" id="activityList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/overview.js"></script>
+</body>
+
+</html>

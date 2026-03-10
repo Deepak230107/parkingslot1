@@ -1,0 +1,84 @@
+.d-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.d-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    padding: 24px;
+}
+
+.d-card.span-2 {
+    grid-column: span 2;
+}
+
+.d-card-hdr {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.d-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    color: var(--text);
+}
+
+.chart-container {
+    height: 300px;
+    width: 100%;
+}
+
+.d-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.d-activity {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.d-act-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.d-act-b {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.d-act-g {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.d-act-info {
+    flex: 1;
+}
+
+.d-act-t {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.d-act-s {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 3px;
+}

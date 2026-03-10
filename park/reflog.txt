@@ -1,0 +1,8 @@
+﻿0e43bef HEAD@{0}: reset: moving to 0e43bef
+0e43bef HEAD@{1}: checkout: moving from main to main
+0e43bef HEAD@{2}: reset: moving to HEAD
+0e43bef HEAD@{3}: reset: moving to HEAD
+0e43bef HEAD@{4}: commit: 2
+e17adb5 HEAD@{5}: commit: 1
+703f922 HEAD@{6}: Branch: renamed refs/heads/master to refs/heads/main
+703f922 HEAD@{8}: commit (initial): Initial commit

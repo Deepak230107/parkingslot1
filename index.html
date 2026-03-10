@@ -1,310 +1,275 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ParkEase — Smart Parking</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="assets/css/style.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParkEase — Smart Parking</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
 
-<!-- ════════════════════════════════════════
+  <!-- ════════════════════════════════════════
      LANDING PAGE
 ════════════════════════════════════════ -->
-<div id="landing">
+  <div id="landing">
 
-  <!-- NAV -->
-  <nav class="l-nav">
-    <div class="l-logo">Park<span>Ease</span></div>
-    <div class="l-nav-links">
-      <button class="l-nav-btn active" onclick="lScroll('hero',this)">Find</button>
-      <button class="l-nav-btn" onclick="lScroll('l-reserve-sec',this)">Reserve</button>
-      <button class="l-nav-btn" onclick="lScroll('l-pay-sec',this)">Pay</button>
-    </div>
-    <div class="l-nav-right">
-      <button class="go-dashboard" onclick="showDashboard()">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor"/></svg>
-        Admin Dashboard
-      </button>
-      <div class="avatar-nav">JD</div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <section id="hero" style="padding-top:0;">
-    <div class="l-hero">
-      <div class="hero-glow"></div>
-      <div class="hero-ring"></div>
-      <div class="hero-left">
-        <div class="hero-pill">Live availability • Updated now</div>
-        <h1 class="hero-title">FIND YOUR<br><em>PARKING</em><br>SPACE</h1>
-        <p class="hero-sub">Locate, reserve, and pay for parking in seconds. Real-time slot availability, zero circling.</p>
-        <div class="v-selector">
-          <button class="v-btn sel" onclick="selectV(this,'CAR')">
-            <svg width="26" height="20" viewBox="0 0 26 20" fill="none"><rect x="1" y="7" width="24" height="11" rx="3" fill="currentColor" opacity=".9"/><path d="M4 7L7 2H19L22 7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.5" cy="18.5" r="2.5" fill="white"/><circle cx="19.5" cy="18.5" r="2.5" fill="white"/></svg>
-            CAR
-          </button>
-          <button class="v-btn" onclick="selectV(this,'BIKE')">
-            <svg width="26" height="20" viewBox="0 0 26 20" fill="none"><circle cx="5" cy="15" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="21" cy="15" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M5 15L8 7L13 4L21 8L21 15" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-            BIKE
-          </button>
-          <button class="v-btn" onclick="selectV(this,'TRUCK')">
-            <svg width="26" height="20" viewBox="0 0 26 20" fill="none"><rect x="1" y="5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><rect x="18" y="9" width="7" height="8" rx="1.5" stroke="currentColor" stroke-width="1.8"/><circle cx="5.5" cy="18" r="2" stroke="currentColor" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2" stroke="currentColor" stroke-width="1.8"/></svg>
-            TRUCK
-          </button>
-        </div>
-        <div class="hero-cta">
-          <button class="btn-gold" onclick="lScroll('l-reserve-sec',null)">
-            Check Availability
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <button class="btn-outline" onclick="lScroll('l-features-sec',null)">Learn More</button>
-        </div>
+    <!-- NAV -->
+    <nav class="l-nav">
+      <div class="l-logo">Park<span>Ease</span></div>
+      <div class="l-nav-links">
+        <button class="l-nav-btn active" onclick="lScroll('hero',this)">Find</button>
+        <button class="l-nav-btn" onclick="lScroll('l-reserve-sec',this)">Reserve</button>
+        <button class="l-nav-btn" onclick="lScroll('l-pay-sec',this)">Pay</button>
       </div>
-      <div class="hero-right">
-        <div class="lot-card">
-          <div class="lot-hdr">
-            <div><div class="lot-hdr-title">Central Parking — B2</div><div class="lot-hdr-sub">48 slots · Updated just now</div></div>
-            <div class="lot-legend">
-              <div class="l-leg"><div class="l-dot free"></div>Free</div>
-              <div class="l-leg"><div class="l-dot occ"></div>Taken</div>
-              <div class="l-leg"><div class="l-dot sel"></div>Yours</div>
-            </div>
-          </div>
-          <div class="mini-grid" id="miniGrid"></div>
-          <div class="lot-stats">
-            <div class="lst"><div class="lst-n g" id="mFree">0</div><div class="lst-l">Available</div></div>
-            <div class="lst"><div class="lst-n r" id="mOcc">0</div><div class="lst-l">Occupied</div></div>
-            <div class="lst"><div class="lst-n y" id="mSel">0</div><div class="lst-l">Selected</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section id="l-features-sec" class="l-features">
-    <div class="sec-label">Why ParkEase</div>
-    <div class="sec-title">SMART PARKING,<br>ZERO HASSLE</div>
-    <p class="sec-sub">Everything you need to park confidently — from finding a spot to walking away carefree.</p>
-    <div class="feat-grid">
-      <div class="feat-card"><div class="feat-ico">🗺️</div><div class="feat-t">Real-Time Availability</div><div class="feat-d">Live sensor data refreshes slot status every 30 seconds. Never drive around again.</div></div>
-      <div class="feat-card"><div class="feat-ico">⚡</div><div class="feat-t">Instant Reservation</div><div class="feat-d">Hold your spot up to 15 minutes before arrival. Your space is locked in.</div></div>
-      <div class="feat-card"><div class="feat-ico">💳</div><div class="feat-t">Seamless Payment</div><div class="feat-d">Card, UPI, or wallet. Auto-billing on exit — no kiosks, no queues.</div></div>
-      <div class="feat-card"><div class="feat-ico">📍</div><div class="feat-t">Turn-by-Turn Navigation</div><div class="feat-d">Guided directly to your reserved slot inside the structure.</div></div>
-      <div class="feat-card"><div class="feat-ico">🔔</div><div class="feat-t">Smart Alerts</div><div class="feat-d">Expiry reminders, one-tap extension, and exit confirmations — all in-app.</div></div>
-      <div class="feat-card"><div class="feat-ico">📊</div><div class="feat-t">Parking History</div><div class="feat-d">Full log of sessions, durations, and receipts. Tax-ready export included.</div></div>
-    </div>
-  </section>
-
-  <!-- RESERVE -->
-  <section id="l-reserve-sec" class="l-reserve">
-    <div>
-      <div class="sec-label">Step 2</div>
-      <div class="sec-title">RESERVE<br>YOUR SPOT</div>
-      <p class="sec-sub">Choose your arrival time and duration. Your slot is locked in instantly — no surprises.</p>
-    </div>
-    <div class="form-card">
-      <h3>Reservation Details</h3>
-      <div class="fg">
-        <label class="fl">Location</label>
-        <select class="fi"><option>Central Parking — Level B2</option><option>Airport Terminal A — P3</option><option>Downtown Mall — Rooftop</option><option>Tech Park North — Basement</option></select>
-      </div>
-      <div class="fr">
-        <div class="fg"><label class="fl">Date</label><input type="date" class="fi" id="lDate"/></div>
-        <div class="fg"><label class="fl">Arrival Time</label><input type="time" class="fi" value="09:00"/></div>
-      </div>
-      <div class="fg">
-        <label class="fl">Duration</label>
-        <select class="fi" id="lDur" onchange="updateLPrice()">
-          <option value="40">1 Hour — ₹40</option>
-          <option value="75">2 Hours — ₹75</option>
-          <option value="140" selected>4 Hours — ₹140</option>
-          <option value="220">Full Day — ₹220</option>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">Vehicle Number</label><input type="text" class="fi" placeholder="e.g. TN 09 AX 1234"/></div>
-      <div class="price-prev">
-        <div><div class="pp-lbl">Estimated Total</div><div style="font-size:10.5px;color:var(--muted);margin-top:2px;">Inc. taxes & fees</div></div>
-        <div class="pp-val" id="lPrice">₹140</div>
-      </div>
-      <button class="btn-gold" style="width:100%;justify-content:center;" onclick="lScroll('l-pay-sec',null)">
-        Confirm Reservation
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-  </section>
-
-  <!-- PAY -->
-  <section id="l-pay-sec" class="l-pay">
-    <div>
-      <div class="sec-label">Step 3</div>
-      <div class="sec-title">QUICK &<br>SECURE<br>PAYMENT</div>
-      <p class="sec-sub">Multiple payment methods. Auto-checkout when you drive out. No fuss, no waiting.</p>
-    </div>
-    <div>
-      <div class="receipt">
-        <div class="r-top">
-          <div class="r-ico">🅿️</div>
-          <div><div class="r-title">Parking Receipt</div><div class="r-sub">Central Parking · B2 · Slot 14</div></div>
-        </div>
-        <div class="r-row"><span class="k">Date</span><span class="v" id="lRcDate">—</span></div>
-        <div class="r-row"><span class="k">Arrival</span><span class="v">09:00 AM</span></div>
-        <div class="r-row"><span class="k">Duration</span><span class="v">4 Hours</span></div>
-        <div class="r-row"><span class="k">Vehicle</span><span class="v">TN 09 AX 1234</span></div>
-        <div class="r-row"><span class="k">Parking Fee</span><span class="v">₹140</span></div>
-        <div class="r-row"><span class="k">Service Fee</span><span class="v">₹12</span></div>
-        <div class="r-row total"><span class="k">Total</span><span class="v">₹152</span></div>
-        <div class="pay-methods">
-          <div class="pm active" onclick="selPm(this)">💳 Card</div>
-          <div class="pm" onclick="selPm(this)">📱 UPI</div>
-          <div class="pm" onclick="selPm(this)">👛 Wallet</div>
-        </div>
-        <button class="btn-pay" onclick="showToast('✅ Payment successful! Head to B2-14.','dark-t')">Pay ₹152 Now →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="l-footer">
-    <div class="f-logo">ParkEase</div>
-    <div class="f-links">
-      <div class="f-link">Privacy</div><div class="f-link">Terms</div>
-      <div class="f-link">Support</div><div class="f-link">About</div>
-    </div>
-    <div class="f-copy">© 2026 ParkEase. All rights reserved.</div>
-  </footer>
-</div>
-
-<!-- ════════════════════════════════════════
-     ADMIN DASHBOARD
-════════════════════════════════════════ -->
-<div id="dashboard">
-  <!-- SIDEBAR -->
-  <aside class="d-sidebar">
-    <div class="d-logo-wrap">
-      <div class="d-logo-box">P</div>
-      <div class="d-logo-name">Park<span>Ease</span></div>
-    </div>
-    <nav class="d-nav">
-      <div class="d-nav-item" onclick="dNav(this)">
-        <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.5"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.5"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="currentColor" stroke-width="1.5"/></svg></span>
-        Dashboard
-      </div>
-      <div class="d-nav-item active" onclick="dNav(this)">
-        <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 7.5h7M4 5h4M4 10h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-        Allotment
-        <span class="d-badge">3</span>
-      </div>
-      <div class="d-nav-item" onclick="dNav(this)">
-        <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.8" stroke="currentColor" stroke-width="1.5"/><path d="M2 13.5c0-2.8 2.5-4.8 5.5-4.8s5.5 2 5.5 4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-        Users
-      </div>
-      <div class="d-nav-item" onclick="dNav(this)">
-        <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="3" width="13" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 7.5h5M7.5 5.5v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-        Payments
-      </div>
-      <div class="d-nav-item" onclick="dNav(this)">
-        <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M3 2h9v11H3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M5.5 6h4M5.5 8.5h4M5.5 11h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-        Report
+      <div class="l-nav-right">
+        <a href="overview.html" class="go-dashboard" style="text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor" />
+            <rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor" />
+            <rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor" />
+            <rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor" />
+          </svg>
+          Admin Dashboard
+        </a>
+        <div class="avatar-nav">JD</div>
       </div>
     </nav>
-    <div class="d-sidebar-bot">
-      <div class="d-nav-item" onclick="dNav(this)">
-        <span class="d-nav-ico"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M3 3l1 1M11 11l1 1M11 3l-1 1M4 11l-1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-        Settings
-      </div>
-      <div class="back-btn" onclick="showLanding()">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Back to Site
-      </div>
-    </div>
-  </aside>
 
-  <!-- MAIN -->
-  <div class="d-main">
-    <!-- TOPBAR -->
-    <div class="d-topbar">
-      <div class="d-search">
-        <span class="d-search-ico">🔍</span>
-        <input type="text" placeholder="Search slot, vehicle, user..." oninput="dSearch(this.value)"/>
-      </div>
-      <button class="d-filter">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="4.5" cy="3.5" r="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8.5" cy="9.5" r="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M1 3.5h2M6 3.5h6M1 9.5h6M10 9.5h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        Filter
-      </button>
-      <div class="d-topbar-r">
-        <span class="d-date-lbl" id="dDateLbl"></span>
-        <div class="d-ico-btn on">⊞</div>
-        <div class="d-ico-btn">📍</div>
-      </div>
-    </div>
-
-    <!-- CONTENT -->
-    <div class="d-content">
-      <!-- Stats -->
-      <div class="d-stats">
-        <div class="d-stat"><div class="d-stat-ico ic-g">🟢</div><div><div class="d-stat-n" id="dAvail">—</div><div class="d-stat-l">Available</div></div></div>
-        <div class="d-stat"><div class="d-stat-ico ic-r">🔴</div><div><div class="d-stat-n" id="dOcc">—</div><div class="d-stat-l">Occupied</div></div></div>
-        <div class="d-stat"><div class="d-stat-ico ic-y">🟡</div><div><div class="d-stat-n" id="dSel">0</div><div class="d-stat-l">Selected</div></div></div>
-        <div class="d-stat"><div class="d-stat-ico ic-b">🔵</div><div><div class="d-stat-n" id="dTotal">—</div><div class="d-stat-l">Total Slots</div></div></div>
-      </div>
-
-      <!-- Vehicle tabs -->
-      <div class="d-vtabs">
-        <div class="d-vtab active" onclick="dVehicle('CAR',this)">
-          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="1" y="4" width="14" height="7" rx="2" fill="currentColor" opacity=".9"/><path d="M3 4L5 1H11L13 4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="4" cy="11" r="1.5" fill="white"/><circle cx="12" cy="11" r="1.5" fill="white"/></svg>
-          CAR
+    <!-- HERO -->
+    <section id="hero" style="padding-top:0;">
+      <div class="l-hero">
+        <div class="hero-glow"></div>
+        <div class="hero-ring"></div>
+        <div class="hero-left">
+          <div class="hero-pill">Live availability • Updated now</div>
+          <h1 class="hero-title">FIND YOUR<br><em>PARKING</em><br>SPACE</h1>
+          <p class="hero-sub">Locate, reserve, and pay for parking in seconds. Real-time slot availability, zero
+            circling.</p>
+          <div class="v-selector">
+            <button class="v-btn sel" onclick="selectV(this,'CAR')">
+              <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+                <rect x="1" y="7" width="24" height="11" rx="3" fill="currentColor" opacity=".9" />
+                <path d="M4 7L7 2H19L22 7" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                <circle cx="6.5" cy="18.5" r="2.5" fill="white" />
+                <circle cx="19.5" cy="18.5" r="2.5" fill="white" />
+              </svg>
+              CAR
+            </button>
+            <button class="v-btn" onclick="selectV(this,'BIKE')">
+              <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+                <circle cx="5" cy="15" r="4" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="21" cy="15" r="4" stroke="currentColor" stroke-width="1.8" />
+                <path d="M5 15L8 7L13 4L21 8L21 15" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+              </svg>
+              BIKE
+            </button>
+            <button class="v-btn" onclick="selectV(this,'TRUCK')">
+              <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+                <rect x="1" y="5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.8" />
+                <rect x="18" y="9" width="7" height="8" rx="1.5" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="5.5" cy="18" r="2" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="15.5" cy="18" r="2" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+              TRUCK
+            </button>
+          </div>
+          <div class="hero-cta">
+            <button class="btn-gold" onclick="lScroll('l-reserve-sec',null)">
+              Check Availability
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button class="btn-outline" onclick="lScroll('l-features-sec',null)">Learn More</button>
+          </div>
         </div>
-        <div class="d-vtab" onclick="dVehicle('BIKE',this)">
-          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><circle cx="3" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/><circle cx="13" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 9L5 4L8 2L13 5L13 9" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          BIKE
-        </div>
-        <div class="d-vtab" onclick="dVehicle('TRUCK',this)">
-          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="1" y="2" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/><rect x="11" y="5" width="4" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><circle cx="3.5" cy="11" r="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="9.5" cy="11" r="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
-          TRUCK
+        <div class="hero-right">
+          <div class="lot-card">
+            <div class="lot-hdr">
+              <div>
+                <div class="lot-hdr-title">Central Parking — B2</div>
+                <div class="lot-hdr-sub">48 slots · Updated just now</div>
+              </div>
+              <div class="lot-legend">
+                <div class="l-leg">
+                  <div class="l-dot free"></div>Free
+                </div>
+                <div class="l-leg">
+                  <div class="l-dot occ"></div>Taken
+                </div>
+                <div class="l-leg">
+                  <div class="l-dot sel"></div>Yours
+                </div>
+              </div>
+            </div>
+            <div class="mini-grid" id="miniGrid"></div>
+            <div class="lot-stats">
+              <div class="lst">
+                <div class="lst-n g" id="mFree">0</div>
+                <div class="lst-l">Available</div>
+              </div>
+              <div class="lst">
+                <div class="lst-n r" id="mOcc">0</div>
+                <div class="lst-l">Occupied</div>
+              </div>
+              <div class="lst">
+                <div class="lst-n y" id="mSel">0</div>
+                <div class="lst-l">Selected</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- Zone header -->
-      <div class="d-lot-hdr">
-        <div class="d-lot-title">Parking Allotment — All Zones</div>
-        <div class="d-legend">
-          <div class="d-leg-i"><div class="d-leg-d fr"></div>Available</div>
-          <div class="d-leg-i"><div class="d-leg-d oc"></div>Occupied</div>
-          <div class="d-leg-i"><div class="d-leg-d sl"></div>Selected</div>
+    <!-- FEATURES -->
+    <section id="l-features-sec" class="l-features">
+      <div class="sec-label">Why ParkEase</div>
+      <div class="sec-title">SMART PARKING,<br>ZERO HASSLE</div>
+      <p class="sec-sub">Everything you need to park confidently — from finding a spot to walking away carefree.</p>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-ico">🗺️</div>
+          <div class="feat-t">Real-Time Availability</div>
+          <div class="feat-d">Live sensor data refreshes slot status every 30 seconds. Never drive around again.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">⚡</div>
+          <div class="feat-t">Instant Reservation</div>
+          <div class="feat-d">Hold your spot up to 15 minutes before arrival. Your space is locked in.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">💳</div>
+          <div class="feat-t">Seamless Payment</div>
+          <div class="feat-d">Card, UPI, or wallet. Auto-billing on exit — no kiosks, no queues.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">📍</div>
+          <div class="feat-t">Turn-by-Turn Navigation</div>
+          <div class="feat-d">Guided directly to your reserved slot inside the structure.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">🔔</div>
+          <div class="feat-t">Smart Alerts</div>
+          <div class="feat-d">Expiry reminders, one-tap extension, and exit confirmations — all in-app.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">📊</div>
+          <div class="feat-t">Parking History</div>
+          <div class="feat-d">Full log of sessions, durations, and receipts. Tax-ready export included.</div>
         </div>
       </div>
+    </section>
 
-      <!-- Zones -->
-      <div class="d-zones" id="dZonesGrid"></div>
-    </div>
+    <!-- RESERVE -->
+    <section id="l-reserve-sec" class="l-reserve">
+      <div>
+        <div class="sec-label">Step 2</div>
+        <div class="sec-title">RESERVE<br>YOUR SPOT</div>
+        <p class="sec-sub">Choose your arrival time and duration. Your slot is locked in instantly — no surprises.</p>
+      </div>
+      <div class="form-card">
+        <h3>Reservation Details</h3>
+        <div class="fg">
+          <label class="fl">Location</label>
+          <select class="fi">
+            <option>Central Parking — Level B2</option>
+            <option>Airport Terminal A — P3</option>
+            <option>Downtown Mall — Rooftop</option>
+            <option>Tech Park North — Basement</option>
+          </select>
+        </div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Date</label><input type="date" class="fi" id="lDate" /></div>
+          <div class="fg"><label class="fl">Arrival Time</label><input type="time" class="fi" value="09:00" /></div>
+        </div>
+        <div class="fg">
+          <label class="fl">Duration</label>
+          <select class="fi" id="lDur" onchange="updateLPrice()">
+            <option value="40">1 Hour — ₹40</option>
+            <option value="75">2 Hours — ₹75</option>
+            <option value="140" selected>4 Hours — ₹140</option>
+            <option value="220">Full Day — ₹220</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Vehicle Number</label><input type="text" class="fi"
+            placeholder="e.g. TN 09 AX 1234" /></div>
+        <div class="price-prev">
+          <div>
+            <div class="pp-lbl">Estimated Total</div>
+            <div style="font-size:10.5px;color:var(--muted);margin-top:2px;">Inc. taxes & fees</div>
+          </div>
+          <div class="pp-val" id="lPrice">₹140</div>
+        </div>
+        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="lScroll('l-pay-sec',null)">
+          Confirm Reservation
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- PAY -->
+    <section id="l-pay-sec" class="l-pay">
+      <div>
+        <div class="sec-label">Step 3</div>
+        <div class="sec-title">QUICK &<br>SECURE<br>PAYMENT</div>
+        <p class="sec-sub">Multiple payment methods. Auto-checkout when you drive out. No fuss, no waiting.</p>
+      </div>
+      <div>
+        <div class="receipt">
+          <div class="r-top">
+            <div class="r-ico">🅿️</div>
+            <div>
+              <div class="r-title">Parking Receipt</div>
+              <div class="r-sub">Central Parking · B2 · Slot 14</div>
+            </div>
+          </div>
+          <div class="r-row"><span class="k">Date</span><span class="v" id="lRcDate">—</span></div>
+          <div class="r-row"><span class="k">Arrival</span><span class="v">09:00 AM</span></div>
+          <div class="r-row"><span class="k">Duration</span><span class="v">4 Hours</span></div>
+          <div class="r-row"><span class="k">Vehicle</span><span class="v">TN 09 AX 1234</span></div>
+          <div class="r-row"><span class="k">Parking Fee</span><span class="v">₹140</span></div>
+          <div class="r-row"><span class="k">Service Fee</span><span class="v">₹12</span></div>
+          <div class="r-row total"><span class="k">Total</span><span class="v">₹152</span></div>
+          <div class="pay-methods">
+            <div class="pm active" onclick="selPm(this)">💳 Card</div>
+            <div class="pm" onclick="selPm(this)">📱 UPI</div>
+            <div class="pm" onclick="selPm(this)">👛 Wallet</div>
+          </div>
+          <button class="btn-pay" onclick="showToast('✅ Payment successful! Head to B2-14.','dark-t')">Pay ₹152 Now
+            →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="l-footer">
+      <div class="f-logo">ParkEase</div>
+      <div class="f-links">
+        <div class="f-link">Privacy</div>
+        <div class="f-link">Terms</div>
+        <div class="f-link">Support</div>
+        <div class="f-link">About</div>
+      </div>
+      <div class="f-copy">© 2026 ParkEase. All rights reserved.</div>
+    </footer>
   </div>
-</div>
 
-<!-- DETAIL PANEL -->
-<div class="d-panel" id="dPanel">
-  <div class="d-panel-head">
-    <div class="d-panel-title" id="dPanelTitle">Slot Detail</div>
-    <button class="d-panel-close" onclick="dClosePanel()">✕</button>
-  </div>
-  <div class="d-slot-big" id="dPanelVis">
-    <svg width="58" height="44" viewBox="0 0 58 44" fill="none">
-      <rect x="2" y="12" width="54" height="24" rx="5" fill="#eef0f5"/>
-      <path d="M8 12L13 3H45L50 12" stroke="#1a1d24" stroke-width="2.2" stroke-linejoin="round"/>
-      <ellipse cx="12" cy="38" rx="5" ry="5" fill="#1a1d24"/>
-      <ellipse cx="46" cy="38" rx="5" ry="5" fill="#1a1d24"/>
-      <rect x="17" y="5" width="24" height="7" rx="2" fill="#c8ccd8"/>
-    </svg>
-  </div>
-  <div id="dPanelInfo"></div>
-  <div class="d-panel-acts" id="dPanelActs"></div>
-</div>
+  <!-- Admin Dashboard logic moved to separate pages -->
 
-<!-- TOAST -->
-<div class="toast dark-t" id="toast"></div>
+  <!-- TOAST -->
+  <div class="toast dark-t" id="toast"></div>
 
-<script src="assets/js/script.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
+
 </html>
