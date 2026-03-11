@@ -217,15 +217,13 @@
       </div>
     </section>
 
-    <!-- PAY -->
     <section id="l-pay-sec" class="l-pay">
       <div>
         <div class="sec-label">Step 3</div>
         <div class="sec-title">QUICK &<br>SECURE<br>PAYMENT</div>
         <p class="sec-sub">Multiple payment methods. Auto-checkout when you drive out. No fuss, no waiting.</p>
-      </div>
-      <div>
-        <div class="receipt">
+        <div class="receipt"
+          style="margin-top: 30px; border: 1px solid rgba(255, 255, 255, 0.09); background: rgba(255,255,255,0.02); padding: 30px;">
           <div class="r-top">
             <div class="r-ico">🅿️</div>
             <div>
@@ -240,14 +238,40 @@
           <div class="r-row"><span class="k">Parking Fee</span><span class="v">₹140</span></div>
           <div class="r-row"><span class="k">Service Fee</span><span class="v">₹12</span></div>
           <div class="r-row total"><span class="k">Total</span><span class="v">₹152</span></div>
-          <div class="pay-methods">
-            <div class="pm active" onclick="selPm(this)">💳 Card</div>
-            <div class="pm" onclick="selPm(this)">📱 UPI</div>
-            <div class="pm" onclick="selPm(this)">👛 Wallet</div>
-          </div>
-          <button class="btn-pay" onclick="showToast('✅ Payment successful! Head to B2-14.','dark-t')">Pay ₹152 Now
-            →</button>
         </div>
+      </div>
+      <div class="scanner-container">
+        <div class="scanner-box">
+          <div class="scanner-corners top-left"></div>
+          <div class="scanner-corners top-right"></div>
+          <div class="scanner-corners bottom-left"></div>
+          <div class="scanner-corners bottom-right"></div>
+          <div class="scan-line"></div>
+          <div class="qr-code-dummy">
+            <div class="scanner-pulse"></div>
+            <div class="scanner-pattern"></div>
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+              style="position:relative; z-index:2; margin:auto; display:block; top: 12%;">
+              <rect x="3" y="3" width="7" height="7" rx="1" stroke="var(--gold)" stroke-width="1.5" />
+              <rect x="5" y="5" width="3" height="3" fill="var(--gold)" />
+              <rect x="14" y="3" width="7" height="7" rx="1" stroke="var(--gold)" stroke-width="1.5" />
+              <rect x="16" y="5" width="3" height="3" fill="var(--gold)" />
+              <rect x="3" y="14" width="7" height="7" rx="1" stroke="var(--gold)" stroke-width="1.5" />
+              <rect x="5" y="16" width="3" height="3" fill="var(--gold)" />
+              <rect x="14" y="14" width="3" height="3" fill="var(--gold)" />
+              <rect x="18" y="14" width="3" height="3" fill="var(--gold)" />
+              <rect x="14" y="18" width="7" height="3" fill="var(--gold)" />
+              <rect x="18" y="16" width="3" height="2" fill="var(--gold)" />
+            </svg>
+          </div>
+        </div>
+        <div class="scanner-text">Point your camera to scan & pay</div>
+        <div class="pay-methods" style="margin-top: 24px;">
+          <div class="pm active" onclick="selPm(this)">📱 UPI / QR</div>
+          <div class="pm" onclick="selPm(this)">💳 Card</div>
+        </div>
+        <button class="btn-pay" onclick="showToast('✅ Payment successful! Head to B2-14.','dark-t')">Simulate Payment
+          →</button>
       </div>
     </section>
 
