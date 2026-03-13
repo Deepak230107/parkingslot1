@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — ParkEase</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 10% 20%, var(--dark2) 0%, var(--dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(245, 168, 0, 0.08) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .login-card {
+            width: min(420px, 94vw);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 40px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            animation: cardSlide .6s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @keyframes cardSlide {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo span {
+            color: var(--gold);
+        }
+
+        .module-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            border-radius: 14px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .toggle-btn {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Syne', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .3s;
+        }
+
+        .toggle-btn.active {
+            background: var(--gold);
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(245, 168, 0, 0.3);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .input-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-wrap label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .input-wrap input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #fff;
+            font-family: 'Mulish', sans-serif;
+            font-size: 14px;
+            transition: all .2s;
+        }
+
+        .input-wrap input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-login {
+            background: var(--gold);
+            color: var(--dark);
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all .3s;
+            box-shadow: 0 10px 30px rgba(245, 168, 0, 0.25);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: var(--gold-light);
+            box-shadow: 0 15px 40px rgba(245, 168, 0, 0.35);
+        }
+
+        .login-footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .login-footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .admin-note {
+            font-size: 11px;
+            color: var(--gold);
+            background: rgba(245, 168, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="login-glow"></div>
+        <div class="login-card">
+            <div class="login-logo">Park<span>Ease</span></div>
+
+            <div class="module-toggle">
+                <button class="toggle-btn active" onclick="switchModule('user', this)">User Login</button>
+                <button class="toggle-btn" onclick="switchModule('admin', this)">Admin Login</button>
+            </div>
+
+            <div class="login-form">
+                <h2 class="form-title" id="formTitle">Welcome Back</h2>
+
+                <div class="input-wrap">
+                    <label>Email Address / Username</label>
+                    <input type="text" id="username" placeholder="Enter your ID" value="demo_user">
+                </div>
+
+                <div class="input-wrap">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" value="password123">
+                </div>
+
+                <div id="adminNote" class="admin-note">
+                    🔒 Protected Admin Module. Requires system administrator privileges.
+                </div>
+
+                <button class="btn-login" onclick="handleLogin()">Sign In to Dashboard</button>
+            </div>
+
+            <div class="login-footer">
+                Don't have an account? <a href="#">Create Account</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast dark-t" id="toast"></div>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        let currentModule = 'user';
+
+        function switchModule(module, btn) {
+            currentModule = module;
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const title = document.getElementById('formTitle');
+            const note = document.getElementById('adminNote');
+            const userInp = document.getElementById('username');
+
+            if (module === 'admin') {
+                title.textContent = 'Admin Central';
+                note.style.display = 'block';
+                userInp.value = 'admin_root';
+            } else {
+                title.textContent = 'Welcome Back';
+                note.style.display = 'none';
+                userInp.value = 'demo_user';
+            }
+        }
+
+        function handleLogin() {
+            showToast(`Authenticating ${currentModule}...`, 'dark-t');
+
+            setTimeout(() => {
+                if (currentModule === 'admin') {
+                    window.location.href = 'overview.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }, 1200);
+        }
+    </script>
+</body>
+
+</html>

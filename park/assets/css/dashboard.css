@@ -898,3 +898,185 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Theater Style Grid (BookMyShow) ── */
+.theater-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.entrance-focus {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 60px;
+    text-align: center;
+    position: relative;
+    perspective: 500px;
+}
+
+.entrance-line {
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    box-shadow: 0 10px 20px rgba(245, 168, 0, 0.4);
+    border-radius: 100px;
+}
+
+.entrance-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 3px;
+    margin-top: 15px;
+}
+
+.d-cinema-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.theater-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.row-lbl {
+    width: 25px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--muted);
+    text-align: center;
+}
+
+.t-slot-wrap {
+    display: flex;
+    gap: 8px;
+}
+
+.t-slot {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px 8px 5px 5px;
+    border: 1.5px solid #d5d9e8;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all .2s;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    position: relative;
+}
+
+.t-slot::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 4px;
+    right: 4px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 2px;
+}
+
+.t-slot:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.t-slot.occupied {
+    background: var(--dark);
+    border-color: var(--dark);
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.t-slot.selected {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #111;
+    box-shadow: 0 0 20px rgba(245, 168, 0, 0.4);
+}
+
+.t-aisle {
+    width: 30px;
+}
+
+.theater-legend {
+    margin-top: 60px;
+    display: flex;
+    gap: 40px;
+    border-top: 1px solid var(--border-light);
+    padding-top: 30px;
+    width: 100%;
+    justify-content: center;
+}
+
+.t-leg-i {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.t-leg-d {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+}
+
+.t-leg-d.free {
+    background: #f8fafc;
+    border: 1.5px solid #d5d9e8;
+}
+
+.t-leg-d.occupied {
+    background: var(--dark);
+}
+
+.t-leg-d.selected {
+    background: var(--gold);
+}
+
+@media (max-width: 768px) {
+    .theater-container {
+        padding: 30px 15px;
+    }
+
+    .t-slot {
+        width: 30px;
+        height: 30px;
+        font-size: 8px;
+    }
+
+    .theater-legend {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .t-aisle {
+        width: 15px;
+    }
+}

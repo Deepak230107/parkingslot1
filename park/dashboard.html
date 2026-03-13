@@ -77,12 +77,13 @@
                         </svg></span>
                     Settings
                 </a>
-                <a href="index.html" class="back-btn">
+                <a href="login.html" class="back-btn"
+                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                        <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
+                        <path d="M10 10L13 7L10 4M13 7H5M1 1V13" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    Back to Site
+                    Logout Admin
                 </a>
             </div>
         </aside>
@@ -177,24 +178,30 @@
                     </div>
                 </div>
 
-                <!-- Zone header -->
-                <div class="d-lot-hdr">
-                    <div class="d-lot-title">Parking Allotment — All Zones</div>
-                    <div class="d-legend">
-                        <div class="d-leg-i">
-                            <div class="d-leg-d fr"></div>Available
+                <!-- Cinematic Grid Structure -->
+                <div class="theater-container">
+                    <!-- Entrance / Screen Mockup -->
+                    <div class="entrance-focus">
+                        <div class="entrance-line"></div>
+                        <div class="entrance-label">MAIN ENTRANCE / VIEWPORT</div>
+                    </div>
+
+                    <!-- Zones in Seat structure -->
+                    <div class="d-cinema-grid" id="dZonesGrid"></div>
+
+                    <!-- Legend (Bottom) -->
+                    <div class="theater-legend">
+                        <div class="t-leg-i">
+                            <div class="t-leg-d free"></div>Available
                         </div>
-                        <div class="d-leg-i">
-                            <div class="d-leg-d oc"></div>Occupied
+                        <div class="t-leg-i">
+                            <div class="t-leg-d occupied"></div>Occupied
                         </div>
-                        <div class="d-leg-i">
-                            <div class="d-leg-d sl"></div>Selected
+                        <div class="t-leg-i">
+                            <div class="t-leg-d selected"></div>Selected
                         </div>
                     </div>
                 </div>
-
-                <!-- Zones -->
-                <div class="d-zones" id="dZonesGrid"></div>
             </div>
         </div>
     </div>

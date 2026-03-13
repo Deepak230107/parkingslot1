@@ -27,7 +27,11 @@
         <button class="l-nav-btn" onclick="lScroll('l-pay-sec',this)">Pay</button>
       </div>
       <div class="l-nav-right">
-        <a href="overview.html" class="go-dashboard" style="text-decoration:none;">
+        <a href="login.html" class="go-dashboard"
+          style="text-decoration:none; margin-right: 15px; border-color: rgba(255,255,255,0.1); background: transparent;">
+          Sign In
+        </a>
+        <a href="login.html" class="go-dashboard" style="text-decoration:none;">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor" />
             <rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor" />
@@ -85,6 +89,10 @@
                 <path d="M2.5 7.5H12.5M12.5 7.5L8.5 3.5M12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round" />
               </svg>
+            </button>
+            <button class="btn-spot" onclick="openSpotModal()">
+              <span class="spot-pulse"></span>
+              On-the-spot Booking
             </button>
             <button class="btn-outline" onclick="lScroll('l-features-sec',null)">Learn More</button>
           </div>
@@ -187,27 +195,52 @@
         </div>
         <div class="fr">
           <div class="fg"><label class="fl">Date</label><input type="date" class="fi" id="lDate" /></div>
-          <div class="fg"><label class="fl">Arrival Time</label><input type="time" class="fi" value="09:00" /></div>
+          <div class="fg"><label class="fl">Arrival Time</label><input type="time" class="fi" id="lArrival"
+              value="09:00" /></div>
         </div>
         <div class="fg">
           <label class="fl">Duration</label>
           <select class="fi" id="lDur" onchange="updateLPrice()">
-            <option value="40">1 Hour — ₹40</option>
-            <option value="75">2 Hours — ₹75</option>
-            <option value="140" selected>4 Hours — ₹140</option>
-            <option value="220">Full Day — ₹220</option>
+            <option value="1" data-hrs="1">1 Hour — ₹1</option>
+            <option value="1" data-hrs="2">2 Hours — ₹1</option>
+            <option value="1" data-hrs="4" selected>4 Hours — ₹1</option>
+            <option value="1" data-hrs="8">Full Day — ₹1</option>
           </select>
         </div>
-        <div class="fg"><label class="fl">Vehicle Number</label><input type="text" class="fi"
+        <div class="fg"><label class="fl">Vehicle Number</label><input type="text" class="fi" id="lPlate"
             placeholder="e.g. TN 09 AX 1234" /></div>
+
+        <!-- ── ALERT SECTION ── -->
+        <div class="alert-section">
+          <div class="alert-section-hdr">
+            <span class="alert-bell">🔔</span>
+            <div>
+              <div class="alert-sec-title">Parking Expiry Alerts</div>
+              <div class="alert-sec-sub">Get notified 30 min before your time ends</div>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">Mobile Number (for SMS-style alert)</label>
+            <input type="tel" class="fi" id="lPhone" placeholder="e.g. +91 98765 43210" maxlength="15" />
+          </div>
+          <button class="btn-alert-enable" id="btnEnableAlert" onclick="enableParkingAlerts()">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <path d="M7.5 1C7.5 1 3 3.5 3 8v3l-1 1.5h11L12 11V8C12 3.5 7.5 1 7.5 1Z" stroke="currentColor"
+                stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M6 12.5a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            Enable Expiry Alert
+          </button>
+        </div>
+
         <div class="price-prev">
           <div>
             <div class="pp-lbl">Estimated Total</div>
             <div style="font-size:10.5px;color:var(--muted);margin-top:2px;">Inc. taxes & fees</div>
           </div>
-          <div class="pp-val" id="lPrice">₹140</div>
+          <div class="pp-val" id="lPrice">₹1</div>
         </div>
-        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="lScroll('l-pay-sec',null)">
+        <button class="btn-gold" style="width:100%;justify-content:center;" onclick="confirmReservation()">
           Confirm Reservation
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -235,9 +268,9 @@
           <div class="r-row"><span class="k">Arrival</span><span class="v">09:00 AM</span></div>
           <div class="r-row"><span class="k">Duration</span><span class="v">4 Hours</span></div>
           <div class="r-row"><span class="k">Vehicle</span><span class="v">TN 09 AX 1234</span></div>
-          <div class="r-row"><span class="k">Parking Fee</span><span class="v">₹140</span></div>
-          <div class="r-row"><span class="k">Service Fee</span><span class="v">₹12</span></div>
-          <div class="r-row total"><span class="k">Total</span><span class="v">₹152</span></div>
+          <div class="r-row"><span class="k">Parking Fee</span><span class="v" id="rParkFee">₹1</span></div>
+          <div class="r-row"><span class="k">Service Fee</span><span class="v" id="rServFee">₹0</span></div>
+          <div class="r-row total"><span class="k">Total</span><span class="v" id="rTotal">₹1</span></div>
         </div>
       </div>
       <div class="scanner-container">
@@ -272,6 +305,15 @@
         </div>
         <button class="btn-pay" onclick="showToast('✅ Payment successful! Head to B2-14.','dark-t')">Simulate Payment
           →</button>
+        <button class="btn-receipt" onclick="downloadReceipt()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Receipt PDF
+        </button>
       </div>
     </section>
 
@@ -288,12 +330,118 @@
     </footer>
   </div>
 
+  <!-- ════ ON-THE-SPOT BOOKING MODAL ════ -->
+  <div class="spot-overlay" id="spotOverlay" style="display:none;">
+    <div class="spot-modal">
+      <div class="spot-modal-hdr">
+        <div class="spot-icon-wrap">⚡</div>
+        <div>
+          <h2 class="spot-title">On-the-spot Booking</h2>
+          <p class="spot-sub">Instant access for users already at the location.</p>
+        </div>
+        <button class="spot-close" onclick="closeSpotModal()">✕</button>
+      </div>
+
+      <div class="spot-body">
+        <div class="spot-input-row">
+          <div class="fg">
+            <label class="fl">Vehicle Number</label>
+            <input type="text" class="fi" id="spotPlate" placeholder="e.g. TN 09 AX 1234" />
+          </div>
+          <div class="fg">
+            <label class="fl">Preferred Zone</label>
+            <select class="fi" id="spotZone">
+              <option value="A">Zone A (Premium)</option>
+              <option value="B">Zone B (Standard)</option>
+              <option value="C">Zone C (Economy)</option>
+              <option value="D">Zone D (Bike Only)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="spot-duration-grid">
+          <div class="dur-card active" onclick="selectSpotDur(this, 1)">
+            <div class="dur-check"></div>
+            <div class="dur-time">1 Hour</div>
+            <div class="dur-price">₹1</div>
+          </div>
+          <div class="dur-card" onclick="selectSpotDur(this, 2)">
+            <div class="dur-check"></div>
+            <div class="dur-time">2 Hours</div>
+            <div class="dur-price">₹1</div>
+          </div>
+          <div class="dur-card" onclick="selectSpotDur(this, 4)">
+            <div class="dur-check"></div>
+            <div class="dur-time">4 Hours</div>
+            <div class="dur-price">₹1</div>
+          </div>
+        </div>
+
+        <div class="spot-footer">
+          <div class="spot-total">
+            <span class="st-l">Total Payable</span>
+            <span class="st-v">₹1</span>
+          </div>
+          <button class="btn-spot-confirm" onclick="confirmSpotBooking()">
+            Book & Enter Now →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Admin Dashboard logic moved to separate pages -->
+
+  <!-- ════ LIVE COUNTDOWN RIBBON ════ -->
+  <div class="park-countdown" id="parkCountdown" style="display:none;">
+    <div class="pk-left">
+      <div class="pk-icon">🅿️</div>
+      <div>
+        <div class="pk-label">Parking Active</div>
+        <div class="pk-slot" id="pkSlotLabel">Slot B2-14</div>
+      </div>
+    </div>
+    <div class="pk-center">
+      <div class="pk-timer" id="pkTimer">00:00:00</div>
+      <div class="pk-timer-label">time remaining</div>
+    </div>
+    <div class="pk-right">
+      <button class="pk-extend" onclick="extendParking()">+ Extend</button>
+      <button class="pk-close" onclick="stopCountdown()">✕</button>
+    </div>
+  </div>
+
+  <!-- ════ EXPIRY ALERT MODAL ════ -->
+  <div class="alert-overlay" id="alertOverlay" style="display:none;">
+    <div class="alert-modal">
+      <div class="alert-modal-pulse"></div>
+      <div class="alert-phone-mockup">
+        <div class="apm-notif">
+          <div class="apm-app-row">
+            <span class="apm-app-ico">🅿️</span>
+            <span class="apm-app-name">ParkEase</span>
+            <span class="apm-time">now</span>
+          </div>
+          <div class="apm-title">⚠️ Parking Expiring Soon!</div>
+          <div class="apm-body" id="alertModalBody">Your slot expires in 30 minutes. Move or extend now.</div>
+        </div>
+      </div>
+      <div class="alert-modal-info">
+        <div class="ami-countdown" id="amiCountdown">30:00</div>
+        <div class="ami-label">minutes until expiry</div>
+      </div>
+      <div class="alert-modal-btns">
+        <button class="amb-extend" onclick="extendParking(); closeAlertModal()">⚡ Extend Parking</button>
+        <button class="amb-dismiss" onclick="closeAlertModal()">I'll Move My Car</button>
+      </div>
+    </div>
+  </div>
 
   <!-- TOAST -->
   <div class="toast dark-t" id="toast"></div>
 
   <script src="assets/js/script.js"></script>
+  <script src="assets/js/notifications.js"></script>
 </body>
 
 </html>

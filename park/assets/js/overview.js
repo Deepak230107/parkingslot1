@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const activities = [
         { icon: '🚗', class: 'd-act-b', title: 'New Reservation', sub: 'TN 09 AX 1234 booked Zone A-04' },
-        { icon: '💵', class: 'd-act-g', title: 'Payment Received', sub: '₹220 paid for Full Day (UPI)' },
+        { icon: '💵', class: 'd-act-g', title: 'Payment Received', sub: '₹1 paid for Full Day (UPI)' },
         { icon: '🚪', class: 'd-act-b', title: 'Vehicle Exit', sub: 'DL 7C E3456 left Zone C-12' },
         { icon: '🚗', class: 'd-act-b', title: 'New Reservation', sub: 'MH 12 CD 9012 booked Zone B-01' }
     ];
