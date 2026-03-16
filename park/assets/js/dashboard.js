@@ -1,4 +1,4 @@
-﻿// ════════════ DASHBOARD LOGIC ════════════
+// ════════════ PARKING DASHBOARD LOGIC ════════════
 const dZones = ['A', 'B', 'C', 'D'];
 let dSlots = {};
 let dSelSlot = null;
@@ -14,7 +14,7 @@ function initDashboard() {
         for (let n = 1; n <= 16; n++) {
             const id = `${z}${String(n).padStart(2, '0')}`;
             const r = seededR(idx++);
-            const state = r < 0.45 ? 'occupied' : 'free';
+            const state = r < 0.4 ? 'occupied' : 'free';
             dSlots[id] = {
                 id, zone: z, num: n, state,
                 plate: state === 'occupied' ? dPlates[Math.floor(r * 6)] : '',
@@ -28,79 +28,70 @@ function initDashboard() {
 }
 
 function dRender() {
-    const grid = document.getElementById('dZonesGrid'); grid.innerHTML = '';
+    const grid = document.getElementById('dZonesGrid'); 
+    if(!grid) return;
+    grid.innerHTML = '';
+    
     let free = 0, occ = 0, sel = 0, total = 0;
 
-    const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-
-    rows.forEach((rowChar, ri) => {
+    dZones.forEach((zoneChar, zi) => {
         const rowDiv = document.createElement('div');
-        rowDiv.className = 'theater-row';
-        rowDiv.style.animationDelay = `${ri * .05}s`;
+        rowDiv.className = 'parking-row';
 
-        // Row Label (Left)
-        const lblL = document.createElement('div');
-        lblL.className = 'row-lbl';
-        lblL.textContent = rowChar;
-        rowDiv.appendChild(lblL);
+        // Row Label
+        const lbl = document.createElement('div');
+        lbl.className = 'row-label';
+        lbl.textContent = zoneChar;
+        rowDiv.appendChild(lbl);
 
-        // Slot Wrap
-        const wrap = document.createElement('div');
-        wrap.className = 't-slot-wrap';
-
-        // We have 8 seats per row (2 + 4 + 2 style)
-        for (let s = 1; s <= 8; s++) {
-            // Map seat to existing dSlots ID logic if needed, or just use Row-Seat
-            // For now, let's just use existing IDs from dSlots to maintain state
-            // Logic: 64 slots total. Row A is 1-8, B is 9-16...
-            const slotIndex = (ri * 8) + s;
-            const zoneIdx = Math.floor((slotIndex - 1) / 16);
-            const zoneChar = dZones[zoneIdx];
-            const numInZone = ((slotIndex - 1) % 16) + 1;
-            const id = `${zoneChar}${String(numInZone).padStart(2, '0')}`;
-
-            const slotData = dSlots[id];
-            if (slotData) {
-                if (slotData.state === 'free') free++;
-                else if (slotData.state === 'occupied') occ++;
-                else if (slotData.state === 'selected') sel++;
-                total++;
-
-                const sBtn = document.createElement('div');
-                sBtn.className = `t-slot ${slotData.state}`;
-                sBtn.dataset.id = id;
-                sBtn.textContent = s;
-                sBtn.onclick = () => dSlotClick(id);
-                wrap.appendChild(sBtn);
-            }
-
-            // Add Aisle after 2 and 6
-            if (s === 2 || s === 6) {
-                const aisle = document.createElement('div');
-                aisle.className = 't-aisle';
-                wrap.appendChild(aisle);
-            }
+        // First Block of 4 slots
+        const block1 = document.createElement('div');
+        block1.className = 'slot-block';
+        
+        for (let s = 1; s <= 4; s++) {
+            renderSlot(zoneChar, s, block1);
         }
+        rowDiv.appendChild(block1);
 
-        rowDiv.appendChild(wrap);
+        // Aisle
+        const aisle = document.createElement('div');
+        aisle.className = 'parking-aisle';
+        rowDiv.appendChild(aisle);
 
-        // Row Label (Right)
-        const lblR = document.createElement('div');
-        lblR.className = 'row-lbl';
-        lblR.textContent = rowChar;
-        rowDiv.appendChild(lblR);
+        // Second Block of 4 slots
+        const block2 = document.createElement('div');
+        block2.className = 'slot-block';
+        for (let s = 5; s <= 8; s++) {
+            renderSlot(zoneChar, s, block2);
+        }
+        rowDiv.appendChild(block2);
 
         grid.appendChild(rowDiv);
     });
+
+    function renderSlot(zone, num, parent) {
+        const id = `${zone}${String(num).padStart(2, '0')}`;
+        const slotData = dSlots[id];
+        if (slotData) {
+            if (slotData.state === 'free') free++;
+            else if (slotData.state === 'occupied') occ++;
+            else if (slotData.state === 'selected') sel++;
+            total++;
+
+            const sBtn = document.createElement('div');
+            sBtn.className = `parking-slot ${slotData.state}`;
+            sBtn.dataset.id = id;
+            sBtn.dataset.num = num;
+            sBtn.onclick = () => dSlotClick(id);
+            parent.appendChild(sBtn);
+        }
+    }
 
     document.getElementById('dAvail').textContent = free;
     document.getElementById('dOcc').textContent = occ;
     document.getElementById('dSel').textContent = sel;
     document.getElementById('dTotal').textContent = total;
 }
-
-// dBuildSlot is no longer needed in this structure, integrated into dRender
-
 
 function dSlotClick(id) {
     const s = dSlots[id]; if (!s) return;
@@ -115,46 +106,49 @@ function dSlotClick(id) {
 
 function dOpenPanel(id) {
     const s = dSlots[id]; if (!s) return;
-    document.getElementById('dPanelTitle').textContent = `Slot ${id}`;
-    const vis = document.getElementById('dPanelVis');
-    vis.className = 'd-slot-big ' + (s.state === 'selected' ? 'sel-bg' : s.state === 'occupied' ? 'occ-bg' : '');
+    document.getElementById('dPanelTitle').textContent = `Parking Slot ${id}`;
+    
     const badge = s.state === 'free' ? '<span class="d-badge fr">Available</span>' : s.state === 'selected' ? '<span class="d-badge sl">Selected</span>' : '<span class="d-badge oc">Occupied</span>';
+    
     document.getElementById('dPanelInfo').innerHTML = `
-    <div class="d-info-row"><span class="d-info-k">Slot ID</span><span class="d-info-v">${id}</span></div>
-    <div class="d-info-row"><span class="d-info-k">Zone</span><span class="d-info-v">Zone ${s.zone}</span></div>
-    <div class="d-info-row"><span class="d-info-k">Status</span><span class="d-info-v">${badge}</span></div>
-    ${s.state === 'occupied' ? `
-    <div class="d-info-row"><span class="d-info-k">Vehicle</span><span class="d-info-v">${s.plate}</span></div>
-    <div class="d-info-row"><span class="d-info-k">User</span><span class="d-info-v">${s.user}</span></div>
-    <div class="d-info-row"><span class="d-info-k">Since</span><span class="d-info-v">${s.since}</span></div>` : ''}
-  `;
+        <div class="d-info-row"><span class="d-info-k">Slot Reference</span><span class="d-info-v">${id}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Parking Zone</span><span class="d-info-v">Zone ${s.zone}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Availability</span><span class="d-info-v">${badge}</span></div>
+        ${s.state === 'occupied' ? `
+        <div class="d-info-row"><span class="d-info-k">Vehicle Plate</span><span class="d-info-v">${s.plate}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Authorized User</span><span class="d-info-v">${s.user}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Parked Since</span><span class="d-info-v">${s.since}</span></div>` : ''}
+    `;
+    
     const acts = document.getElementById('dPanelActs');
-    if (s.state === 'free') acts.innerHTML = `<button class="d-act-btn primary" onclick="dReserve('${id}')">Reserve This Slot →</button>`;
-    else if (s.state === 'selected') acts.innerHTML = `<button class="d-act-btn primary" onclick="dConfirm('${id}')">Confirm Reservation</button><button class="d-act-btn secondary" onclick="dClear('${id}')">Clear Selection</button>`;
-    else acts.innerHTML = `<button class="d-act-btn secondary" onclick="showToast('Session details sent.','light-t')">View Session</button><button class="d-act-btn danger" onclick="dRelease('${id}')">Release Slot</button>`;
+    if (s.state === 'free') acts.innerHTML = `<button class="d-act-btn" onclick="dReserve('${id}')">Assign Slot</button>`;
+    else if (s.state === 'selected') acts.innerHTML = `<button class="d-act-btn" onclick="dConfirm('${id}')">Finalize Assignment</button>`;
+    else acts.innerHTML = `<button class="d-act-btn" onclick="dRelease('${id}')">Deallocate Slot</button>`;
+    
     document.getElementById('dPanel').classList.add('open');
 }
+
 function dClosePanel() { document.getElementById('dPanel').classList.remove('open'); }
-function dReserve(id) { dSlots[id].state = 'selected'; dSelSlot = id; dRender(); dOpenPanel(id); showToast(`Slot ${id} selected.`, 'light-t'); }
+function dReserve(id) { dSlots[id].state = 'selected'; dSelSlot = id; dRender(); dOpenPanel(id); }
 function dConfirm(id) {
-    dSlots[id].state = 'occupied'; dSlots[id].plate = dPlates[Math.floor(Math.random() * 6)];
-    dSlots[id].user = dNames[Math.floor(Math.random() * 6)]; dSlots[id].since = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')}`;
-    dSelSlot = null; dRender(); dClosePanel(); showToast(`✅ Slot ${id} reserved!`, 'light-t');
+    dSlots[id].state = 'occupied'; 
+    dSlots[id].plate = dPlates[Math.floor(Math.random() * 6)];
+    dSlots[id].user = dNames[Math.floor(Math.random() * 6)]; 
+    dSlots[id].since = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`;
+    dSelSlot = null; dRender(); dClosePanel(); showToast(`✅ Slot ${id} Assigned`);
 }
-function dClear(id) { dSlots[id].state = 'free'; dSelSlot = null; dRender(); dClosePanel(); showToast(`Slot ${id} cleared.`, 'light-t'); }
-function dRelease(id) { dSlots[id].state = 'free'; dSlots[id].plate = ''; dSlots[id].user = ''; dSlots[id].since = ''; dRender(); dOpenPanel(id); showToast(`Slot ${id} available.`, 'light-t'); }
-function dNav(el) { document.querySelectorAll('.d-nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); }
-function dVehicle(v, btn) { document.querySelectorAll('.d-vtab').forEach(b => b.classList.remove('active')); btn.classList.add('active'); showToast(`Showing ${v} slots`, 'light-t'); }
+function dRelease(id) { dSlots[id].state = 'free'; dSlots[id].plate = ''; dSlots[id].user = ''; dSlots[id].since = ''; dRender(); dOpenPanel(id); showToast(`Slot ${id} Released`); }
+
 function dSearch(q) {
-    document.querySelectorAll('.d-slot').forEach(s => { s.style.opacity = (!q || s.dataset.id?.toLowerCase().includes(q.toLowerCase())) ? '1' : '0.18'; });
+    document.querySelectorAll('.parking-slot').forEach(s => { 
+        s.style.opacity = (!q || s.dataset.id?.toLowerCase().includes(q.toLowerCase())) ? '1' : '0.1'; 
+    });
 }
 
-// ════════════ TOAST ════════════
-function showToast(msg, cls = 'dark-t') {
+function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg; t.className = `toast ${cls} show`;
-    setTimeout(() => t.classList.remove('show'), 2800);
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Initialize on load
 document.addEventListener('DOMContentLoaded', initDashboard);

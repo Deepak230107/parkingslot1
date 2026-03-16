@@ -1,0 +1,54 @@
+{
+  "project": "ParkEase Smart Parking System",
+  "database_type": "SQLite3",
+  "schema": {
+    "table_name": "transactions",
+    "columns": [
+      { "name": "id", "type": "INTEGER", "attributes": "PRIMARY KEY AUTOINCREMENT" },
+      { "name": "name", "type": "TEXT", "description": "User's full name" },
+      { "name": "plate", "type": "TEXT", "description": "Vehicle registration number" },
+      { "name": "destination", "type": "TEXT", "description": "Parking level or zone" },
+      { "name": "date", "type": "TEXT", "description": "Date of reservation" },
+      { "name": "time", "type": "TEXT", "description": "Estimated arrival time" },
+      { "name": "amount", "type": "TEXT", "description": "Payment amount in INR" },
+      { "name": "status", "type": "TEXT", "description": "Transaction state (SUCCESS/PENDING)" },
+      { "name": "timestamp", "type": "DATETIME", "default": "CURRENT_TIMESTAMP" }
+    ]
+  },
+  "api_endpoint_payload": {
+    "url": "/api/record-transaction",
+    "method": "POST",
+    "sample_payload": {
+      "name": "Deepak Y",
+      "plate": "TN 09 AX 1234",
+      "location": "Central Park Business District",
+      "date": "2026-03-16",
+      "time": "09:00",
+      "amount": "₹1.00"
+    }
+  },
+  "mock_records": [
+    {
+      "id": 1,
+      "name": "Arjun Sharma",
+      "plate": "DL 3C AB 1234",
+      "destination": "Terminal 3 — International",
+      "date": "2026-03-16",
+      "time": "14:30",
+      "amount": "₹1.00",
+      "status": "SUCCESS",
+      "timestamp": "2026-03-16 10:15:00"
+    },
+    {
+      "id": 2,
+      "name": "Priya Mani",
+      "plate": "KA 01 MX 9988",
+      "destination": "Elite Plaza — North Wing",
+      "date": "2026-03-17",
+      "time": "11:00",
+      "amount": "₹1.00",
+      "status": "SUCCESS",
+      "timestamp": "2026-03-16 11:20:45"
+    }
+  ]
+}

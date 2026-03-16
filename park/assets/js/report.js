@@ -36,20 +36,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const reps = [
+        { name: 'Consolidated Revenue Audit', span: 'All Time (Live)', by: 'Admin', format: 'PDF', id: 'live-revenue' },
         { name: 'Monthly Financial Audit', span: 'Feb 1 - Feb 28, 2026', by: 'Deepak Y.', format: 'PDF' },
         { name: 'Usage Statistics Q1', span: 'Jan 1 - Feb 28, 2026', by: 'System', format: 'CSV' },
         { name: 'User Management Output', span: 'All Time', by: 'Admin', format: 'Excel' }
     ];
     const tb = document.getElementById('reportTableData');
     reps.forEach(r => {
-        tb.innerHTML += `
-            <tr>
-                <td><strong>${r.name}</strong></td>
-                <td>${r.span}</td>
-                <td>${r.by}</td>
-                <td style="color:var(--gold);font-weight:700;">${r.format}</td>
-                <td><a href="#" class="r-dl">⬇ Download</a></td>
-            </tr>
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${r.name}</strong></td>
+            <td>${r.span}</td>
+            <td>${r.by}</td>
+            <td style="color:var(--gold);font-weight:700;">${r.format}</td>
+            <td><a href="#" class="r-dl" ${r.id ? `onclick="downloadAdminRevenueReport(event)"` : ''}>⬇ Download</a></td>
         `;
+        tb.appendChild(row);
     });
 });
+
+async function downloadAdminRevenueReport(e) {
+    if(e) e.preventDefault();
+    console.log("Generating Live Revenue Report...");
+    
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/admin/download-report');
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ParkEase_Revenue_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        } else {
+            alert("No payment data found in SQL database.");
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Admin Backend Offline. Please ensure app.py is running on port 5000.");
+    }
+}
