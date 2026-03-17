@@ -58,9 +58,11 @@ def handle_receipt_generation():
             "amount": data.get('amount', 'INR 1.00')
         }
         
-        # Create a unique filename
+        # Create a unique filename and sanitize it for Windows/Linux
+        import re
+        safe_plate = re.sub(r'[^\w\s-]', '', user_details['plate']).strip().replace(' ', '_')
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"receipt_{user_details['plate'].replace(' ', '_')}_{timestamp}.pdf"
+        filename = f"receipt_{safe_plate}_{timestamp}.pdf"
         file_path = os.path.join(RECEIPTS_DIR, filename)
         
         # Call the existing generator function
@@ -70,6 +72,8 @@ def handle_receipt_generation():
         return send_file(file_path, as_attachment=True)
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 400
 
 @app.route('/api/record-transaction', methods=['POST'])

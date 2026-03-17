@@ -1,10 +1,13 @@
-/* Reusing base user table components */
 .d-card {
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid var(--border-light);
-    padding: 24px;
+    background: var(--glass);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 32px;
+    backdrop-filter: blur(20px);
+    transition: all 0.4s;
 }
+
+.d-card:hover { border-color: var(--secondary); transform: translateY(-4px); }
 
 .d-card-hdr {
     margin-bottom: 20px;
@@ -14,23 +17,28 @@
 }
 
 .d-card-title {
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Syne', sans-serif;
-    color: var(--text);
+    font-size: 18px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .u-btn {
-    padding: 8px 16px;
-    border-radius: 8px;
-    background: var(--gold);
-    color: #111;
-    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 800;
     border: none;
     cursor: pointer;
     font-size: 12px;
-    font-family: 'Mulish', sans-serif;
+    font-family: var(--font-main);
+    transition: all 0.3s;
 }
+
+.u-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px var(--primary-glow); }
 
 .table-wrap {
     overflow-x: auto;
@@ -45,19 +53,22 @@
 
 .u-table th,
 .u-table td {
-    padding: 14px;
-    border-bottom: 1px solid var(--border-light);
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
 }
 
 .u-table th {
-    font-weight: 700;
-    color: var(--muted);
-    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--secondary);
+    font-size: 11px;
     text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
+.u-table tbody tr { transition: background 0.3s; }
 .u-table tbody tr:hover {
-    background: #f8f9fc;
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .p-method {

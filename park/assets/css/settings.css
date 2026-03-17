@@ -1,10 +1,11 @@
 .d-card {
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid var(--border-light);
-    padding: 24px;
+    background: var(--glass);
+    border-radius: 32px;
+    border: 1px solid var(--border);
+    padding: 40px;
     max-width: 600px;
     margin: 0 auto;
+    backdrop-filter: blur(20px);
 }
 
 .d-card-hdr {
@@ -15,29 +16,29 @@
 }
 
 .d-card-title {
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Syne', sans-serif;
-    color: var(--text);
+    font-size: 20px;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .u-btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: var(--gold);
-    color: #111;
-    font-weight: 700;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 800;
     border: none;
     cursor: pointer;
-    font-size: 13px;
-    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    font-family: var(--font-main);
     width: 100%;
-    transition: opacity 0.2s;
+    transition: all 0.3s;
 }
 
-.u-btn:hover {
-    opacity: 0.9;
-}
+.u-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--primary-glow); }
 
 .form-grid {
     display: grid;
@@ -61,19 +62,20 @@
 }
 
 .form-in {
-    padding: 10px 14px;
-    background: var(--bg);
-    border: 1.5px solid var(--border-light);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'Mulish', sans-serif;
-    font-size: 13.5px;
+    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: 14px;
     outline: none;
-    transition: border-color .2s;
+    transition: all 0.3s;
 }
 
 .form-in:focus {
-    border-color: rgba(245, 168, 0, 0.5);
+    border-color: var(--secondary);
+    background: rgba(255,255,255,0.08);
 }
 
 .set-row {
@@ -101,10 +103,10 @@
     width: 44px;
     height: 24px;
     border-radius: 100px;
-    background: var(--border-light);
+    background: rgba(255,255,255,0.1);
     position: relative;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.3s;
 }
 
 .toggle .dot {
@@ -120,7 +122,7 @@
 }
 
 .toggle.active {
-    background: var(--gold);
+    background: var(--secondary);
 }
 
 .toggle.active .dot {

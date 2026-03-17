@@ -9,13 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
             datasets: [{
                 label: 'Revenue (₹)',
                 data: [4200, 5100, 4800, 6300, 5900, 8200, 7500],
-                borderColor: '#f5a800',
-                backgroundColor: 'rgba(245,168,0,0.1)',
-                borderWidth: 3,
+                borderColor: '#06b6d4',
+                backgroundColor: 'rgba(6, 182, 212, 0.05)',
+                borderWidth: 4,
                 tension: 0.4,
                 fill: true,
-                pointBackgroundColor: '#fff',
-                pointBorderColor: '#f5a800'
+                pointBackgroundColor: '#8b5cf6',
+                pointBorderColor: '#fff',
+                pointHoverRadius: 8
             }]
         },
         options: {
@@ -25,8 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 legend: { display: false }
             },
             scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
-                x: { grid: { display: false } }
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b' } },
+                x: { grid: { display: false }, ticks: { color: '#64748b' } }
+            }
             }
         }
     });
@@ -39,14 +42,25 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const list = document.getElementById('activityList');
-    activities.forEach(a => {
-        const div = document.createElement('div');
-        div.className = 'd-activity';
-        div.innerHTML = `<div class="d-act-icon ${a.class}">${a.icon}</div>
-                         <div class="d-act-info">
-                             <div class="d-act-t">${a.title}</div>
-                             <div class="d-act-s">${a.sub}</div>
-                         </div>`;
-        list.appendChild(div);
-    });
+    if(list) {
+        activities.forEach((a, index) => {
+            const div = document.createElement('div');
+            div.className = 'd-activity';
+            div.style.opacity = '0';
+            div.style.transform = 'translateX(20px)';
+            div.style.transition = 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+            
+            div.innerHTML = `<div class="d-act-icon ${a.class}">${a.icon}</div>
+                             <div class="d-act-info">
+                                 <div class="d-act-t">${a.title}</div>
+                                 <div class="d-act-s">${a.sub}</div>
+                             </div>`;
+            list.appendChild(div);
+            
+            setTimeout(() => {
+                div.style.opacity = '1';
+                div.style.transform = 'translateX(0)';
+            }, 100 + (index * 100));
+        });
+    }
 });

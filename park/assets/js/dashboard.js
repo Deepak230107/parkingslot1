@@ -1,5 +1,5 @@
 // ════════════ PARKING DASHBOARD LOGIC ════════════
-const dZones = ['A', 'B', 'C', 'D'];
+const dZones = ['A'];
 let dSlots = {};
 let dSelSlot = null;
 const dNames = ['Arjun S.', 'Priya M.', 'Ravi K.', 'Kavya T.', 'Arun B.', 'Deepa R.'];
@@ -9,17 +9,14 @@ function seededR(seed) { let x = Math.sin(seed + 3) * 10000; return x - Math.flo
 
 function initDashboard() {
     if (Object.keys(dSlots).length > 0) return;
-    let idx = 0;
     dZones.forEach(z => {
-        for (let n = 1; n <= 16; n++) {
+        for (let n = 1; n <= 8; n++) {
             const id = `${z}${String(n).padStart(2, '0')}`;
-            const r = seededR(idx++);
-            const state = r < 0.4 ? 'occupied' : 'free';
             dSlots[id] = {
-                id, zone: z, num: n, state,
-                plate: state === 'occupied' ? dPlates[Math.floor(r * 6)] : '',
-                user: state === 'occupied' ? dNames[Math.floor(r * 6)] : '',
-                since: state === 'occupied' ? `${Math.floor(r * 5) + 8}:${r > .5 ? '30' : '00'} AM` : '',
+                id, zone: z, num: n, state: 'free',
+                plate: '',
+                user: '',
+                since: '',
             };
         }
     });

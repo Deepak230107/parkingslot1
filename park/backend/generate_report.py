@@ -12,10 +12,10 @@ if not os.path.exists(REPORTS_DIR):
 
 class PaymentReportPDF(FPDF):
     def header(self):
-        self.set_fill_color(15, 17, 26)
+        self.set_fill_color(2, 6, 23) # Deep Navy
         self.rect(0, 0, 210, 40, 'F')
         self.set_font('helvetica', 'B', 24)
-        self.set_text_color(245, 168, 0)
+        self.set_text_color(139, 92, 246) # Electric Violet
         self.set_xy(10, 10)
         self.cell(0, 20, 'ParkEase', 0, 0, 'L')
         self.set_font('helvetica', 'B', 14)
@@ -51,8 +51,8 @@ def generate_full_payments_pdf():
     pdf = PaymentReportPDF()
     pdf.add_page()
     
-    # Table Header
-    pdf.set_fill_color(245, 168, 0)
+    # Table Header (Electric Violet)
+    pdf.set_fill_color(139, 92, 246)
     pdf.set_text_color(0, 0, 0)
     pdf.set_font('helvetica', 'B', 10)
     

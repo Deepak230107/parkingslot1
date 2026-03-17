@@ -16,46 +16,38 @@ function selectV(btn, v) {
 }
 
 // ════════════ MINI LOT GRID ════════════
-let currentSlot = 'PE-104'; // Default
+let currentSlot = 'PE-001'; // Default
 function buildMiniGrid() {
   const mg = document.getElementById('miniGrid');
   if (!mg) return;
   mg.innerHTML = '';
   
-  const occ = new Set();
-  let i = 0;
-  // Generate random stable occupied slots
-  while (occ.size < 12) {
-    const r = Math.sin(i + 13) * 10000;
-    occ.add(Math.floor((r - Math.floor(r)) * 36));
-    i++;
-  }
+  const occ = new Set(); // All available
 
   let mSel = null;
-  for (let n = 0; n < 36; n++) {
+  for (let n = 1; n <= 8; n++) {
     const s = document.createElement('div');
-    s.className = 'mini-slot' + (occ.has(n) ? ' occ' : '');
+    s.className = 'mini-slot'; // No 'occ' class
+    const id = `PE-${String(n).padStart(3, '0')}`;
     
-    if (!occ.has(n)) {
-      s.addEventListener('click', () => {
-        mg.querySelectorAll('.mini-slot').forEach(x => x.classList.remove('sel'));
-        if (currentSlot === `PE-${n + 100}`) {
-          currentSlot = 'PE-104';
-        } else {
-          s.classList.add('sel');
-          currentSlot = `PE-${n + 100}`;
-          showToast(`Slot ${currentSlot} selected`);
-        }
-        updateMiniStats(occ, currentSlot === 'PE-104' ? null : n);
-      });
-    }
+    s.addEventListener('click', () => {
+      mg.querySelectorAll('.mini-slot').forEach(x => x.classList.remove('sel'));
+      if (currentSlot === id) {
+        currentSlot = 'PE-001';
+      } else {
+        s.classList.add('sel');
+        currentSlot = id;
+        showToast(`Slot ${currentSlot} selected`);
+      }
+      updateMiniStats(occ, currentSlot === 'PE-001' ? null : n);
+    });
     mg.appendChild(s);
   }
   updateMiniStats(occ, null);
 }
 
 function updateMiniStats(occ, sel) {
-  const free = 36 - occ.size - (sel !== null ? 1 : 0);
+  const free = 8 - occ.size - (sel !== null ? 1 : 0);
   document.getElementById('mFree').textContent = free;
   document.getElementById('mOcc').textContent = occ.size;
   document.getElementById('mSel').textContent = sel !== null ? 1 : 0;
@@ -228,20 +220,49 @@ document.addEventListener('DOMContentLoaded', () => {
     dateInput.value = new Date().toISOString().split('T')[0];
   }
 
-  // Scroll Spy for Nav
+  // Scroll Reveal Observer
+  const revealCallback = (entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+      }
+    });
+  };
+
+  const revealObserver = new IntersectionObserver(revealCallback, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+
+  // Navbar & Scroll Spy
+  const nav = document.querySelector('.l-nav');
   window.addEventListener('scroll', () => {
+    // Nav Style
+    if (nav) {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    }
+
+    // Scroll Spy
     const sections = ['hero', 'l-steps-sec', 'l-reserve-sec'];
     let current = 'hero';
     sections.forEach(id => {
       const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - 150) {
+      if (el && window.scrollY >= el.offsetTop - 200) {
         current = id;
       }
     });
 
     document.querySelectorAll('.l-nav-btn').forEach(btn => {
-      const target = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
-      btn.classList.toggle('active', target === current);
+      const targetAttr = btn.getAttribute('onclick');
+      if (targetAttr) {
+        const match = targetAttr.match(/'([^']+)'/);
+        if (match && match[1] === current) {
+          document.querySelectorAll('.l-nav-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+      }
     });
   }, { passive: true });
 });

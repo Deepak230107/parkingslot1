@@ -9,7 +9,10 @@
 </head>
 
 <body>
-
+  <div class="noise"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+ 
   <div id="landing">
 
     <!-- NAV -->
@@ -32,9 +35,9 @@
     <!-- HERO -->
     <section id="hero">
       <div class="l-hero">
-        <div class="hero-left">
+        <div class="hero-left" data-reveal="left">
           <div class="hero-pill">Now Serving Central District</div>
-          <h1 class="hero-title">PARKING FOR THE<br><em>MODERN ERA</em></h1>
+          <h1 class="hero-title" data-reveal>THE FUTURE IS<br><em data-text="AURORA">AURORA</em></h1>
           <p class="hero-sub">Ditch the search. Secure premium parking spots via our real-time slot tracking system. Reserved for you, before you even arrive.</p>
           
           <div class="v-selector">
@@ -70,8 +73,10 @@
           </div>
         </div>
 
-        <div class="hero-right">
-          <div class="hero-image-wrap"></div>
+        <div class="hero-right" data-reveal="right" data-reveal-delay="300">
+          <div class="hero-image-wrap">
+            <img src="assets/images/aurora_parking_concept.png" alt="Aurora Parking Hub" style="width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 40px 80px rgba(0,0,0,0.5);">
+          </div>
         </div>
       </div>
     </section>
@@ -81,19 +86,19 @@
       <div class="sec-label">Simple Process</div>
       <h2 class="sec-title">PARKING IN 3 EASY STEPS</h2>
       <div class="feat-grid" style="margin-top: 60px;">
-        <div class="feat-card" style="padding: 40px;">
+        <div class="feat-card" style="padding: 40px;" data-reveal="bottom" class="reveal-delay-1">
           <div style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">01</div>
           <div class="feat-ico">🔍</div>
           <h3 class="feat-t">Find a Spot</h3>
           <p class="feat-d">Browse available slots in real-time across your destination zones.</p>
         </div>
-        <div class="feat-card" style="padding: 40px;">
+        <div class="feat-card" style="padding: 40px;" data-reveal="bottom" class="reveal-delay-2">
           <div style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">02</div>
           <div class="feat-ico">⚡</div>
           <h3 class="feat-t">Instant Reserve</h3>
           <p class="feat-d">Book your preferred slot with a single tap. Locked for 15 minutes.</p>
         </div>
-        <div class="feat-card" style="padding: 40px;">
+        <div class="feat-card" style="padding: 40px;" data-reveal="bottom" class="reveal-delay-3">
           <div style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">03</div>
           <div class="feat-ico">💳</div>
           <h3 class="feat-t">Pay & Park</h3>
@@ -109,17 +114,17 @@
       <p class="sec-sub">We combine IoT sensors with an intuitive interface to eliminate the stress of urban parking.</p>
       
       <div class="feat-grid">
-        <div class="feat-card">
+        <div class="feat-card" data-reveal="scale" class="reveal-delay-1">
           <div class="feat-ico">🛰️</div>
           <h3 class="feat-t">Bayesian Precision</h3>
           <p class="feat-d">Our sensors update slot availability with sub-second accuracy using IoT mesh.</p>
         </div>
-        <div class="feat-card">
+        <div class="feat-card" data-reveal="scale" class="reveal-delay-2">
           <div class="feat-ico">🛡️</div>
           <h3 class="feat-t">Secure Transactions</h3>
           <p class="feat-d">Every payment is secured with bank-grade 256-bit encryption.</p>
         </div>
-        <div class="feat-card">
+        <div class="feat-card" data-reveal="scale" class="reveal-delay-3">
           <div class="feat-ico">💎</div>
           <h3 class="feat-t">Elite Access</h3>
           <p class="feat-d">Priority locations near entrances reserved for our premium members.</p>
@@ -134,11 +139,11 @@
         <h2 class="sec-title">SELECT YOUR<br>PLACEMENT</h2>
         <p class="sec-sub">View live status at our Central Hub. Green slots are ready for immediate reservation.</p>
         
-        <div class="lot-card" style="margin-top: 48px;">
+        <div class="lot-card" style="margin-top: 48px;" data-reveal="left">
           <div class="lot-hdr">
             <div>
               <div class="lot-hdr-title">Central Hub — Level B2</div>
-              <div class="lot-hdr-sub">Live View • Updated every 5s</div>
+              <div class="lot-hdr-sub">Quantum Prismatic Grid • Latency < 1ms</div>
             </div>
           </div>
           <div class="mini-grid" id="miniGrid"></div>
@@ -159,7 +164,7 @@
         </div>
       </div>
 
-      <div class="form-card">
+      <div class="form-card" data-reveal="right">
         <h3>Finalize Reservation</h3>
         <div class="fg">
           <label class="fl">Full Name</label>
@@ -201,7 +206,7 @@
 
     <!-- PAY -->
     <section id="l-pay-sec" class="l-pay">
-      <div class="scanner-container">
+      <div class="scanner-container" data-reveal="right">
         <div class="scanner-box">
           <div class="scan-line"></div>
           <div class="qr-code-dummy">
@@ -229,7 +234,7 @@
 
       </div>
 
-      <div>
+      <div data-reveal="left">
         <div class="sec-label">Transactions</div>
         <h2 class="sec-title">SECURE<br>CHECKOUT</h2>
         <div class="receipt" id="finalReceipt">
@@ -261,7 +266,7 @@
         <a href="#" class="f-link">Privacy Policy</a>
         <a href="#" class="f-link">Terms</a>
       </div>
-      <div class="f-copy">© 2026 ParkEase Systems. All payments encrypted.</div>
+      <div class="f-copy">© 2026 ParkEase Systems. Engineered by <span style="color:var(--primary)">Deepak Y</span> & <span style="color:var(--secondary)">Priya Esha</span>. All payments encrypted.</div>
     </footer>
 
   </div>

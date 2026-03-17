@@ -9,8 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
             datasets: [{
                 label: 'Avg Cars Parked',
                 data: [12, 5, 20, 85, 95, 75, 60, 25],
-                backgroundColor: 'rgba(245,168,0,0.8)',
-                borderRadius: 4
+                label: 'Avg Cars Parked',
+                data: [12, 5, 20, 85, 95, 75, 60, 25],
+                backgroundColor: 'rgba(6, 182, 212, 0.8)',
+                borderRadius: 8,
+                hoverBackgroundColor: '#06b6d4'
             }]
         },
         options: {
@@ -18,8 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: 'rgba(0,0,0,0.05)' } },
-                x: { grid: { display: false } }
+            scales: {
+                y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b' } },
+                x: { grid: { display: false }, ticks: { color: '#64748b' } }
+            }
             }
         }
     });
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td><strong>${r.name}</strong></td>
             <td>${r.span}</td>
             <td>${r.by}</td>
-            <td style="color:var(--gold);font-weight:700;">${r.format}</td>
+            <td style="color:var(--secondary);font-weight:800;letter-spacing:1px;">${r.format}</td>
             <td><a href="#" class="r-dl" ${r.id ? `onclick="downloadAdminRevenueReport(event)"` : ''}>⬇ Download</a></td>
         `;
         tb.appendChild(row);

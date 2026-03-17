@@ -5,16 +5,18 @@
 }
 
 .d-card {
-    background: var(--bg-surface);
+    background: var(--glass);
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 32px;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(20px);
 }
 
 .d-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-4px);
+    border-color: var(--secondary);
+    transform: translateY(-8px);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
 }
 
 .d-card.span-2 {
@@ -50,9 +52,16 @@
     display: flex;
     gap: 16px;
     align-items: center;
-    padding: 12px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.02);
+    padding: 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.d-activity:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--border);
 }
 
 .d-act-icon {
@@ -66,8 +75,8 @@
     flex-shrink: 0;
 }
 
-.d-act-b { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-.d-act-g { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+.d-act-b { background: rgba(var(--secondary-rgb), 0.1); color: var(--secondary); }
+.d-act-g { background: rgba(16, 185, 129, 0.1); color: #10b981; }
 
 .d-act-info { flex: 1; }
 .d-act-t { font-size: 14px; font-weight: 700; color: #fff; }

@@ -4,13 +4,13 @@ from datetime import datetime
 
 class ParkEaseReceipt(FPDF):
     def header(self):
-        # Background color for the header
-        self.set_fill_color(15, 17, 26) # #0f111a
+        # Background color for the header (Deep Navy)
+        self.set_fill_color(2, 6, 23) # #020617
         self.rect(0, 0, 210, 40, 'F')
         
-        # Logo
+        # Logo (Indigo Glow)
         self.set_font('helvetica', 'B', 24)
-        self.set_text_color(245, 168, 0) # #f5a800
+        self.set_text_color(139, 92, 246) # #8b5cf6
         self.set_xy(10, 10)
         self.cell(0, 20, 'ParkEase', 0, 0, 'L')
         
@@ -46,8 +46,8 @@ def generate_parking_receipt(user_details, filename):
     pdf.cell(0, 10, 'PARKING AUTHORIZATION PERMIT', 0, 1, 'C')
     pdf.ln(5)
     
-    # Receipt Table Header
-    pdf.set_fill_color(245, 168, 0)
+    # Receipt Table Header (Electric Violet)
+    pdf.set_fill_color(139, 92, 246)
     pdf.set_text_color(0, 0, 0)
     pdf.set_font('helvetica', 'B', 12)
     pdf.cell(190, 10, '   RESERVATION DETAILS', 0, 1, 'L', True)
@@ -89,7 +89,7 @@ def generate_parking_receipt(user_details, filename):
     
     pdf.set_xy(20, pdf.get_y() + 2)
     pdf.set_font('helvetica', 'B', 24)
-    pdf.set_text_color(245, 168, 0)
+    pdf.set_text_color(139, 92, 246) # Electric Violet
     pdf.cell(80, 15, f"Amount Paid: {user_details.get('amount', 'INR 1.00')}", 0, 1)
     
     # Save PDF
