@@ -12,11 +12,11 @@
   <div class="noise"></div>
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
- 
+
   <div id="landing">
 
     <!-- NAV -->
-    <nav class="l-nav
+    <nav class="l-nav">
       <a href="index.html" class="l-logo">Park<span>Ease</span></a>
       <div class="l-nav-links">
         <button class="l-nav-btn active" onclick="lScroll('hero',this)">Home</button>
@@ -26,7 +26,13 @@
       <div class="l-nav-right">
         <a href="login.html" class="l-nav-btn" style="text-decoration:none;">Log In</a>
         <a href="dashboard.html" class="go-dashboard">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
           Admin Portal
         </a>
       </div>
@@ -38,36 +44,54 @@
         <div class="hero-left" data-reveal="left">
           <div class="hero-pill">Now Serving Central District</div>
           <h1 class="hero-title" data-reveal>THE FUTURE IS<br><em data-text="AURORA">AURORA</em></h1>
-          <p class="hero-sub">Ditch the search. Secure premium parking spots via our real-time slot tracking system. Reserved for you, before you even arrive.</p>
-          
+          <p class="hero-sub">Ditch the search. Secure premium parking spots via our real-time slot tracking system.
+            Reserved for you, before you even arrive.</p>
+
           <div class="v-selector">
             <button class="v-btn sel" onclick="selectV(this,'CAR')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2" />
+                <circle cx="7" cy="17" r="2" />
+                <path d="M9 17h6" />
+                <circle cx="17" cy="17" r="2" />
+              </svg>
               Standard Car
             </button>
             <button class="v-btn" onclick="selectV(this,'BIKE')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="18" r="3"/><circle cx="19" cy="18" r="3"/><path d="M12 18V7l7 4"/><path d="M7 8l5-2 5 2"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="5" cy="18" r="3" />
+                <circle cx="19" cy="18" r="3" />
+                <path d="M12 18V7l7 4" />
+                <path d="M7 8l5-2 5 2" />
+              </svg>
               Quick Bike
-            </button>
-            <button class="v-btn" onclick="selectV(this,'TRUCK')">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><path d="M16 8l4 2v6h-4"/><circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg>
-              Heavy Truck
             </button>
           </div>
 
           <div class="hero-cta">
             <button class="btn-gold" onclick="lScroll('l-reserve-sec',null)">
               Book Your Spot Now
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
             </button>
             <button class="btn-outline" onclick="lScroll('l-steps-sec',null)">How it Works</button>
           </div>
-          
+
           <div style="margin-top: 40px; display: flex; align-items: center; gap: 12px; opacity: 0.7;">
             <div style="display: flex;">
-              <div style="width: 32px; height: 32px; border-radius: 50%; background: #222; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">JD</div>
-              <div style="width: 32px; height: 32px; border-radius: 50%; background: #333; border: 2px solid #000; margin-left: -12px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">AS</div>
-              <div style="width: 32px; height: 32px; border-radius: 50%; background: #444; border: 2px solid #000; margin-left: -12px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">PK</div>
+              <div
+                style="width: 32px; height: 32px; border-radius: 50%; background: #222; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">
+                JD</div>
+              <div
+                style="width: 32px; height: 32px; border-radius: 50%; background: #333; border: 2px solid #000; margin-left: -12px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">
+                AS</div>
+              <div
+                style="width: 32px; height: 32px; border-radius: 50%; background: #444; border: 2px solid #000; margin-left: -12px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">
+                PK</div>
             </div>
             <span style="font-size: 13px; font-weight: 600;">Trusted by 50,000+ users</span>
           </div>
@@ -75,7 +99,8 @@
 
         <div class="hero-right" data-reveal="right" data-reveal-delay="300">
           <div class="hero-image-wrap">
-            <img src="assets/images/aurora_parking_concept.png" alt="Aurora Parking Hub" style="width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 40px 80px rgba(0,0,0,0.5);">
+            <img src="assets/images/aurora_parking_concept.png" alt="Aurora Parking Hub"
+              style="width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: 0 40px 80px rgba(0,0,0,0.5);">
           </div>
         </div>
       </div>
@@ -87,19 +112,25 @@
       <h2 class="sec-title">PARKING IN 3 EASY STEPS</h2>
       <div class="feat-grid" style="margin-top: 60px;">
         <div class="feat-card" style="padding: 40px;" data-reveal="bottom" class="reveal-delay-1">
-          <div style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">01</div>
+          <div
+            style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">
+            01</div>
           <div class="feat-ico">🔍</div>
           <h3 class="feat-t">Find a Spot</h3>
           <p class="feat-d">Browse available slots in real-time across your destination zones.</p>
         </div>
         <div class="feat-card" style="padding: 40px;" data-reveal="bottom" class="reveal-delay-2">
-          <div style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">02</div>
+          <div
+            style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">
+            02</div>
           <div class="feat-ico">⚡</div>
           <h3 class="feat-t">Instant Reserve</h3>
           <p class="feat-d">Book your preferred slot with a single tap. Locked for 15 minutes.</p>
         </div>
         <div class="feat-card" style="padding: 40px;" data-reveal="bottom" class="reveal-delay-3">
-          <div style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">03</div>
+          <div
+            style="font-size: 48px; font-weight: 800; color: var(--primary); opacity: 0.2; position: absolute; top: 20px; right: 30px;">
+            03</div>
           <div class="feat-ico">💳</div>
           <h3 class="feat-t">Pay & Park</h3>
           <p class="feat-d">Complete payment securely and drive directly to your reserved space.</p>
@@ -111,8 +142,9 @@
     <section id="l-features-sec" class="l-features">
       <div class="sec-label">Why Choose Us</div>
       <h2 class="sec-title">ENGINEERING THE<br>FUTURE OF MOBILITY</h2>
-      <p class="sec-sub">We combine IoT sensors with an intuitive interface to eliminate the stress of urban parking.</p>
-      
+      <p class="sec-sub">We combine IoT sensors with an intuitive interface to eliminate the stress of urban parking.
+      </p>
+
       <div class="feat-grid">
         <div class="feat-card" data-reveal="scale" class="reveal-delay-1">
           <div class="feat-ico">🛰️</div>
@@ -138,69 +170,108 @@
         <div class="sec-label">Live Grid</div>
         <h2 class="sec-title">SELECT YOUR<br>PLACEMENT</h2>
         <p class="sec-sub">View live status at our Central Hub. Green slots are ready for immediate reservation.</p>
-        
+
         <div class="lot-card" style="margin-top: 48px;" data-reveal="left">
           <div class="lot-hdr">
             <div>
               <div class="lot-hdr-title">Central Hub — Level B2</div>
               <div class="lot-hdr-sub">Quantum Prismatic Grid • Latency < 1ms</div>
+              </div>
+            </div>
+            <div class="mini-grid" id="miniGrid"></div>
+            <div class="lot-stats">
+              <div class="lst">
+                <div class="lst-n g" id="mFree">0</div>
+                <div class="lst-l">Open</div>
+              </div>
+              <div class="lst">
+                <div class="lst-n r" id="mOcc">0</div>
+                <div class="lst-l">Busy</div>
+              </div>
+              <div class="lst">
+                <div class="lst-n y" id="mSel">0</div>
+                <div class="lst-l">Yours</div>
+              </div>
             </div>
           </div>
-          <div class="mini-grid" id="miniGrid"></div>
-          <div class="lot-stats">
-            <div class="lst">
-              <div class="lst-n g" id="mFree">0</div>
-              <div class="lst-l">Open</div>
+        </div>
+
+        <div class="form-card" data-reveal="right">
+          <h3>Finalize Reservation</h3>
+          <div class="fg">
+            <label class="fl">Full Name</label>
+            <input type="text" class="fi" id="lName" placeholder="e.g. Deepak Y" />
+          </div>
+          <div class="fg">
+            <label class="fl">Destination</label>
+            <select class="fi" id="lDest">
+              <option>Central Park Business District</option>
+              <option>Terminal 3 — International</option>
+              <option>Elite Plaza — North Wing</option>
+            </select>
+          </div>
+          <div class="fr">
+            <div class="fg">
+              <label class="fl">Reservation Date</label>
+              <input type="date" class="fi" id="lDate" />
             </div>
-            <div class="lst">
-              <div class="lst-n r" id="mOcc">0</div>
-              <div class="lst-l">Busy</div>
+            <div class="fg">
+              <label class="fl">Arrival Time</label>
+              <input type="time" class="fi" id="lArrival" value="09:00" />
             </div>
-            <div class="lst">
-              <div class="lst-n y" id="mSel">0</div>
-              <div class="lst-l">Yours</div>
+          </div>
+          <div class="fg">
+            <label class="fl">Vehicle Plate Number</label>
+            <input type="text" class="fi" id="lPlate" placeholder="e.g. TN 09 AX 1234" />
+          </div>
+
+          <div class="price-prev">
+            <div class="pp-lbl">Total Convenience Fee</div>
+            <div class="pp-val" id="lPrice">₹1</div>
+          </div>
+
+          <button class="btn-gold" style="width:100%; justify-content:center;" onclick="confirmReservation()">
+            Identify Vehicle & Allot Slot
+          </button>
+        </div>
+    </section>
+
+    <!-- SENSOR DETECTION -->
+    <section id="l-sensor-sec" class="l-sensor">
+      <div data-reveal="left">
+        <div class="sec-label">IoT Smart Grid</div>
+        <h2 class="sec-title">AUTOMATIC<br>AUTHENTICATION</h2>
+        <p class="sec-sub">Our 360° sensors identify your vehicle upon entry and lock your selected slot instantly.</p>
+
+        <div class="id-card-glow">
+          <div class="id-hdr">
+            <span class="id-status-pulse"></span>
+            VEHICLE MATCH FOUND
+          </div>
+          <div class="id-body">
+            <div class="id-row"><span class="k">Identified Plate</span><span class="v highlight" id="idPlate">—</span>
             </div>
+            <div class="id-row"><span class="k">Allotted Slot</span><span class="v" id="idSlot">—</span></div>
+            <div class="id-row"><span class="k">Owner ID</span><span class="v" id="idUser">—</span></div>
           </div>
         </div>
       </div>
 
-      <div class="form-card" data-reveal="right">
-        <h3>Finalize Reservation</h3>
-        <div class="fg">
-          <label class="fl">Full Name</label>
-          <input type="text" class="fi" id="lName" placeholder="e.g. Deepak Y" />
+      <div class="scanner-wrap" data-reveal="right" id="sensorStatus">
+        <div class="scan-circle">
+          <div class="scan-orb"></div>
+          <div class="scan-label" id="scanLabel">Waiting for Vehicle...</div>
         </div>
-        <div class="fg">
-          <label class="fl">Destination</label>
-          <select class="fi" id="lDest">
-            <option>Central Park Business District</option>
-            <option>Terminal 3 — International</option>
-            <option>Elite Plaza — North Wing</option>
-          </select>
+        <div class="summary-card" id="summaryCard">
+          <h3 style="margin-bottom:16px;">Booking Summary</h3>
+          <div class="sum-row"><span class="k">Service Fee</span><span class="v" id="sumPrice">₹1</span></div>
+          <div class="sum-row"><span class="k">Slot Status</span><span class="v" style="color:#ef4444;">BUSY
+              (LOCKED)</span></div>
+          <button class="btn-gold" style="width:100%; margin-top:24px; justify-content:center;"
+            onclick="lScroll('l-pay-sec',null)">
+            Proceed to Checkout
+          </button>
         </div>
-        <div class="fr">
-          <div class="fg">
-            <label class="fl">Reservation Date</label>
-            <input type="date" class="fi" id="lDate" />
-          </div>
-          <div class="fg">
-            <label class="fl">Arrival Time</label>
-            <input type="time" class="fi" id="lArrival" value="09:00" />
-          </div>
-        </div>
-        <div class="fg">
-          <label class="fl">Vehicle Plate Number</label>
-          <input type="text" class="fi" id="lPlate" placeholder="e.g. TN 09 AX 1234" />
-        </div>
-        
-        <div class="price-prev">
-          <div class="pp-lbl">Total Convenience Fee</div>
-          <div class="pp-val" id="lPrice">₹1</div>
-        </div>
-
-        <button class="btn-gold" style="width:100%; justify-content:center;" onclick="confirmReservation()">
-          Proceed to Payment
-        </button>
       </div>
     </section>
 
@@ -210,22 +281,25 @@
         <div class="scanner-box">
           <div class="scan-line"></div>
           <div class="qr-code-dummy">
-            <img src="assets/images/payment-qr.jpg" alt="Payment QR" style="width:100%; height:100%; object-fit: contain; border-radius: 8px;">
+            <img src="assets/images/payment-qr.jpg" alt="Payment QR"
+              style="width:100%; height:100%; object-fit: contain; border-radius: 8px;">
           </div>
         </div>
         <p class="scanner-text">Scan with UPI App or Select Platform</p>
-        
+
         <div class="platform-pay">
           <div class="plat-btn gpay" onclick="openUpi('GPay')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google_Pay_%28GPay%29_Logo.svg" alt="GPay">
             GPay
           </div>
           <div class="plat-btn phonepe" onclick="openUpi('PhonePe')">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_x8p8-vNn29KjNf-N8lA8mN0V-n407e3_dg&s" alt="PhonePe" style="border-radius:4px;">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_x8p8-vNn29KjNf-N8lA8mN0V-n407e3_dg&s"
+              alt="PhonePe" style="border-radius:4px;">
             PhonePe
           </div>
           <div class="plat-btn upi" onclick="openUpi('UPI')">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo.png" alt="UPI" style="filter:invert(1)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo.png" alt="UPI"
+              style="filter:invert(1)">
             Any UPI
           </div>
         </div>
@@ -246,12 +320,17 @@
             </div>
           </div>
           <div class="r-row"><span class="k">Parking Zone</span><span class="v" id="rcZone">Premium B2</span></div>
-          <div class="r-row"><span class="k">Vehicle Plate</span><span class="v" id="lRcPlate">TN 09 AX 1234</span></div>
-          <div class="r-row"><span class="k">Payment Status</span><span class="v" id="payStatus" style="color:var(--primary)">PENDING</span></div>
+          <div class="r-row"><span class="k">Vehicle Plate</span><span class="v" id="lRcPlate">TN 09 AX 1234</span>
+          </div>
+          <div class="r-row"><span class="k">Payment Status</span><span class="v" id="payStatus"
+              style="color:var(--primary)">PENDING</span></div>
           <div class="r-row total"><span class="k">Grand Total</span><span class="v" id="rTotal">₹1</span></div>
-          
-          <button class="btn-receipt" style="margin-top:24px; width:100%; justify-content:center;" onclick="downloadReceipt()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+
+          <button class="btn-receipt" style="margin-top:24px; width:100%; justify-content:center;"
+            onclick="downloadReceipt()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+            </svg>
             Export Invoice
           </button>
         </div>
@@ -266,7 +345,8 @@
         <a href="#" class="f-link">Privacy Policy</a>
         <a href="#" class="f-link">Terms</a>
       </div>
-      <div class="f-copy">© 2026 ParkEase Systems. Engineered by <span style="color:var(--primary)">Deepak Y</span> & <span style="color:var(--secondary)">Priya Esha</span>. All payments encrypted.</div>
+      <div class="f-copy">© 2026 ParkEase Systems. Engineered by <span style="color:var(--primary)">Deepak Y</span> &
+        <span style="color:var(--secondary)">Priya Esha</span>. All payments encrypted.</div>
     </footer>
 
   </div>

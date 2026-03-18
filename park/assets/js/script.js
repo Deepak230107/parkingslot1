@@ -11,7 +11,7 @@ let currentVehicle = 'Standard Car';
 function selectV(btn, v) {
   document.querySelectorAll('.v-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  currentVehicle = v === 'CAR' ? 'Standard Car' : v === 'BIKE' ? 'Quick Bike' : 'Heavy Truck';
+  currentVehicle = v === 'CAR' ? 'Standard Car' : 'Quick Bike';
   showToast(`Vehicle type: ${currentVehicle}`);
 }
 
@@ -21,62 +21,90 @@ function buildMiniGrid() {
   const mg = document.getElementById('miniGrid');
   if (!mg) return;
   mg.innerHTML = '';
-  
-  const occ = new Set(); // All available
 
-  let mSel = null;
-  for (let n = 1; n <= 8; n++) {
+  const occ = new Set();
+
+  // Set as 5 slots in one line
+  for (let n = 1; n <= 5; n++) {
     const s = document.createElement('div');
-    s.className = 'mini-slot'; // No 'occ' class
+    s.className = 'mini-slot';
     const id = `PE-${String(n).padStart(3, '0')}`;
-    
+
     s.addEventListener('click', () => {
       mg.querySelectorAll('.mini-slot').forEach(x => x.classList.remove('sel'));
-      if (currentSlot === id) {
-        currentSlot = 'PE-001';
-      } else {
-        s.classList.add('sel');
-        currentSlot = id;
-        showToast(`Slot ${currentSlot} selected`);
-      }
-      updateMiniStats(occ, currentSlot === 'PE-001' ? null : n);
+      s.classList.add('sel');
+      currentSlot = id;
+      showToast(`Slot ${currentSlot} selected`);
+      updateMiniStats(occ, 1);
     });
     mg.appendChild(s);
   }
-  updateMiniStats(occ, null);
+  updateMiniStats(occ, 0);
 }
 
-function updateMiniStats(occ, sel) {
-  const free = 8 - occ.size - (sel !== null ? 1 : 0);
-  document.getElementById('mFree').textContent = free;
+function updateMiniStats(occ, selCount) {
+  const totalSlots = 5;
+  const sCount = typeof selCount === 'number' ? selCount : 0;
+  const free = totalSlots - occ.size - sCount;
+
+  document.getElementById('mFree').textContent = Math.max(0, free);
   document.getElementById('mOcc').textContent = occ.size;
-  document.getElementById('mSel').textContent = sel !== null ? 1 : 0;
+  document.getElementById('mSel').textContent = sCount;
 }
 
-// ════════════ RESERVATION LOGIC ════════════
+// ════════════ SENSOR & RESERVATION ════════════
 function confirmReservation() {
   const plate = document.getElementById('lPlate').value.trim();
+  const name = document.getElementById('lName').value.trim() || 'Guest User';
   const dest = document.getElementById('lDest').value;
-  
+
   if (!plate) {
     showToast('⚠️ Please enter your vehicle registration number');
     return;
   }
-  
-  showToast('⚡ Securing your placement...', 'dark-t');
-  
+
+  showToast('🛰️ Initiating IoT Smart Scanning...');
+  document.getElementById('l-sensor-sec').scrollIntoView({ behavior: 'smooth' });
+
+  const label = document.getElementById('scanLabel');
+  const summary = document.getElementById('summaryCard');
+  const orb = document.querySelector('.scan-orb');
+
+  // Simulation of sensor handshake
   setTimeout(() => {
-    showToast('✅ Slot Reserved! Finalize payment below.');
-    document.getElementById('lRcPlate').textContent = plate.toUpperCase();
-    document.getElementById('rcZone').textContent = dest.includes('B2') ? 'Zone B2' : 'Elite Zone';
-    document.getElementById('l-pay-sec').scrollIntoView({ behavior: 'smooth' });
-  }, 1200);
+    label.textContent = "Vehicle Detected...";
+    orb.style.background = 'radial-gradient(circle, var(--secondary) 0%, transparent 70%)';
+
+    setTimeout(() => {
+      label.textContent = "Authenticating Plate...";
+
+      setTimeout(() => {
+        label.textContent = "SUCCESS: Slot Locked";
+        orb.style.background = 'radial-gradient(circle, #22c55e 0%, transparent 70%)';
+
+        // Populate ID Card
+        document.getElementById('idPlate').textContent = plate.toUpperCase();
+        document.getElementById('idSlot').textContent = currentSlot;
+        document.getElementById('idUser').textContent = name;
+
+        // Show Summary
+        summary.style.display = 'block';
+        summary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Mark as Busy in Mini Stats Simulation
+        const occ = new Set(['BUSY']); // Simulate one occupied
+        updateMiniStats(occ, 1);
+
+        showToast('✅ Vehicle Authenticated. Slot PE-00X Locked.');
+      }, 1500);
+    }, 1500);
+  }, 1000);
 }
 
 async function processPayment() {
   const btn = document.getElementById('mainPayBtn');
   const plate = document.getElementById('lPlate')?.value || 'PARKEASE';
-  
+
   // Real UPI deep link for bank transaction simulation
   const vpa = "deepak@sbi"; // Based on your SBI QR
   const name = "DEEPAK";
@@ -85,7 +113,7 @@ async function processPayment() {
 
   btn.textContent = '🔒 Redirecting to Bank...';
   btn.style.opacity = '0.7';
-  
+
   showToast('🏦 Handshaking with Bank Gateway...');
 
   // Open the UPI app
@@ -98,10 +126,10 @@ async function processPayment() {
     btn.style.color = '#fff';
     btn.style.opacity = '1';
     btn.disabled = true;
-    
+
     document.getElementById('payStatus').textContent = 'SUCCESSFUL';
     document.getElementById('payStatus').style.color = '#22c55e';
-    
+
     showToast('💎 Transaction Verified. Access Granted.');
 
     // SAVE TO SQL DATABASE
@@ -110,7 +138,7 @@ async function processPayment() {
       const dest = document.getElementById('lDest')?.value || 'Central Park District';
       const date = document.getElementById('lDate')?.value || 'N/A';
       const time = document.getElementById('lArrival')?.value || 'N/A';
-      
+
       await fetch('http://127.0.0.1:5000/api/record-transaction', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -139,7 +167,7 @@ async function downloadReceipt() {
   const dest = document.getElementById('lDest')?.value || 'Central Park District';
   const date = document.getElementById('lDate')?.value || 'N/A';
   const time = document.getElementById('lArrival')?.value || 'N/A';
-  
+
   showToast('📜 Retrieving user data for personalized PDF...');
 
   try {
@@ -200,7 +228,7 @@ function openUpi(platform) {
 
   setTimeout(() => {
     window.location.href = upiUri;
-    
+
     // Auto-success after simulation
     setTimeout(() => {
       if (document.getElementById('payStatus').textContent === 'PENDING') {
@@ -213,7 +241,7 @@ function openUpi(platform) {
 // ════════════ INITIALIZATION ════════════
 document.addEventListener('DOMContentLoaded', () => {
   buildMiniGrid();
-  
+
   // Set default date
   const dateInput = document.getElementById('lDate');
   if (dateInput) {
