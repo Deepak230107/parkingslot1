@@ -998,7 +998,7 @@ body::before {
 
 .mini-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-content: center;
   gap: 10px;
   margin: 32px 0;
@@ -1035,7 +1035,7 @@ body::before {
   transform: translateY(-2px); 
   background: rgba(var(--secondary-rgb), 0.05); 
 }
-.mini-slot.occ { 
+.mini-slot.occupied { 
   background: transparent; 
   border: 1px solid rgba(255, 255, 255, 0.05);
   pointer-events: none; 

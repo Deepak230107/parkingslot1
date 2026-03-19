@@ -8,21 +8,54 @@ const dPlates = ['TN09AX1234', 'KA04BZ5678', 'MH12CD9012', 'DL7CE3456', 'AP28FG7
 function seededR(seed) { let x = Math.sin(seed + 3) * 10000; return x - Math.floor(x); }
 
 function initDashboard() {
-    if (Object.keys(dSlots).length > 0) return;
-    dZones.forEach(z => {
-        for (let n = 1; n <= 8; n++) {
-            const id = `${z}${String(n).padStart(2, '0')}`;
-            dSlots[id] = {
-                id, zone: z, num: n, state: 'free',
-                plate: '',
-                user: '',
-                since: '',
-            };
+    // Basic init if empty
+    if (Object.keys(dSlots).length === 0) {
+        dZones.forEach(z => {
+            for (let n = 1; n <= 8; n++) {
+                const id = `${z}${String(n).padStart(2, '0')}`;
+                dSlots[id] = {
+                    id, zone: z, num: n, state: 'free',
+                    plate: '',
+                    user: '',
+                    since: '',
+                };
+            }
+        });
+    }
+
+    // Sync from LocalStorage
+    const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+    const selectedSlotId = localStorage.getItem('parkease_selected_slot');
+    
+    // Reset temporary states (like 'selected' from admin side if we want pure sync)
+    // But let's prioritize user sync
+    Object.keys(dSlots).forEach(id => {
+        if (dSlots[id].state !== 'occupied') {
+             dSlots[id].state = 'free';
         }
     });
+
+    // Apply bookings
+    bookings.forEach(b => {
+        if (dSlots[b.id]) {
+            dSlots[b.id].state = b.state;
+            dSlots[b.id].user = b.user;
+            dSlots[b.id].plate = b.plate;
+            dSlots[b.id].since = b.since;
+        }
+    });
+
+    // Apply active user selection
+    if (selectedSlotId && dSlots[selectedSlotId] && dSlots[selectedSlotId].state === 'free') {
+        dSlots[selectedSlotId].state = 'selected';
+    }
+
     document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
     dRender();
 }
+
+// Polling for real-time appearance of user selections
+setInterval(initDashboard, 2000);
 
 function dRender() {
     const grid = document.getElementById('dZonesGrid'); 
@@ -128,13 +161,45 @@ function dOpenPanel(id) {
 function dClosePanel() { document.getElementById('dPanel').classList.remove('open'); }
 function dReserve(id) { dSlots[id].state = 'selected'; dSelSlot = id; dRender(); dOpenPanel(id); }
 function dConfirm(id) {
-    dSlots[id].state = 'occupied'; 
-    dSlots[id].plate = dPlates[Math.floor(Math.random() * 6)];
-    dSlots[id].user = dNames[Math.floor(Math.random() * 6)]; 
-    dSlots[id].since = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`;
+    const s = dSlots[id];
+    s.state = 'occupied'; 
+    s.plate = dPlates[Math.floor(Math.random() * 6)];
+    s.user = dNames[Math.floor(Math.random() * 6)]; 
+    s.since = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`;
+    
+    // Sync to LocalStorage
+    updateLocalStorageFromDashboard();
+    
     dSelSlot = null; dRender(); dClosePanel(); showToast(`✅ Slot ${id} Assigned`);
 }
-function dRelease(id) { dSlots[id].state = 'free'; dSlots[id].plate = ''; dSlots[id].user = ''; dSlots[id].since = ''; dRender(); dOpenPanel(id); showToast(`Slot ${id} Released`); }
+
+function dRelease(id) { 
+    dSlots[id].state = 'free'; 
+    dSlots[id].plate = ''; 
+    dSlots[id].user = ''; 
+    dSlots[id].since = ''; 
+    
+    // Sync to LocalStorage
+    updateLocalStorageFromDashboard();
+    
+    dRender(); dOpenPanel(id); showToast(`Slot ${id} Released`); 
+}
+
+function updateLocalStorageFromDashboard() {
+    const bookings = [];
+    Object.keys(dSlots).forEach(id => {
+        if (dSlots[id].state === 'occupied') {
+            bookings.push({
+                id: id,
+                user: dSlots[id].user,
+                plate: dSlots[id].plate,
+                since: dSlots[id].since,
+                state: 'occupied'
+            });
+        }
+    });
+    localStorage.setItem('parkease_bookings', JSON.stringify(bookings));
+}
 
 function dSearch(q) {
     document.querySelectorAll('.parking-slot').forEach(s => { 

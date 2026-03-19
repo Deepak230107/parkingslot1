@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
 
     const ctx = document.getElementById('revenueChart').getContext('2d');
+    
+    // Create Gradients
+    const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientFill.addColorStop(0, 'rgba(139, 92, 246, 0.25)'); // Electric Indigo
+    gradientFill.addColorStop(1, 'rgba(6, 182, 212, 0)');    // Transparent Cyan
+    
+    const gradientLine = ctx.createLinearGradient(0, 0, 800, 0);
+    gradientLine.addColorStop(0, '#8b5cf6'); // Electric Indigo
+    gradientLine.addColorStop(1, '#06b6d4'); // Vivid Cyan
+
     new Chart(ctx, {
         type: 'line',
         data: {
@@ -9,27 +19,54 @@ document.addEventListener('DOMContentLoaded', () => {
             datasets: [{
                 label: 'Revenue (₹)',
                 data: [4200, 5100, 4800, 6300, 5900, 8200, 7500],
-                borderColor: '#06b6d4',
-                backgroundColor: 'rgba(6, 182, 212, 0.05)',
+                borderColor: gradientLine,
+                backgroundColor: gradientFill,
                 borderWidth: 4,
-                tension: 0.4,
+                tension: 0.45,
                 fill: true,
-                pointBackgroundColor: '#8b5cf6',
-                pointBorderColor: '#fff',
-                pointHoverRadius: 8
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#8b5cf6',
+                pointBorderWidth: 2,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#8b5cf6',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 3,
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { family: 'Outfit', size: 14, weight: '700' },
+                    bodyFont: { family: 'Outfit', size: 14 },
+                    padding: 12,
+                    cornerRadius: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `₹ ${context.parsed.y.toLocaleString('en-IN')}`;
+                        }
+                    }
+                }
             },
             scales: {
-            scales: {
-                y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b' } },
-                x: { grid: { display: false }, ticks: { color: '#64748b' } }
-            }
+                y: { 
+                    beginAtZero: true, 
+                    grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false }, 
+                    ticks: { color: '#64748b', font: { family: 'Outfit', size: 12 }, padding: 10 } 
+                },
+                x: { 
+                    grid: { display: false, drawBorder: false }, 
+                    ticks: { color: '#64748b', font: { family: 'Outfit', size: 12 }, padding: 10 } 
+                }
             }
         }
     });

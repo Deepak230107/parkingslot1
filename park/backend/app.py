@@ -1,7 +1,7 @@
 from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
 from generate_receipt import generate_parking_receipt
-from generate_report import generate_full_payments_pdf
+from generate_report import generate_full_payments_pdf, generate_users_report_pdf
 import os
 import sqlite3
 import json
@@ -141,6 +141,16 @@ def download_admin_report():
         if report_path and os.path.exists(report_path):
             return send_file(report_path, as_attachment=True)
         return jsonify({"error": "No data found to generate report"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/admin/download-users-report', methods=['GET'])
+def download_users_report():
+    try:
+        report_path = generate_users_report_pdf()
+        if report_path and os.path.exists(report_path):
+            return send_file(report_path, as_attachment=True)
+        return jsonify({"error": "No user data found to generate report"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

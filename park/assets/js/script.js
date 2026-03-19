@@ -16,34 +16,51 @@ function selectV(btn, v) {
 }
 
 // ════════════ MINI LOT GRID ════════════
-let currentSlot = 'PE-001'; // Default
+let currentSlot = null; // Default none selected
 function buildMiniGrid() {
   const mg = document.getElementById('miniGrid');
   if (!mg) return;
   mg.innerHTML = '';
 
   const occ = new Set();
+  
+  // Load existing occupied slots from dashboard sync
+  const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+  bookings.forEach(b => {
+    if (b.state === 'occupied') occ.add(b.id);
+  });
 
-  // Set as 5 slots in one line
-  for (let n = 1; n <= 5; n++) {
+  // Set as 8 slots (matching dashboard Zone A)
+  for (let n = 1; n <= 8; n++) {
     const s = document.createElement('div');
+    const id = `A${String(n).padStart(2, '0')}`;
+    
     s.className = 'mini-slot';
-    const id = `PE-${String(n).padStart(3, '0')}`;
+    if (occ.has(id)) s.classList.add('occupied');
+    if (id === currentSlot && !occ.has(id)) s.classList.add('sel');
 
     s.addEventListener('click', () => {
+      if (occ.has(id)) {
+        showToast(`Slot ${id} is already occupied`);
+        return;
+      }
       mg.querySelectorAll('.mini-slot').forEach(x => x.classList.remove('sel'));
       s.classList.add('sel');
       currentSlot = id;
       showToast(`Slot ${currentSlot} selected`);
+      
+      // Sync Selection to Dashboard
+      localStorage.setItem('parkease_selected_slot', id);
+      
       updateMiniStats(occ, 1);
     });
     mg.appendChild(s);
   }
-  updateMiniStats(occ, 0);
+  updateMiniStats(occ, (currentSlot && !occ.has(currentSlot)) ? 1 : 0);
 }
 
 function updateMiniStats(occ, selCount) {
-  const totalSlots = 5;
+  const totalSlots = 8;
   const sCount = typeof selCount === 'number' ? selCount : 0;
   const free = totalSlots - occ.size - sCount;
 
@@ -60,6 +77,12 @@ function confirmReservation() {
 
   if (!plate) {
     showToast('⚠️ Please enter your vehicle registration number');
+    return;
+  }
+  
+  if (!currentSlot) {
+    showToast('⚠️ Please select a slot from the live grid above');
+    document.getElementById('l-reserve-sec').scrollIntoView({ behavior: 'smooth' });
     return;
   }
 
@@ -91,11 +114,30 @@ function confirmReservation() {
         summary.style.display = 'block';
         summary.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        // Mark as Busy in Mini Stats Simulation
-        const occ = new Set(['BUSY']); // Simulate one occupied
-        updateMiniStats(occ, 1);
+        // MARK AS OCCUPIED IN SYNC
+        const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+        // Check if already exists, update or add
+        const idx = bookings.findIndex(b => b.id === currentSlot);
+        const newBooking = {
+          id: currentSlot,
+          user: name,
+          plate: plate.toUpperCase(),
+          since: `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`,
+          state: 'occupied'
+        };
+        if (idx > -1) bookings[idx] = newBooking;
+        else bookings.push(newBooking);
+        
+        localStorage.setItem('parkease_bookings', JSON.stringify(bookings));
+        localStorage.removeItem('parkease_selected_slot'); // Clear selected state
+        
+        const bookedId = currentSlot;
+        currentSlot = null; // Prevent 'sel' from staying active locally
+        
+        // RE-BUILD MINI GRID to show local occupied state immediately
+        buildMiniGrid();
 
-        showToast('✅ Vehicle Authenticated. Slot PE-00X Locked.');
+        showToast(`✅ Vehicle Authenticated. Slot ${bookedId} Locked.`);
       }, 1500);
     }, 1500);
   }, 1000);
@@ -241,6 +283,8 @@ function openUpi(platform) {
 // ════════════ INITIALIZATION ════════════
 document.addEventListener('DOMContentLoaded', () => {
   buildMiniGrid();
+  // Live Sync Loop to reflect Admin-level releases/changes
+  setInterval(buildMiniGrid, 2000);
 
   // Set default date
   const dateInput = document.getElementById('lDate');

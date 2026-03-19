@@ -35,4 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const exportBtn = document.querySelector('.u-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', async () => {
+            console.log("Generating User Engagement Report...");
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/admin/download-users-report');
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `ParkEase_User_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                } else {
+                    alert("No user activity found to generate report.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Backend Offline. Please ensure app.py is running.");
+            }
+        });
+    }
 });

@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
 
     const ctx = document.getElementById('usageChart').getContext('2d');
+    
+    // Create Gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, '#06b6d4'); // Vivid Cyan
+    gradient.addColorStop(1, 'rgba(139, 92, 246, 0.4)'); // Electric Indigo with opacity
+
     new Chart(ctx, {
         type: 'bar',
         data: {
@@ -9,22 +15,42 @@ document.addEventListener('DOMContentLoaded', () => {
             datasets: [{
                 label: 'Avg Cars Parked',
                 data: [12, 5, 20, 85, 95, 75, 60, 25],
-                label: 'Avg Cars Parked',
-                data: [12, 5, 20, 85, 95, 75, 60, 25],
-                backgroundColor: 'rgba(6, 182, 212, 0.8)',
-                borderRadius: 8,
-                hoverBackgroundColor: '#06b6d4'
+                backgroundColor: gradient,
+                borderRadius: 12,
+                hoverBackgroundColor: '#06b6d4',
+                borderWidth: 0,
+                barThickness: 32,
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: { 
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { family: 'Outfit', size: 14, weight: '700' },
+                    bodyFont: { family: 'Outfit', size: 14 },
+                    padding: 12,
+                    cornerRadius: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.parsed.y} cars`;
+                        }
+                    }
+                }
+            },
             scales: {
-            scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#64748b' } },
-                x: { grid: { display: false }, ticks: { color: '#64748b' } }
-            }
+                y: { 
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false }, 
+                    ticks: { color: '#64748b', font: { family: 'Outfit', size: 12 }, padding: 10 } 
+                },
+                x: { 
+                    grid: { display: false, drawBorder: false }, 
+                    ticks: { color: '#64748b', font: { family: 'Outfit', size: 12 }, padding: 10 } 
+                }
             }
         }
     });
