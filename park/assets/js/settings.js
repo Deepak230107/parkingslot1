@@ -15,10 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
         saveBtn.textContent = 'Saving...';
         saveBtn.style.opacity = '0.7';
 
+        // Persist Configuration
+        const spotCount = document.getElementById('spotCountIn').value;
+        localStorage.setItem('parkease_total_slots', spotCount);
+
         setTimeout(() => {
             saveBtn.textContent = 'Save Changes';
             saveBtn.style.opacity = '1';
-            showToast('✅ Configuration saved successfully!');
+            showToast(`✅ Configuration saved! Total slots set to ${spotCount}.`);
         }, 800);
     });
 

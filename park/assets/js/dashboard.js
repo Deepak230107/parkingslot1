@@ -51,13 +51,14 @@ function initDashboard() {
     }
 
     document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-    dRender();
+    dRender(totalSlots);
 }
 
 // Polling for real-time appearance of user selections
 setInterval(initDashboard, 2000);
 
 function dRender() {
+    const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
     const grid = document.getElementById('dZonesGrid'); 
     if(!grid) return;
     grid.innerHTML = '';
@@ -74,27 +75,30 @@ function dRender() {
         lbl.textContent = zoneChar;
         rowDiv.appendChild(lbl);
 
-        // First Block of 4 slots
+        // Block of slots (All together or split by aisle if > 4)
         const block1 = document.createElement('div');
         block1.className = 'slot-block';
         
-        for (let s = 1; s <= 4; s++) {
+        const limit1 = Math.min(4, totalSlots);
+        for (let s = 1; s <= limit1; s++) {
             renderSlot(zoneChar, s, block1);
         }
         rowDiv.appendChild(block1);
 
-        // Aisle
-        const aisle = document.createElement('div');
-        aisle.className = 'parking-aisle';
-        rowDiv.appendChild(aisle);
+        if (totalSlots > 4) {
+            // Aisle
+            const aisle = document.createElement('div');
+            aisle.className = 'parking-aisle';
+            rowDiv.appendChild(aisle);
 
-        // Second Block of 4 slots
-        const block2 = document.createElement('div');
-        block2.className = 'slot-block';
-        for (let s = 5; s <= 8; s++) {
-            renderSlot(zoneChar, s, block2);
+            // Second Block
+            const block2 = document.createElement('div');
+            block2.className = 'slot-block';
+            for (let s = 5; s <= totalSlots; s++) {
+                renderSlot(zoneChar, s, block2);
+            }
+            rowDiv.appendChild(block2);
         }
-        rowDiv.appendChild(block2);
 
         grid.appendChild(rowDiv);
     });

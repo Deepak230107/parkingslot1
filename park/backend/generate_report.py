@@ -82,7 +82,10 @@ def generate_full_payments_pdf():
         pdf.cell(30, 8, str(row['plate']), 1)
         pdf.cell(30, 8, str(row['type']), 1)
         pdf.cell(25, 8, str(row['slot']), 1)
-        pdf.cell(30, 8, str(row['amount']), 1, 1, 'R')
+        
+        # Clean amount string to avoid Unicode Errors
+        clean_amt = str(row['amount']).replace('₹', 'INR ')
+        pdf.cell(30, 8, clean_amt, 1, 1, 'R')
         
         try:
             amt = float(str(row['amount']).replace('₹', '').replace('INR ', '').replace(',','').strip())

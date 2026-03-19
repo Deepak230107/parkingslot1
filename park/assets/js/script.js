@@ -30,8 +30,10 @@ function buildMiniGrid() {
     if (b.state === 'occupied') occ.add(b.id);
   });
 
-  // Set as 8 slots (matching dashboard Zone A)
-  for (let n = 1; n <= 8; n++) {
+  const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
+  
+  // Dynamic slot generation based on settings
+  for (let n = 1; n <= totalSlots; n++) {
     const s = document.createElement('div');
     const id = `A${String(n).padStart(2, '0')}`;
     
@@ -180,6 +182,24 @@ async function processPayment() {
       const dest = document.getElementById('lDest')?.value || 'Central Park District';
       const date = document.getElementById('lDate')?.value || 'N/A';
       const time = document.getElementById('lArrival')?.value || 'N/A';
+      const duration = parseInt(document.getElementById('lDuration')?.value || '3');
+
+      // Calculate Expiry for Notification
+      const [h, m] = time.split(':').map(Number);
+      const arrivalDate = new Date();
+      arrivalDate.setHours(h, m, 0, 0);
+      const expiryDate = new Date(arrivalDate.getTime() + duration * 60 * 60 * 1000);
+      
+      const bookingData = {
+        name, plate, dest, date, time, duration,
+        expiry: expiryDate.getTime(),
+        alertSent: false
+      };
+      
+      // Store locally for background check
+      const currentBookings = JSON.parse(localStorage.getItem('user_active_sessions') || '[]');
+      currentBookings.push(bookingData);
+      localStorage.setItem('user_active_sessions', JSON.stringify(currentBookings));
 
       await fetch('http://127.0.0.1:5000/api/record-transaction', {
         method: 'POST',
@@ -192,7 +212,8 @@ async function processPayment() {
           time: time,
           type: currentVehicle,
           slot: currentSlot,
-          amount: '₹1.00'
+          amount: '₹1.00',
+          duration: `${duration} hrs`
         })
       });
       console.log("SQL: Transaction data synced.");
@@ -200,6 +221,42 @@ async function processPayment() {
       console.warn("SQL: Record failed, backend might be local-only.", err);
     }
   }, 3000);
+}
+
+// ════════════ BACKGROUND NOTIFICATION ENGINE ════════════
+setInterval(() => {
+  const sessions = JSON.parse(localStorage.getItem('user_active_sessions') || '[]');
+  const now = Date.now();
+  let changed = false;
+
+  sessions.forEach(s => {
+    // 30 minutes expressed in ms = 30 * 60 * 1000 = 1,800,000
+    const timeUntilExpiry = s.expiry - now;
+    
+    if (timeUntilExpiry > 0 && timeUntilExpiry <= 1800000 && !s.alertSent) {
+      // Trigger Notification
+      showToast(`⚠️ URGENT: Your stay at ${s.dest} expires in 30 minutes!`);
+      if (Notification.permission === "granted") {
+        new Notification("ParkEase Alert", {
+           body: `Vehicle ${s.plate} session in ${s.dest} expires soon.`,
+           icon: "assets/images/favicon.png"
+        });
+      } else {
+        alert(`🚨 ParkEase Alert: Your session for ${s.plate} expires in 30 minutes!`);
+      }
+      s.alertSent = true;
+      changed = true;
+    }
+  });
+
+  if (changed) {
+    localStorage.setItem('user_active_sessions', JSON.stringify(sessions));
+  }
+}, 30000); // Check every 30 seconds
+
+// Request notification permission on load
+if ("Notification" in window && Notification.permission !== "denied") {
+  Notification.requestPermission();
 }
 
 async function downloadReceipt() {

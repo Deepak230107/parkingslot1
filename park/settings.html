@@ -2,6 +2,11 @@
 <html lang="en">
 
 <head>
+    <script>
+        if (localStorage.getItem('parkease_admin_logged') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings — Admin Dashboard</title>
@@ -13,6 +18,10 @@
 </head>
 
 <body>
+    <div class="bg-blobs">
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
     <div class="noise"></div>
     <div id="dashboard">
         <aside class="d-sidebar">
@@ -47,7 +56,7 @@
                 </a>
             </nav>
             <div class="d-sidebar-bot">
-                <a href="index.html" class="back-btn">
+                <a href="login.html" class="back-btn" onclick="localStorage.removeItem('parkease_admin_logged')">
                     Logout
                 </a>
             </div>
@@ -70,7 +79,11 @@
                         <div class="form-grid">
                             <div class="fg">
                                 <label>Facility Name</label>
-                                <input type="text" class="form-in" value="Central Parking Hub - B2" />
+                                <select class="form-in" id="facilityNameIn">
+                                    <option>Basement 1 - Ultra Zone</option>
+                                    <option selected>Basement 2 - Central Hub</option>
+                                    <option>Surface Lot - Open Air</option>
+                                </select>
                             </div>
                             <div class="fg">
                                 <label>Support Email</label>
@@ -86,6 +99,10 @@
                                     <option>Asia/Kolkata (IST)</option>
                                     <option>UTC</option>
                                 </select>
+                            </div>
+                            <div class="fg">
+                                <label>Total Parking Spots</label>
+                                <input type="number" class="form-in" id="spotCountIn" value="3" min="1" max="12" />
                             </div>
                         </div>
                         <div class="set-row">

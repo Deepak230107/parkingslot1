@@ -83,8 +83,8 @@ def record_transaction():
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO transactions (name, plate, destination, date, time, amount, type, slot, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO transactions (name, plate, destination, date, time, amount, type, slot, status, duration)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             data.get('name'),
             data.get('plate'),
@@ -94,7 +94,8 @@ def record_transaction():
             data.get('amount'),
             data.get('type'),
             data.get('slot'),
-            'SUCCESS'
+            'SUCCESS',
+            data.get('duration')
         ))
         conn.commit()
         conn.close()

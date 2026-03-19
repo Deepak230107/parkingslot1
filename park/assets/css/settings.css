@@ -74,8 +74,13 @@
 }
 
 .form-in:focus {
-    border-color: var(--secondary);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.08);
+}
+
+.form-in option {
+    background: #0f172a;
+    color: #fff;
 }
 
 .set-row {
@@ -83,7 +88,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px 0;
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border);
 }
 
 .set-info h4 {
@@ -122,7 +127,7 @@
 }
 
 .toggle.active {
-    background: var(--secondary);
+    background: var(--primary);
 }
 
 .toggle.active .dot {

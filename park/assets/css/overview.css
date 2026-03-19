@@ -86,3 +86,37 @@
     .d-overview-grid { grid-template-columns: 1fr; }
     .d-card.span-2 { grid-column: span 1; }
 }
+
+.d-mini-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.mini-slot-dot {
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    transition: all 0.3s;
+}
+
+.mini-slot-dot.free { background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); color: #10b981; }
+.mini-slot-dot.occupied { background: rgba(244, 63, 94, 0.08); border-color: rgba(244, 63, 94, 0.3); color: #f43f5e; }
+.mini-slot-dot.selected { background: rgba(139, 92, 246, 0.15); border-color: var(--primary); color: var(--primary); }
+
+.d-view-all {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.d-view-all:hover { text-decoration: underline; }

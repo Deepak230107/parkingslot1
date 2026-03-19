@@ -255,10 +255,14 @@
         function handleLogin() {
             showToast(`Authenticating ${currentModule}...`, 'dark-t');
 
+            localStorage.setItem('parkease_current_module', currentModule);
+
             setTimeout(() => {
                 if (currentModule === 'admin') {
+                    localStorage.setItem('parkease_admin_logged', 'true');
                     window.location.href = 'overview.html';
                 } else {
+                    localStorage.setItem('parkease_user_logged', 'true');
                     window.location.href = 'index.html';
                 }
             }, 1200);

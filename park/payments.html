@@ -2,6 +2,11 @@
 <html lang="en">
 
 <head>
+    <script>
+        if (localStorage.getItem('parkease_admin_logged') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Payments — Admin Dashboard</title>
@@ -13,6 +18,10 @@
 </head>
 
 <body>
+    <div class="bg-blobs">
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
     <div class="noise"></div>
     <div id="dashboard">        <aside class="d-sidebar">
             <div class="d-logo-wrap">
@@ -46,7 +55,7 @@
                 </a>
             </nav>
             <div class="d-sidebar-bot">
-                <a href="index.html" class="back-btn">
+                <a href="login.html" class="back-btn" onclick="localStorage.removeItem('parkease_admin_logged')">
                     Logout
                 </a>
             </div>
