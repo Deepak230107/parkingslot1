@@ -644,9 +644,85 @@ select option {
 }
 
 @media (max-width: 1024px) {
-  .d-slot-recap { grid-template-columns: repeat(2, 1fr); }
+  .d-sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 1001;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+  }
+
+  .d-sidebar.active {
+    left: 0;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .d-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .quantum-card {
+    padding: 30px 16px;
+    border-radius: 20px;
+  }
+
+  .slot-block {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
-  .d-slot-recap { grid-template-columns: 1fr; }
+  .d-stats, .d-slot-recap {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .d-topbar {
+    padding: 0 16px;
+    gap: 8px;
+  }
+
+  .d-search {
+    display: none;
+  }
+
+  .d-content {
+    padding: 20px 12px;
+  }
+
+  .d-logo-name {
+    display: none;
+  }
+}
+
+.mobile-toggle {
+  display: none;
 }

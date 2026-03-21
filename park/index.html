@@ -31,17 +31,26 @@
         </a>
         <a href="login.html" class="l-nav-btn" style="text-decoration:none;">Log In</a>
         <a href="dashboard.html" class="go-dashboard">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           Admin Portal
         </a>
+        <div class="mobile-menu-btn" onclick="toggleMobileNav(true)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </div>
       </div>
     </nav>
+
+    <!-- MOBILE NAV DRAWER -->
+    <div class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-close" onclick="toggleMobileNav(false)">✕</div>
+      <div class="mobile-nav-links">
+        <a href="#hero" class="mobile-nav-link" onclick="toggleMobileNav(false)">Home</a>
+        <a href="#l-steps-sec" class="mobile-nav-link" onclick="toggleMobileNav(false)">Process</a>
+        <a href="#l-reserve-sec" class="mobile-nav-link" onclick="toggleMobileNav(false)">Reserve</a>
+        <a href="scantopay.html" class="mobile-nav-link" onclick="toggleMobileNav(false)">Scan to Pay</a>
+        <a href="login.html" class="mobile-nav-link" onclick="toggleMobileNav(false)">Admin Portal</a>
+      </div>
+    </div>
 
     <!-- HERO -->
     <section id="hero">
@@ -83,7 +92,10 @@
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </button>
-            <button class="btn-outline" onclick="lScroll('l-steps-sec',null)">How it Works</button>
+            <a href="scantopay.html" class="btn-outline" style="text-decoration:none; display: flex; align-items: center; gap: 8px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line><line x1="10" y1="3" x2="10" y2="21"></line></svg>
+              Scan to Pay
+            </a>
           </div>
 
           <div style="margin-top: 40px; display: flex; align-items: center; gap: 12px; opacity: 0.7;">

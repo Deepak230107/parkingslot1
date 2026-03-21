@@ -19,9 +19,10 @@
         <div class="blob"></div>
     </div>
     <div class="noise"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
     <div id="dashboard">
         <!-- SIDEBAR -->
-        <aside class="d-sidebar">
+        <aside class="d-sidebar" id="sidebar">
             <div class="d-logo-wrap">
                 <div class="d-logo-box">P</div>
                 <div class="d-logo-name">Park<span>Ease</span></div>
@@ -63,6 +64,9 @@
         <div class="d-main">
             <!-- TOPBAR -->
             <div class="d-topbar">
+                <div class="mobile-toggle" onclick="toggleSidebar(true)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </div>
                 <div class="d-search">
                     <span class="d-search-ico">🔍</span>
                     <input type="text" placeholder="Filter by slot ID..." oninput="dSearch(this.value)" />
@@ -164,6 +168,12 @@
     <div class="toast" id="toast"></div>
 
     <script src="assets/js/dashboard.js"></script>
+    <script>
+        function toggleSidebar(show) {
+            document.getElementById('sidebar').classList.toggle('active', show);
+            document.getElementById('sidebarOverlay').classList.toggle('active', show);
+        }
+    </script>
 </body>
 
 </html>

@@ -434,3 +434,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { passive: true });
 });
+
+function toggleMobileNav(show) {
+  const nav = document.getElementById('mobileNav');
+  if (nav) nav.classList.toggle('active', show);
+  document.body.style.overflow = show ? 'hidden' : '';
+}
