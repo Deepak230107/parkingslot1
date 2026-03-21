@@ -1,12 +1,17 @@
-import sqlite3
+import mysql.connector
 import os
 from fpdf import FPDF
 from datetime import datetime
 
-# --- PATH SETUP ---
-DB_PATH = os.path.join(os.path.dirname(__file__), "database.db")
-REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
+# --- CONFIGURATION (Match app.py) ---
+MYSQL_CONFIG = {
+    "host": "localhost",
+    "user": "root",
+    "password": "", 
+    "database": "parkease_db"
+}
 
+REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
 if not os.path.exists(REPORTS_DIR):
     os.makedirs(REPORTS_DIR)
 
@@ -25,7 +30,7 @@ class ParkEaseReportPDF(FPDF):
         self.set_font('helvetica', 'B', 14)
         self.set_text_color(255, 255, 255)
         self.set_xy(10, 25)
-        self.cell(0, 10, self.report_title, 0, 0, 'L') # Use dynamic title
+        self.cell(0, 10, self.report_title, 0, 0, 'L')
         self.set_font('helvetica', '', 10)
         self.set_xy(150, 15)
         self.cell(50, 10, f"Generated: {datetime.now().strftime('%d %b %Y %H:%M')}", 0, 0, 'R')
@@ -38,20 +43,19 @@ class ParkEaseReportPDF(FPDF):
         self.cell(0, 10, f'Page {self.page_no()}', 0, 0, 'C')
 
 def generate_full_payments_pdf():
-    if not os.path.exists(DB_PATH):
-        print("❌ Database not found.")
-        return
-
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM transactions ORDER BY timestamp DESC")
-    rows = cursor.fetchall()
-    conn.close()
+    try:
+        conn = mysql.connector.connect(**MYSQL_CONFIG)
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM transactions ORDER BY timestamp DESC")
+        rows = cursor.fetchall()
+        conn.close()
+    except Exception as e:
+        print(f"❌ MySQL Error: {e}")
+        return None
     
     if not rows:
         print("📭 No data to report.")
-        return
+        return None
 
     pdf = ParkEaseReportPDF(title="Consolidated Revenue Report")
     pdf.add_page()
@@ -106,19 +110,19 @@ def generate_full_payments_pdf():
     return report_path
 
 def generate_users_report_pdf():
-    if not os.path.exists(DB_PATH):
-        return
-
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    # Unique users based on name and plate
-    cursor.execute("SELECT DISTINCT name, plate, type, COUNT(*) as visit_count FROM transactions GROUP BY plate ORDER BY name ASC")
-    rows = cursor.fetchall()
-    conn.close()
+    try:
+        conn = mysql.connector.connect(**MYSQL_CONFIG)
+        cursor = conn.cursor(dictionary=True)
+        # MySQL Group By behavior might differ slightly, but this is a standard aggregate
+        cursor.execute("SELECT name, plate, type, COUNT(*) as visit_count FROM transactions GROUP BY plate, name, type ORDER BY name ASC")
+        rows = cursor.fetchall()
+        conn.close()
+    except Exception as e:
+        print(f"❌ MySQL Error: {e}")
+        return None
 
     if not rows:
-        return
+        return None
 
     pdf = ParkEaseReportPDF(title="Staff & User Engagement Report")
     pdf.add_page()
@@ -143,8 +147,3 @@ def generate_users_report_pdf():
     report_path = os.path.join(REPORTS_DIR, f"User_Engagement_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
     pdf.output(report_path)
     return report_path
-
-if __name__ == "__main__":
-    r1 = generate_full_payments_pdf()
-    r2 = generate_users_report_pdf()
-    print(f"Reports: {r1}, {r2}")

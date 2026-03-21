@@ -31,7 +31,7 @@
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
                     Insights
                 </a>
-                <a href="dashboard.html" class="d-nav-item active">
+                <a href="dashboard.html" class="d-nav-item">
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"></path><path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path></svg></span>
                     Slot Allotment
                 </a>
@@ -74,45 +74,77 @@
 
             <!-- CONTENT -->
             <div class="d-content">
-                <!-- Stats -->
-                <div class="d-stats">
-                    <div class="d-stat">
-                        <div class="d-stat-ico" style="color:var(--green)">🟢</div>
-                        <div>
-                            <div class="d-stat-n" id="dAvail">—</div>
-                            <div class="d-stat-l">Available</div>
+                <!-- Aurora Slot Recap -->
+                <div class="d-slot-recap">
+                    <div class="recap-card">
+                        <div class="recap-box">
+                            <div class="recap-sphere free"></div>
+                        </div>
+                        <div class="recap-info">
+                            <div class="recap-val" id="dAvail">—</div>
+                            <div class="recap-lbl">Available</div>
                         </div>
                     </div>
-                    <div class="d-stat">
-                        <div class="d-stat-ico" style="color:var(--red)">🔴</div>
-                        <div>
-                            <div class="d-stat-n" id="dOcc">—</div>
-                            <div class="d-stat-l">Occupied</div>
+                    <div class="recap-card">
+                        <div class="recap-box">
+                            <div class="recap-sphere occupied"></div>
+                        </div>
+                        <div class="recap-info">
+                            <div class="recap-val" id="dOcc">—</div>
+                            <div class="recap-lbl">Occupied</div>
                         </div>
                     </div>
-                    <div class="d-stat">
-                        <div class="d-stat-ico" style="color:var(--primary)">🟡</div>
-                        <div>
-                            <div class="d-stat-n" id="dSel">0</div>
-                            <div class="d-stat-l">Selected</div>
+                    <div class="recap-card">
+                        <div class="recap-box">
+                            <div class="recap-sphere selected"></div>
+                        </div>
+                        <div class="recap-info">
+                            <div class="recap-val" id="dSel">0</div>
+                            <div class="recap-lbl">Selected</div>
                         </div>
                     </div>
-                    <div class="d-stat">
-                        <div class="d-stat-ico" style="color:var(--blue)">🔵</div>
-                        <div>
-                            <div class="d-stat-n" id="dTotal">—</div>
-                            <div class="d-stat-l">Capacity</div>
+                    <div class="recap-card">
+                        <div class="recap-box">
+                            <div class="recap-sphere total"></div>
+                        </div>
+                        <div class="recap-info">
+                            <div class="recap-val" id="dTotal">—</div>
+                            <div class="recap-lbl">Capacity</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Parking Grid Structure -->
-                <div class="parking-container">
-                    <div class="parking-entrance">
-                        <div class="entrance-label">South-West Entry Gate</div>
+                <!-- Quantum Prismatic Grid Section -->
+                <div class="quantum-card">
+                    <div class="quantum-beam"></div>
+                    
+                    <div class="quantum-hdr">
+                        <h2 class="quantum-title">CENTRAL HUB — LEVEL B2</h2>
+                        <div class="quantum-sub">QUANTUM PRISMATIC GRID • LATENCY < 1MS</div>
                     </div>
 
-                    <div class="parking-grid" id="dZonesGrid"></div>
+                    <div class="quantum-grid-wrap">
+                        <div class="parking-grid" id="dZonesGrid">
+                            <!-- Slots will be rendered here by dashboard.js -->
+                        </div>
+                    </div>
+
+                    <div class="quantum-sep"></div>
+
+                    <div class="quantum-ftr">
+                        <div class="q-stat">
+                            <div class="q-val open" id="qOpen">8</div>
+                            <div class="q-lbl">OPEN</div>
+                        </div>
+                        <div class="q-stat">
+                            <div class="q-val busy" id="qBusy">0</div>
+                            <div class="q-lbl">BUSY</div>
+                        </div>
+                        <div class="q-stat">
+                            <div class="q-val yours" id="qYours">0</div>
+                            <div class="q-lbl">YOURS</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

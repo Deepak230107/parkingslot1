@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (localStorage.getItem('parkease_admin_logged') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Scanner — ParkEase</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <style>
+        .scanner-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #reader {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+        .scan-result-card {
+            display: none;
+            background: rgba(var(--primary-rgb), 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 24px;
+            margin-top: 24px;
+            text-align: left;
+            animation: slideUp 0.4s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .result-k { color: var(--text-muted); font-size: 13px; font-weight: 600; }
+        .result-v { font-weight: 700; font-size: 15px; }
+        
+        .verify-btn {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .verify-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--primary-glow); }
+        
+        .pay-btn {
+            background: var(--secondary);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            width: 100%;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .pay-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--secondary-glow); }
+        
+        #reader__dashboard_section_csr button {
+            background: var(--secondary) !important;
+            color: #000 !important;
+            border: none !important;
+            padding: 10px 20px !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            margin: 10px !important;
+        }
+        #reader__camera_selection {
+            background: var(--bg-surface) !important;
+            color: #fff !important;
+            border: 1px solid var(--border) !important;
+            padding: 8px !important;
+            border-radius: 8px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blobs">
+        <div class="blob"></div>
+        <div class="blob"></div>
+    </div>
+    <div class="noise"></div>
+    <div id="landing-scanner" style="min-height: 100vh; display: flex; flex-direction: column;">
+        <nav class="l-nav" style="background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 20px 48px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="l-logo" style="font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: #fff; text-decoration: none;">Park<span>Ease</span></a>
+            <a href="index.html" class="l-nav-btn" style="text-decoration: none; color: var(--text-muted); font-weight: 700;">Back to Home</a>
+        </nav>
+
+        <div class="d-main" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px;">
+
+            <div class="d-content">
+                <div class="scanner-card">
+                    <h2 style="margin-bottom: 24px; font-family: var(--font-heading);">Scan User Permit</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 32px;">Position the receipt's QR code within the frame for automatic verification.</p>
+                    
+                    <div id="reader"></div>
+
+                    <div id="scanResult" class="scan-result-card">
+                        <h3 style="margin-bottom: 20px; font-family: var(--font-heading); color: var(--secondary);">Permit Verified ✔</h3>
+                        <div id="resultDetails"></div>
+                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
+                            <button class="verify-btn" onclick="confirmCheckIn()">Confirm Check-In</button>
+                            <button class="pay-btn" onclick="proceedToPayment()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                Proceed to Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="assets/js/scanner.js"></script>
+</body>
+</html>

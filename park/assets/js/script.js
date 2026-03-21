@@ -134,6 +134,7 @@ function confirmReservation() {
         localStorage.removeItem('parkease_selected_slot'); // Clear selected state
         
         const bookedId = currentSlot;
+        window.lastBookedSlot = bookedId; // Global reference for receipt
         currentSlot = null; // Prevent 'sel' from staying active locally
         
         // RE-BUILD MINI GRID to show local occupied state immediately
@@ -280,7 +281,7 @@ async function downloadReceipt() {
         location: dest,
         date: date,
         time: time,
-        slot: currentSlot,
+        slot: window.lastBookedSlot || 'B2-A01',
         amount: 'INR 1.00'
       })
     });
@@ -349,18 +350,56 @@ document.addEventListener('DOMContentLoaded', () => {
     dateInput.value = new Date().toISOString().split('T')[0];
   }
 
-  // Scroll Reveal Observer
-  const revealCallback = (entries, observer) => {
+  // Check for scanned data from scanner.html
+  const scannedData = localStorage.getItem('parkease_last_scanned');
+  if (scannedData) {
+    try {
+      const data = JSON.parse(scannedData);
+      
+      // Auto-fill form
+      if (document.getElementById('lName')) document.getElementById('lName').value = data.name || '';
+      if (document.getElementById('lPlate')) document.getElementById('lPlate').value = data.plate || '';
+      if (data.slot) {
+        currentSlot = data.slot;
+        buildMiniGrid(); // Refresh grid to show selection
+      }
+      
+      // Update receipt UI
+      if (document.getElementById('lRcPlate')) document.getElementById('lRcPlate').textContent = data.plate || 'N/A';
+      if (document.getElementById('rTotal')) document.getElementById('rTotal').textContent = data.amount || '₹1';
+      
+      showToast("📋 Scanned Permit Data Loaded");
+      
+      // Scroll to payment after short delay
+      setTimeout(() => {
+        document.getElementById('l-pay-sec')?.scrollIntoView({ behavior: 'smooth' });
+        localStorage.removeItem('parkease_last_scanned'); // Clear after use
+      }, 800);
+      
+    } catch (e) {
+      console.error("Failed to parse scanned data", e);
+    }
+  }
+
+  // ═══ SCROLL PROGRESS BAR ═══
+  const progressBar = document.getElementById('scrollProgress');
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (progressBar && docHeight > 0)
+      progressBar.style.width = ((window.scrollY / docHeight) * 100) + '%';
+  }, { passive: true });
+
+  // ═══ SCROLL REVEAL OBSERVER ═══
+  const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target); // fire once only
       }
     });
-  };
-
-  const revealObserver = new IntersectionObserver(revealCallback, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -60px 0px'
   });
 
   document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));

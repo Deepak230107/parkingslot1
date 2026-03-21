@@ -7,55 +7,44 @@ const dPlates = ['TN09AX1234', 'KA04BZ5678', 'MH12CD9012', 'DL7CE3456', 'AP28FG7
 
 function seededR(seed) { let x = Math.sin(seed + 3) * 10000; return x - Math.floor(x); }
 
-function initDashboard() {
-    // Basic init if empty
-    if (Object.keys(dSlots).length === 0) {
-        dZones.forEach(z => {
-            for (let n = 1; n <= 8; n++) {
-                const id = `${z}${String(n).padStart(2, '0')}`;
-                dSlots[id] = {
-                    id, zone: z, num: n, state: 'free',
-                    plate: '',
-                    user: '',
-                    since: '',
+async function initDashboard() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/get-slots');
+        if (response.ok) {
+            const remoteSlots = await response.json();
+            
+            // Clear or update local cache
+            remoteSlots.forEach(s => {
+                dSlots[s.id] = {
+                    id: s.id,
+                    zone: s.id.split('-')[1]?.charAt(0) || 'A',
+                    num: parseInt(s.id.slice(-2)),
+                    state: s.state,
+                    user: s.user || '',
+                    plate: s.plate || '',
+                    since: s.since || ''
                 };
-            }
-        });
+            });
+        }
+    } catch (err) {
+        console.warn("API Offline. Falling back to simulation.");
+        // Fallback or keep current simulated state
     }
 
-    // Sync from LocalStorage
-    const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+    // Sync from LocalStorage (Selections / Temporary Overrides)
     const selectedSlotId = localStorage.getItem('parkease_selected_slot');
-    
-    // Reset temporary states (like 'selected' from admin side if we want pure sync)
-    // But let's prioritize user sync
-    Object.keys(dSlots).forEach(id => {
-        if (dSlots[id].state !== 'occupied') {
-             dSlots[id].state = 'free';
-        }
-    });
-
-    // Apply bookings
-    bookings.forEach(b => {
-        if (dSlots[b.id]) {
-            dSlots[b.id].state = b.state;
-            dSlots[b.id].user = b.user;
-            dSlots[b.id].plate = b.plate;
-            dSlots[b.id].since = b.since;
-        }
-    });
-
-    // Apply active user selection
     if (selectedSlotId && dSlots[selectedSlotId] && dSlots[selectedSlotId].state === 'free') {
         dSlots[selectedSlotId].state = 'selected';
     }
 
     document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-    dRender(totalSlots);
+    dRender();
 }
 
-// Polling for real-time appearance of user selections
-setInterval(initDashboard, 2000);
+// Global Polling (now async)
+setInterval(() => {
+    initDashboard();
+}, 2000);
 
 function dRender() {
     const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
@@ -104,27 +93,36 @@ function dRender() {
     });
 
     function renderSlot(zone, num, parent) {
-        const id = `${zone}${String(num).padStart(2, '0')}`;
-        const slotData = dSlots[id];
-        if (slotData) {
-            if (slotData.state === 'free') free++;
-            else if (slotData.state === 'occupied') occ++;
-            else if (slotData.state === 'selected') sel++;
-            total++;
+        // Construct Quantum ID B2-A01...A08
+        const id = `B2-A${String(num).padStart(2, '0')}`;
+        const slotData = dSlots[id] || { state: 'free' };
+        
+        if (slotData.state === 'free') free++;
+        else if (slotData.state === 'occupied') occ++;
+        else if (slotData.state === 'selected') sel++;
+        total++;
 
-            const sBtn = document.createElement('div');
-            sBtn.className = `parking-slot ${slotData.state}`;
-            sBtn.dataset.id = id;
-            sBtn.dataset.num = num;
-            sBtn.onclick = () => dSlotClick(id);
-            parent.appendChild(sBtn);
-        }
+        const sBtn = document.createElement('div');
+        sBtn.className = `parking-slot ${slotData.state}`;
+        sBtn.dataset.id = id;
+        sBtn.dataset.num = num;
+        sBtn.onclick = () => dSlotClick(id);
+        parent.appendChild(sBtn);
     }
 
     document.getElementById('dAvail').textContent = free;
     document.getElementById('dOcc').textContent = occ;
     document.getElementById('dSel').textContent = sel;
     document.getElementById('dTotal').textContent = total;
+
+    // Update Quantum Footer Stats
+    const qOpen = document.getElementById('qOpen');
+    const qBusy = document.getElementById('qBusy');
+    const qYours = document.getElementById('qYours');
+    
+    if (qOpen) qOpen.textContent = free;
+    if (qBusy) qBusy.textContent = occ;
+    if (qYours) qYours.textContent = sel;
 }
 
 function dSlotClick(id) {
