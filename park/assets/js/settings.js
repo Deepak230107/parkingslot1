@@ -11,13 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => t.className = 'toast dark-t', 2800);
     }
 
-    saveBtn.addEventListener('click', () => {
+    saveBtn.addEventListener('click', async () => {
         saveBtn.textContent = 'Saving...';
         saveBtn.style.opacity = '0.7';
 
         // Persist Configuration
         const spotCount = document.getElementById('spotCountIn').value;
         localStorage.setItem('parkease_total_slots', spotCount);
+
+        try {
+            await fetch('http://127.0.0.1:5000/api/admin/reinitialize-slots', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ count: parseInt(spotCount) })
+            });
+        } catch (err) {
+            console.error("Backend sync failed", err);
+        }
 
         setTimeout(() => {
             saveBtn.textContent = 'Save Changes';

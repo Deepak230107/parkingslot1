@@ -17,25 +17,36 @@ function selectV(btn, v) {
 
 // ════════════ MINI LOT GRID ════════════
 let currentSlot = null; // Default none selected
-function buildMiniGrid() {
+async function buildMiniGrid() {
   const mg = document.getElementById('miniGrid');
   if (!mg) return;
-  mg.innerHTML = '';
 
   const occ = new Set();
   
-  // Load existing occupied slots from dashboard sync
-  const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
-  bookings.forEach(b => {
-    if (b.state === 'occupied') occ.add(b.id);
-  });
+  try {
+    const res = await fetch('http://127.0.0.1:5000/api/get-slots');
+    if (res.ok) {
+      const remoteSlots = await res.json();
+      remoteSlots.forEach(s => {
+        if (s.state === 'occupied') occ.add(s.id);
+      });
+    }
+  } catch (err) {
+    console.warn("Backend offline, using local storage fallback.");
+    // Load existing occupied slots from dashboard sync
+    const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+    bookings.forEach(b => {
+      if (b.state === 'occupied') occ.add(b.id);
+    });
+  }
 
+  mg.innerHTML = '';
   const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
   
   // Dynamic slot generation based on settings
   for (let n = 1; n <= totalSlots; n++) {
     const s = document.createElement('div');
-    const id = `A${String(n).padStart(2, '0')}`;
+    const id = `B2-A${String(n).padStart(2, '0')}`;
     
     s.className = 'mini-slot';
     if (occ.has(id)) s.classList.add('occupied');
@@ -62,7 +73,7 @@ function buildMiniGrid() {
 }
 
 function updateMiniStats(occ, selCount) {
-  const totalSlots = 8;
+  const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
   const sCount = typeof selCount === 'number' ? selCount : 0;
   const free = totalSlots - occ.size - sCount;
 
@@ -212,7 +223,7 @@ async function processPayment() {
           date: date,
           time: time,
           type: currentVehicle,
-          slot: currentSlot,
+          slot: window.lastBookedSlot,
           amount: '₹1.00',
           duration: `${duration} hrs`
         })

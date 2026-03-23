@@ -8,6 +8,18 @@ const dPlates = ['TN09AX1234', 'KA04BZ5678', 'MH12CD9012', 'DL7CE3456', 'AP28FG7
 function seededR(seed) { let x = Math.sin(seed + 3) * 10000; return x - Math.floor(x); }
 
 async function initDashboard() {
+    const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
+    
+    // Ensure all slots exist locally before fetching, and reset old selections
+    for (let i = 1; i <= totalSlots; i++) {
+        const id = `B2-A${String(i).padStart(2, '0')}`;
+        if (!dSlots[id]) {
+            dSlots[id] = { id: id, zone: 'A', num: i, state: 'free', user: '', plate: '', since: '' };
+        } else if (dSlots[id].state === 'selected') {
+            dSlots[id].state = 'free'; // Reset to evaluate again
+        }
+    }
+
     try {
         const response = await fetch('http://127.0.0.1:5000/api/get-slots');
         if (response.ok) {
@@ -15,27 +27,33 @@ async function initDashboard() {
             
             // Clear or update local cache
             remoteSlots.forEach(s => {
-                dSlots[s.id] = {
-                    id: s.id,
-                    zone: s.id.split('-')[1]?.charAt(0) || 'A',
-                    num: parseInt(s.id.slice(-2)),
-                    state: s.state,
-                    user: s.user || '',
-                    plate: s.plate || '',
-                    since: s.since || ''
-                };
+                if(dSlots[s.id]) {
+                    dSlots[s.id].state = s.state;
+                    dSlots[s.id].user = s.user || '';
+                    dSlots[s.id].plate = s.plate || '';
+                    dSlots[s.id].since = s.since || '';
+                }
             });
         }
     } catch (err) {
-        console.warn("API Offline. Falling back to simulation.");
-        // Fallback or keep current simulated state
+        console.warn("API Offline. Falling back to simulation/local.");
     }
 
-    // Sync from LocalStorage (Selections / Temporary Overrides)
+    // Sync from LocalStorage (Selections & Bookings)
     const selectedSlotId = localStorage.getItem('parkease_selected_slot');
     if (selectedSlotId && dSlots[selectedSlotId] && dSlots[selectedSlotId].state === 'free') {
         dSlots[selectedSlotId].state = 'selected';
     }
+
+    const localBookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+    localBookings.forEach(b => {
+        if (b.state === 'occupied' && dSlots[b.id]) {
+            dSlots[b.id].state = 'occupied';
+            dSlots[b.id].user = b.user;
+            dSlots[b.id].plate = b.plate;
+            dSlots[b.id].since = b.since;
+        }
+    });
 
     document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
     dRender();
@@ -48,74 +66,71 @@ setInterval(() => {
 
 function dRender() {
     const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
-    const grid = document.getElementById('dZonesGrid'); 
-    if(!grid) return;
+    const grid = document.getElementById('dZonesGrid');
+    if (!grid) return;
     grid.innerHTML = '';
-    
+
     let free = 0, occ = 0, sel = 0, total = 0;
 
-    dZones.forEach((zoneChar, zi) => {
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'parking-row';
+    // Car SVG icon
+    const carSVG = `<svg class="s-car" width="36" height="22" viewBox="0 0 48 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 18h36M8 18l4-8h24l4 8"/>
+      <rect x="3" y="18" width="42" height="7" rx="3"/>
+      <circle cx="12" cy="25" r="2.2"/>
+      <circle cx="36" cy="25" r="2.2"/>
+      <path d="M14 10h20"/>
+    </svg>`;
 
-        // Row Label
-        const lbl = document.createElement('div');
-        lbl.className = 'row-label';
-        lbl.textContent = zoneChar;
-        rowDiv.appendChild(lbl);
+    // Build rows: first 4 slots, aisle, last 4 slots
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'lane-row';
 
-        // Block of slots (All together or split by aisle if > 4)
-        const block1 = document.createElement('div');
-        block1.className = 'slot-block';
-        
-        const limit1 = Math.min(4, totalSlots);
-        for (let s = 1; s <= limit1; s++) {
-            renderSlot(zoneChar, s, block1);
-        }
-        rowDiv.appendChild(block1);
+    const block1 = document.createElement('div');
+    block1.className = 'slot-block';
+    const limit1 = Math.min(4, totalSlots);
+    for (let n = 1; n <= limit1; n++) renderSlot(n, block1);
+    rowDiv.appendChild(block1);
 
-        if (totalSlots > 4) {
-            // Aisle
-            const aisle = document.createElement('div');
-            aisle.className = 'parking-aisle';
-            rowDiv.appendChild(aisle);
+    if (totalSlots > 4) {
+        const aisle = document.createElement('div');
+        aisle.className = 'parking-aisle';
+        rowDiv.appendChild(aisle);
 
-            // Second Block
-            const block2 = document.createElement('div');
-            block2.className = 'slot-block';
-            for (let s = 5; s <= totalSlots; s++) {
-                renderSlot(zoneChar, s, block2);
-            }
-            rowDiv.appendChild(block2);
-        }
+        const block2 = document.createElement('div');
+        block2.className = 'slot-block';
+        for (let n = 5; n <= totalSlots; n++) renderSlot(n, block2);
+        rowDiv.appendChild(block2);
+    }
 
-        grid.appendChild(rowDiv);
-    });
+    grid.appendChild(rowDiv);
 
-    function renderSlot(zone, num, parent) {
-        // Construct Quantum ID B2-A01...A08
+    function renderSlot(num, parent) {
         const id = `B2-A${String(num).padStart(2, '0')}`;
         const slotData = dSlots[id] || { state: 'free' };
-        
-        if (slotData.state === 'free') free++;
-        else if (slotData.state === 'occupied') occ++;
-        else if (slotData.state === 'selected') sel++;
+
+        const state = slotData.state || 'free';
+        if (state === 'free')     free++;
+        else if (state === 'occupied') occ++;
+        else if (state === 'selected') sel++;
         total++;
 
-        const sBtn = document.createElement('div');
-        sBtn.className = `parking-slot ${slotData.state}`;
-        sBtn.dataset.id = id;
-        sBtn.dataset.num = num;
-        sBtn.onclick = () => dSlotClick(id);
-        parent.appendChild(sBtn);
+        const card = document.createElement('div');
+        card.className = `parking-slot ${state}`;
+        card.dataset.id = id;
+        card.innerHTML = `
+            <div class="slot-badge">${id}</div>
+            ${carSVG}
+        `;
+        card.onclick = () => dSlotClick(id);
+        parent.appendChild(card);
     }
 
     document.getElementById('dAvail').textContent = free;
-    document.getElementById('dOcc').textContent = occ;
-    document.getElementById('dSel').textContent = sel;
+    document.getElementById('dOcc').textContent   = occ;
+    document.getElementById('dSel').textContent   = sel;
     document.getElementById('dTotal').textContent = total;
 
-    // Update Quantum Footer Stats
+    // Footer stats
     const qOpen = document.getElementById('qOpen');
     const qBusy = document.getElementById('qBusy');
     const qYours = document.getElementById('qYours');
@@ -138,48 +153,88 @@ function dSlotClick(id) {
 
 function dOpenPanel(id) {
     const s = dSlots[id]; if (!s) return;
-    document.getElementById('dPanelTitle').textContent = `Parking Slot ${id}`;
-    
-    const badge = s.state === 'free' ? '<span class="d-badge fr">Available</span>' : s.state === 'selected' ? '<span class="d-badge sl">Selected</span>' : '<span class="d-badge oc">Occupied</span>';
-    
+    document.getElementById('dPanelTitle').textContent = `Slot ${id}`;
+
+    const state = s.state || 'free';
+    const badge = state === 'free'
+        ? '<span class="d-badge fr">● Available</span>'
+        : state === 'selected'
+        ? '<span class="d-badge sl">● Selected</span>'
+        : '<span class="d-badge oc">● Occupied</span>';
+
     document.getElementById('dPanelInfo').innerHTML = `
-        <div class="d-info-row"><span class="d-info-k">Slot Reference</span><span class="d-info-v">${id}</span></div>
-        <div class="d-info-row"><span class="d-info-k">Parking Zone</span><span class="d-info-v">Zone ${s.zone}</span></div>
-        <div class="d-info-row"><span class="d-info-k">Availability</span><span class="d-info-v">${badge}</span></div>
-        ${s.state === 'occupied' ? `
-        <div class="d-info-row"><span class="d-info-k">Vehicle Plate</span><span class="d-info-v">${s.plate}</span></div>
-        <div class="d-info-row"><span class="d-info-k">Authorized User</span><span class="d-info-v">${s.user}</span></div>
-        <div class="d-info-row"><span class="d-info-k">Parked Since</span><span class="d-info-v">${s.since}</span></div>` : ''}
+        <div class="d-info-row"><span class="d-info-k">Slot ID</span><span class="d-info-v">${id}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Zone</span><span class="d-info-v">Central Hub B2</span></div>
+        <div class="d-info-row"><span class="d-info-k">Status</span><span class="d-info-v">${badge}</span></div>
+        ${state === 'occupied' ? `
+        <div class="d-info-row"><span class="d-info-k">Plate</span><span class="d-info-v">${s.plate || '—'}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Driver</span><span class="d-info-v">${s.user || '—'}</span></div>
+        <div class="d-info-row"><span class="d-info-k">Since</span><span class="d-info-v">${s.since || '—'}</span></div>
+        ` : ''}
     `;
-    
+
     const acts = document.getElementById('dPanelActs');
-    if (s.state === 'free') acts.innerHTML = `<button class="d-act-btn" onclick="dReserve('${id}')">Assign Slot</button>`;
-    else if (s.state === 'selected') acts.innerHTML = `<button class="d-act-btn" onclick="dConfirm('${id}')">Finalize Assignment</button>`;
-    else acts.innerHTML = `<button class="d-act-btn" onclick="dRelease('${id}')">Deallocate Slot</button>`;
-    
+    if (state === 'free')          acts.innerHTML = `<button class="d-act-btn" onclick="dReserve('${id}')">Assign Slot</button>`;
+    else if (state === 'selected') acts.innerHTML = `<button class="d-act-btn" onclick="dConfirm('${id}')">Finalize Assignment</button>`;
+    else                           acts.innerHTML = `<button class="d-act-btn danger" onclick="dRelease('${id}')">Release Slot</button>`;
+
     document.getElementById('dPanel').classList.add('open');
 }
 
 function dClosePanel() { document.getElementById('dPanel').classList.remove('open'); }
 function dReserve(id) { dSlots[id].state = 'selected'; dSelSlot = id; dRender(); dOpenPanel(id); }
-function dConfirm(id) {
+async function dConfirm(id) {
     const s = dSlots[id];
-    s.state = 'occupied'; 
-    s.plate = dPlates[Math.floor(Math.random() * 6)];
-    s.user = dNames[Math.floor(Math.random() * 6)]; 
-    s.since = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`;
+    const user = dNames[Math.floor(Math.random() * 6)];
+    const plate = dPlates[Math.floor(Math.random() * 6)];
+    const time = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`;
+
+    try {
+        await fetch('http://127.0.0.1:5000/api/record-transaction', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: user,
+                plate: plate,
+                location: 'Central Hub - B2',
+                date: new Date().toISOString().split('T')[0],
+                time: time,
+                type: 'Manual Entry',
+                slot: id,
+                amount: '₹0.00',
+                duration: 'Manual'
+            })
+        });
+        
+        s.state = 'occupied'; 
+        s.plate = plate;
+        s.user = user; 
+        s.since = time;
+    } catch (err) {
+        console.error("Backend update failed", err);
+    }
     
-    // Sync to LocalStorage
+    // Sync to LocalStorage (Legacy / Local session)
     updateLocalStorageFromDashboard();
     
     dSelSlot = null; dRender(); dClosePanel(); showToast(`✅ Slot ${id} Assigned`);
 }
 
-function dRelease(id) { 
-    dSlots[id].state = 'free'; 
-    dSlots[id].plate = ''; 
-    dSlots[id].user = ''; 
-    dSlots[id].since = ''; 
+async function dRelease(id) { 
+    try {
+        await fetch('http://127.0.0.1:5000/api/release-slot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        });
+
+        dSlots[id].state = 'free'; 
+        dSlots[id].plate = ''; 
+        dSlots[id].user = ''; 
+        dSlots[id].since = ''; 
+    } catch (err) {
+        console.error("Backend release failed", err);
+    }
     
     // Sync to LocalStorage
     updateLocalStorageFromDashboard();

@@ -224,6 +224,8 @@ def release_slot():
 @app.route('/api/admin/reinitialize-slots', methods=['POST'])
 def reinitialize_slots():
     try:
+        data = request.json or {}
+        count = int(data.get('count', 8))
         conn = get_db_connection()
         cursor = conn.cursor()
         
@@ -231,13 +233,13 @@ def reinitialize_slots():
         cursor.execute("DELETE FROM slots")
         
         # New Allocation (Quantum Hub B2)
-        for i in range(1, 9):
+        for i in range(1, count + 1):
             slot_id = f"B2-A{str(i).zfill(2)}"
             cursor.execute('INSERT INTO slots (id, state) VALUES (%s, %s)', (slot_id, 'free'))
             
         conn.commit()
         conn.close()
-        return jsonify({"message": "Slots reallocated to Quantum B2 structure"}), 200
+        return jsonify({"message": f"Slots reallocated to {count} slots"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 

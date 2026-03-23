@@ -2,178 +2,215 @@
 <html lang="en">
 
 <head>
-    <script>
-        if (localStorage.getItem('parkease_admin_logged') !== 'true') {
-            window.location.href = 'login.html';
-        }
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Allotment Control — ParkEase</title>
-    <link rel="stylesheet" href="assets/css/dashboard.css" />
+  <script>
+    if (localStorage.getItem('parkease_admin_logged') !== 'true') {
+      window.location.href = 'login.html';
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slot Allotment — ParkEase Admin</title>
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
 </head>
 
 <body>
-    <div class="bg-blobs">
-        <div class="blob"></div>
-        <div class="blob"></div>
-    </div>
-    <div class="noise"></div>
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
-    <div id="dashboard">
-        <!-- SIDEBAR -->
-        <aside class="d-sidebar" id="sidebar">
-            <div class="d-logo-wrap">
-                <div class="d-logo-box">P</div>
-                <div class="d-logo-name">Park<span>Ease</span></div>
-            </div>
-            <nav class="d-nav">
-                <a href="overview.html" class="d-nav-item">
-                    <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
-                    Insights
-                </a>
-                <a href="dashboard.html" class="d-nav-item">
-                    <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"></path><path d="M9 3v18M15 3v18M3 9h18M3 15h18"></path></svg></span>
-                    Slot Allotment
-                </a>
-                <a href="users.html" class="d-nav-item">
-                    <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
-                    Staff & Users
-                </a>
-                <a href="payments.html" class="d-nav-item">
-                    <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></span>
-                    Revenue
-                </a>
-                <a href="report.html" class="d-nav-item">
-                    <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
-                    Strategic Reports
-                </a>
-                <a href="settings.html" class="d-nav-item">
-                    <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
-                    System Settings
-                </a>
-            </nav>
-            <div class="d-sidebar-bot">
-                <a href="login.html" class="back-btn" onclick="localStorage.removeItem('parkease_admin_logged')">
-                    Logout
-                </a>
-            </div>
-        </aside>
+  <div class="bg-blobs">
+    <div class="blob"></div>
+    <div class="blob"></div>
+  </div>
+  <div class="noise"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
-        <!-- MAIN -->
-        <div class="d-main">
-            <!-- TOPBAR -->
-            <div class="d-topbar">
-                <div class="mobile-toggle" onclick="toggleSidebar(true)">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </div>
-                <div class="d-search">
-                    <span class="d-search-ico">🔍</span>
-                    <input type="text" placeholder="Filter by slot ID..." oninput="dSearch(this.value)" />
-                </div>
-                <div class="d-topbar-r">
-                    <span class="d-date-lbl" id="dDateLbl"></span>
-                </div>
-            </div>
+  <div id="dashboard">
 
-            <!-- CONTENT -->
-            <div class="d-content">
-                <!-- Aurora Slot Recap -->
-                <div class="d-slot-recap">
-                    <div class="recap-card">
-                        <div class="recap-box">
-                            <div class="recap-sphere free"></div>
-                        </div>
-                        <div class="recap-info">
-                            <div class="recap-val" id="dAvail">—</div>
-                            <div class="recap-lbl">Available</div>
-                        </div>
-                    </div>
-                    <div class="recap-card">
-                        <div class="recap-box">
-                            <div class="recap-sphere occupied"></div>
-                        </div>
-                        <div class="recap-info">
-                            <div class="recap-val" id="dOcc">—</div>
-                            <div class="recap-lbl">Occupied</div>
-                        </div>
-                    </div>
-                    <div class="recap-card">
-                        <div class="recap-box">
-                            <div class="recap-sphere selected"></div>
-                        </div>
-                        <div class="recap-info">
-                            <div class="recap-val" id="dSel">0</div>
-                            <div class="recap-lbl">Selected</div>
-                        </div>
-                    </div>
-                    <div class="recap-card">
-                        <div class="recap-box">
-                            <div class="recap-sphere total"></div>
-                        </div>
-                        <div class="recap-info">
-                            <div class="recap-val" id="dTotal">—</div>
-                            <div class="recap-lbl">Capacity</div>
-                        </div>
-                    </div>
-                </div>
+    <!-- ── SIDEBAR ── -->
+    <aside class="d-sidebar" id="sidebar">
+      <div class="d-logo-wrap">
+        <div class="d-logo-box">P</div>
+        <div class="d-logo-name">Park<span>Ease</span></div>
+      </div>
 
-                <!-- Quantum Prismatic Grid Section -->
-                <div class="quantum-card">
-                    <div class="quantum-beam"></div>
-                    
-                    <div class="quantum-hdr">
-                        <h2 class="quantum-title">CENTRAL HUB — LEVEL B2</h2>
-                        <div class="quantum-sub">QUANTUM PRISMATIC GRID • LATENCY < 1MS</div>
-                    </div>
+      <nav class="d-nav">
+        <div class="d-nav-label">Management</div>
+        <a href="overview.html" class="d-nav-item">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </span>Insights
+        </a>
+        <a href="dashboard.html" class="d-nav-item active">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 3v18M16 3v18M2 9h20M2 15h20"/></svg>
+          </span>Slot Allotment
+        </a>
+        <a href="users.html" class="d-nav-item">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>Staff &amp; Users
+        </a>
+        <a href="payments.html" class="d-nav-item">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </span>Revenue
+        </a>
+        <div class="d-nav-label">System</div>
+        <a href="report.html" class="d-nav-item">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </span>Reports
+        </a>
+        <a href="settings.html" class="d-nav-item">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>Settings
+        </a>
+      </nav>
 
-                    <div class="quantum-grid-wrap">
-                        <div class="parking-grid" id="dZonesGrid">
-                            <!-- Slots will be rendered here by dashboard.js -->
-                        </div>
-                    </div>
+      <div class="d-sidebar-bot">
+        <a href="index.html" class="d-nav-item" style="color: var(--text-muted);">
+          <span class="d-nav-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>User Portal
+        </a>
+        <a href="login.html" class="back-btn" onclick="localStorage.removeItem('parkease_admin_logged')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log Out
+        </a>
+      </div>
+    </aside>
 
-                    <div class="quantum-sep"></div>
+    <!-- ── MAIN ── -->
+    <div class="d-main">
 
-                    <div class="quantum-ftr">
-                        <div class="q-stat">
-                            <div class="q-val open" id="qOpen">8</div>
-                            <div class="q-lbl">OPEN</div>
-                        </div>
-                        <div class="q-stat">
-                            <div class="q-val busy" id="qBusy">0</div>
-                            <div class="q-lbl">BUSY</div>
-                        </div>
-                        <div class="q-stat">
-                            <div class="q-val yours" id="qYours">0</div>
-                            <div class="q-lbl">YOURS</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- Topbar -->
+      <div class="d-topbar">
+        <div class="mobile-toggle" onclick="toggleSidebar(true)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </div>
-    </div>
-
-    <!-- DETAIL PANEL -->
-    <div class="d-panel" id="dPanel">
-        <div class="d-panel-head">
-            <h2 class="d-panel-title" id="dPanelTitle">Slot Allocation</h2>
-            <button class="d-panel-close" onclick="dClosePanel()">✕</button>
+        <div class="d-topbar-title">
+          Slot Allotment <span>Central Hub — Level B2</span>
         </div>
-        <div id="dPanelInfo"></div>
-        <div id="dPanelActs"></div>
+        <div class="d-search">
+          <span class="d-search-ico">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input type="text" id="dSearchInput" placeholder="Search slot ID..." oninput="dSearch(this.value)" />
+        </div>
+        <span class="d-date-lbl" id="dDateLbl"></span>
+      </div>
+
+      <!-- Content -->
+      <div class="d-content">
+
+        <!-- Stat Cards -->
+        <div class="d-slot-recap">
+          <div class="recap-card">
+            <div class="recap-box g">
+              <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <div class="recap-val" id="dAvail">—</div>
+              <div class="recap-lbl">Available</div>
+            </div>
+          </div>
+          <div class="recap-card">
+            <div class="recap-box r">
+              <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+            </div>
+            <div>
+              <div class="recap-val" id="dOcc">—</div>
+              <div class="recap-lbl">Occupied</div>
+            </div>
+          </div>
+          <div class="recap-card">
+            <div class="recap-box y">
+              <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <div class="recap-val" id="dSel">0</div>
+              <div class="recap-lbl">Selected</div>
+            </div>
+          </div>
+          <div class="recap-card">
+            <div class="recap-box b">
+              <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 3v18M16 3v18M2 9h20M2 15h20"/></svg>
+            </div>
+            <div>
+              <div class="recap-val" id="dTotal">—</div>
+              <div class="recap-lbl">Capacity</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parking Lot Grid -->
+        <div class="quantum-card">
+          <div class="quantum-hdr">
+            <div class="quantum-hdr-left">
+              <h2>Central Hub — Level B2</h2>
+              <div class="quantum-sub">Quantum Prismatic Grid · Live View</div>
+            </div>
+            <div class="quantum-hdr-right">
+              <div class="q-legend"><div class="q-dot g"></div>Available</div>
+              <div class="q-legend"><div class="q-dot r"></div>Occupied</div>
+              <div class="q-legend"><div class="q-dot y"></div>Selected</div>
+            </div>
+          </div>
+
+          <div class="quantum-body">
+            <div class="parking-grid" id="dZonesGrid">
+              <!-- Rendered by dashboard.js -->
+            </div>
+          </div>
+
+          <div class="quantum-ftr">
+            <div class="q-stat">
+              <div class="q-val open" id="qOpen">8</div>
+              <div class="q-lbl">Open</div>
+            </div>
+            <div class="q-divider"></div>
+            <div class="q-stat">
+              <div class="q-val busy" id="qBusy">0</div>
+              <div class="q-lbl">Busy</div>
+            </div>
+            <div class="q-divider"></div>
+            <div class="q-stat">
+              <div class="q-val yours" id="qYours">0</div>
+              <div class="q-lbl">Selected</div>
+            </div>
+            <div class="q-live">
+              <div class="q-live-dot"></div>
+              LIVE SYNC
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /d-content -->
+    </div><!-- /d-main -->
+  </div><!-- /dashboard -->
+
+  <!-- Detail Panel -->
+  <div class="d-panel" id="dPanel">
+    <div class="d-panel-head">
+      <h2 class="d-panel-title" id="dPanelTitle">Slot Details</h2>
+      <button class="d-panel-close" onclick="dClosePanel()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
+    <div class="d-panel-body">
+      <div id="dPanelInfo"></div>
+      <div id="dPanelActs"></div>
+    </div>
+  </div>
 
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-    <script src="assets/js/dashboard.js"></script>
-    <script>
-        function toggleSidebar(show) {
-            document.getElementById('sidebar').classList.toggle('active', show);
-            document.getElementById('sidebarOverlay').classList.toggle('active', show);
-        }
-    </script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    function toggleSidebar(show) {
+      document.getElementById('sidebar').classList.toggle('active', show);
+      document.getElementById('sidebarOverlay').classList.toggle('active', show);
+    }
+  </script>
 </body>
 
 </html>
