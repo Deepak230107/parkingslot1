@@ -270,4 +270,71 @@ function showToast(msg) {
     setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-document.addEventListener('DOMContentLoaded', initDashboard);
+document.addEventListener('DOMContentLoaded', () => {
+    initDashboard();
+    renderLogs();
+});
+
+// ════════════ SECURITY LOGIC ════════════
+const securityLogs = [
+    { plate: 'TN 09 AX 1234', type: 'entry', desc: 'Valid Pass - Gate A', time: 'Just now' },
+    { plate: 'KA 04 BZ 5678', type: 'exit', desc: 'Checked Out - Gate B', time: '2 mins ago' },
+    { plate: 'MH 12 CD 9012', type: 'entry', desc: 'Valid Pass - Gate A', time: '15 mins ago' },
+    { plate: 'DL 7C E 3456', type: 'incident', desc: 'Unrecognized Plate - Gate C', time: '1 hr ago' },
+    { plate: 'TS 11 HI 2345', type: 'entry', desc: 'Valid Pass - Gate A', time: '2 hrs ago' },
+    { plate: 'AP 28 FG 7890', type: 'exit', desc: 'Checked Out - Gate B', time: '3 hrs ago' },
+];
+
+function renderLogs() {
+    const list = document.getElementById('logList');
+    if (!list) return;
+    list.innerHTML = '';
+    securityLogs.forEach(log => {
+        const el = document.createElement('div');
+        el.className = `log-item ${log.type}`;
+        el.innerHTML = `
+            <div class="log-info">
+                <span class="log-plate">${log.plate}</span>
+                <span class="log-desc">${log.type.toUpperCase()}: ${log.desc}</span>
+            </div>
+            <span class="log-time">${log.time}</span>
+        `;
+        list.appendChild(el);
+    });
+}
+
+function verifyPlate() {
+    const plate = document.getElementById('plateInput').value.trim();
+    const res = document.getElementById('verifyResult');
+    if (!plate) { res.textContent = 'Please enter a plate number'; res.style.color = '#f59e0b'; return; }
+    
+    res.textContent = 'Scanning Database...';
+    res.style.color = '#94a3b8';
+    
+    setTimeout(() => {
+        if (Math.random() > 0.3) {
+            res.textContent = 'VERIFIED - ACCESS GRANTED';
+            res.style.color = '#10b981';
+            securityLogs.unshift({ plate: plate.toUpperCase(), type: 'entry', desc: 'Manual Override - Gate A', time: 'Just now' });
+            renderLogs();
+            showToast('Gate opened successfully.');
+        } else {
+            res.textContent = 'DENIED - NO ACTIVE BOOKING';
+            res.style.color = '#ef4444';
+            showToast('Vehicle access denied.');
+        }
+        setTimeout(() => {
+            res.textContent = '';
+            document.getElementById('plateInput').value = '';
+        }, 4000);
+    }, 800);
+}
+
+function reportIncident() {
+    const plate = prompt("Enter vehicle plate or incident description:");
+    if (plate) {
+        securityLogs.unshift({ plate: plate.toUpperCase(), type: 'incident', desc: 'Security Alert Triggered', time: 'Just now' });
+        renderLogs();
+        showToast('Incident reported successfully.');
+    }
+}

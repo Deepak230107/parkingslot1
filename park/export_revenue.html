@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Export Revenue Report</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <style>
+        body { background: white; color: black; padding: 40px; font-family: var(--font); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; font-family: var(--font-head); }
+        .logo span { color: #7c3aed; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
+        th { background: #f0f0f0; }
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; }
+        }
+        .print-btn { padding: 10px 20px; background: #7c3aed; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button class="print-btn no-print" style="background: #64748b; margin-left: 10px;" onclick="window.close()">Close</button>
+    <div class="header">
+        <div class="logo">Park<span>Ease</span> Admin</div>
+        <div style="text-align: right;">
+            <h2>Revenue & Ledger Report</h2>
+            <p id="dateSpan"></p>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>User / Plate</th>
+                <th>Amount</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="exportTable">
+            <tr><td>#TRX-001</td><td>TN 09 AX 1234</td><td>₹50.00</td><td>01 Mar 2026, 14:30</td><td>Completed</td></tr>
+            <tr><td>#TRX-002</td><td>KA 04 BZ 5678</td><td>₹120.00</td><td>02 Mar 2026, 09:15</td><td>Completed</td></tr>
+            <tr><td>#TRX-003</td><td>MH 12 CD 9012</td><td>₹30.00</td><td>05 Mar 2026, 18:45</td><td>Refunded</td></tr>
+            <tr><td>#TRX-004</td><td>DL 7C E3456</td><td>₹80.00</td><td>08 Mar 2026, 11:20</td><td>Completed</td></tr>
+            <tr><td>#TRX-005</td><td>AP 28 FG 7890</td><td>₹150.00</td><td>10 Mar 2026, 08:00</td><td>Completed</td></tr>
+        </tbody>
+    </table>
+    <div style="margin-top: 30px; font-weight: bold; font-size: 18px; text-align: right;">
+        Total Revenue: ₹430.00
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('dateSpan').textContent = 'Generated on: ' + new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+        
+        window.onload = () => {
+            const element = document.body;
+            // Hide buttons before generating PDF
+            document.querySelectorAll('.print-btn').forEach(btn => btn.style.display = 'none');
+            
+            const opt = {
+                margin:       0.5,
+                filename:     `ParkEase_Revenue_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // Generate and save PDF, then you can close the tab or leave it open
+            html2pdf().from(element).set(opt).save().then(() => {
+                document.querySelectorAll('.print-btn').forEach(btn => btn.style.display = 'inline-block');
+                // Optional: window.close() after download
+            });
+        };
+    </script>
+</body>
+</html>

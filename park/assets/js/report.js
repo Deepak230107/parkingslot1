@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${r.span}</td>
             <td>${r.by}</td>
             <td style="color:var(--secondary);font-weight:800;letter-spacing:1px;">${r.format}</td>
-            <td><a href="#" class="r-dl" ${r.id ? `onclick="downloadAdminRevenueReport(event)"` : ''}>⬇ Download</a></td>
+            <td><a href="${r.name.includes('User') ? 'export_users.html' : 'export_revenue.html'}" target="_blank" class="r-dl">⬇ Download</a></td>
         `;
         tb.appendChild(row);
     });
@@ -88,24 +88,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function downloadAdminRevenueReport(e) {
     if(e) e.preventDefault();
-    console.log("Generating Live Revenue Report...");
-    
-    try {
-        const response = await fetch('http://127.0.0.1:5000/api/admin/download-report');
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ParkEase_Revenue_Report_${new Date().toISOString().split('T')[0]}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        } else {
-            alert("No payment data found in SQL database.");
-        }
-    } catch (err) {
-        console.error(err);
-        alert("Admin Backend Offline. Please ensure app.py is running on port 5000.");
-    }
+    window.open('export_revenue.html', '_blank');
 }

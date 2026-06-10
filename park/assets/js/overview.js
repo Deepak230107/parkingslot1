@@ -71,6 +71,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const tCtx = document.getElementById('trafficChart');
+    if (tCtx) {
+        new Chart(tCtx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['6 AM', '8 AM', '10 AM', '12 PM', '2 PM', '4 PM', '6 PM', '8 PM', '10 PM'],
+                datasets: [{
+                    label: 'Occupancy Level',
+                    data: [15, 45, 80, 95, 85, 60, 90, 50, 20],
+                    backgroundColor: 'rgba(6, 182, 212, 0.8)',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { family: 'Outfit', size: 14, weight: '700' },
+                        bodyFont: { family: 'Outfit', size: 14 },
+                        padding: 12,
+                        cornerRadius: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return `Occupancy: ${context.parsed.y}%`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        max: 100,
+                        grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false }, 
+                        ticks: { color: '#64748b', font: { family: 'Outfit', size: 12 }, padding: 10 } 
+                    },
+                    x: { 
+                        grid: { display: false, drawBorder: false }, 
+                        ticks: { color: '#64748b', font: { family: 'Outfit', size: 12 }, padding: 10 } 
+                    }
+                }
+            }
+        });
+    }
+
     const activities = [
         { icon: '🚗', class: 'd-act-b', title: 'New Reservation', sub: 'TN 09 AX 1234 booked Zone A-04' },
         { icon: '💵', class: 'd-act-g', title: 'Payment Received', sub: '₹1 paid for Full Day (UPI)' },

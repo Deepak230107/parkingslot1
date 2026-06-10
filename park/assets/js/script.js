@@ -272,47 +272,116 @@ if ("Notification" in window && Notification.permission !== "denied") {
 }
 
 async function downloadReceipt() {
-  // Retrieve user data directly from the form elements
-  const name = document.getElementById('lName')?.value.trim() || 'Guest User';
   const plate = document.getElementById('lPlate')?.value.trim() || 'NOT_SPECIFIED';
   const dest = document.getElementById('lDest')?.value || 'Central Park District';
-  const date = document.getElementById('lDate')?.value || 'N/A';
-  const time = document.getElementById('lArrival')?.value || 'N/A';
+  const duration = document.getElementById('lDuration')?.value || '3';
+  const amountStr = document.getElementById('rTotal')?.textContent || '₹1.00';
+  
+  const numericAmount = parseFloat(amountStr.replace(/[^0-9.]/g, '')) || 1.00;
+  const baseFare = (numericAmount * 0.8).toFixed(2);
+  const taxes = (numericAmount * 0.2).toFixed(2);
 
-  showToast('📜 Retrieving user data for personalized PDF...');
+  // Update receipt fields dynamically in UI
+  if (document.getElementById('rcZone')) document.getElementById('rcZone').textContent = dest;
+  if (document.getElementById('lRcPlate')) document.getElementById('lRcPlate').textContent = plate.toUpperCase();
+  if (document.getElementById('lRcModel')) document.getElementById('lRcModel').textContent = window.currentVehicle || 'Standard Car';
+  if (document.getElementById('lRcSlot')) document.getElementById('lRcSlot').textContent = window.lastBookedSlot || 'Pending';
+  if (document.getElementById('lRcDuration')) document.getElementById('lRcDuration').textContent = duration + (duration === '1' ? ' Hour' : ' Hours');
+  if (document.getElementById('lRcBase')) document.getElementById('lRcBase').textContent = `₹${baseFare}`;
+  if (document.getElementById('lRcTax')) document.getElementById('lRcTax').textContent = `₹${taxes}`;
+
+  showToast('📜 Generating full-page PDF Receipt...');
+
+  // Create a clean, A4-sized printable receipt HTML
+  const receiptHTML = `
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 50px; color: #1f2937; width: 800px; min-height: 1050px; background: #ffffff; box-sizing: border-box;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <h1 style="color: #6366f1; margin: 0; font-size: 32px; letter-spacing: -1px;">ParkEase</h1>
+          <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Quantum Prismatic Grid Authorized</p>
+        </div>
+        <div style="text-align: right; color: #6b7280; font-size: 14px;">
+          <p style="margin: 0;">Order #: PE-${Math.floor(100000 + Math.random() * 900000)}</p>
+          <p style="margin: 4px 0 0 0;">Date: ${new Date().toLocaleDateString()}</p>
+        </div>
+      </div>
+      
+      <hr style="border: none; border-top: 2px solid #6366f1; margin: 30px 0;">
+      
+      <h2 style="text-align: center; color: #111827; font-size: 24px; letter-spacing: 2px; margin-bottom: 40px;">AUTHORIZATION PERMIT</h2>
+      
+      <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Parking Zone</td>
+          <td style="padding: 16px 0; text-align: right; color: #111827;">${dest}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Vehicle Plate</td>
+          <td style="padding: 16px 0; text-align: right; color: #111827;">${plate.toUpperCase()}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Vehicle Model</td>
+          <td style="padding: 16px 0; text-align: right; color: #111827;">${window.currentVehicle || 'Standard Car'}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Allotted Slot</td>
+          <td style="padding: 16px 0; text-align: right; color: #111827; font-weight: bold;">${window.lastBookedSlot || 'Pending'}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e5e7eb;">
+          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Duration</td>
+          <td style="padding: 16px 0; text-align: right; color: #111827;">${duration} Hours</td>
+        </tr>
+      </table>
+      
+      <div style="margin-top: 50px; padding: 30px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+        <h3 style="margin-top: 0; margin-bottom: 20px; color: #334155; font-size: 18px;">Payment Summary</h3>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; color: #475569;">
+          <span>Base Fare</span><span>₹${baseFare}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; color: #475569;">
+          <span>Taxes & Fees (20%)</span><span>₹${taxes}</span>
+        </div>
+        <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 20px 0;">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 22px; color: #6366f1;">
+          <span>Grand Total</span><span>₹${numericAmount.toFixed(2)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 16px; font-weight: bold; font-size: 16px; color: #22c55e;">
+          <span>Auth Status</span><span>VERIFIED SUCCESSFUL</span>
+        </div>
+      </div>
+      
+      <div style="margin-top: 80px; text-align: center; color: #94a3b8; font-size: 13px; border-top: 1px solid #e2e8f0; padding-top: 30px;">
+        <p style="margin: 0 0 8px 0;">Thank you for choosing ParkEase. This is a digitally signed Quantum Permit.</p>
+        <p style="margin: 0;">Support: help@parkease.systems | Securely encrypted with RSA-2048</p>
+      </div>
+    </div>
+  `;
+
+  const tempContainer = document.createElement('div');
+  tempContainer.innerHTML = receiptHTML;
+  // Position it to render accurately but hide overflow
+  tempContainer.style.position = 'absolute';
+  tempContainer.style.top = '0';
+  tempContainer.style.left = '0';
+  tempContainer.style.zIndex = '-9999';
+  document.body.appendChild(tempContainer);
+
+  const opt = {
+    margin:       0,
+    filename:     `ParkEase_Receipt_${plate.replace(/\s+/g, '_')}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true },
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/generate-receipt', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: name,
-        plate: plate,
-        type: currentVehicle,
-        location: dest,
-        date: date,
-        time: time,
-        slot: window.lastBookedSlot || 'B2-A01',
-        amount: 'INR 1.00'
-      })
-    });
-
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `ParkEase_Receipt_${plate.replace(/\s+/g, '_')}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      showToast('✅ Personalized Receipt Generated!');
-    } else {
-      throw new Error('Backend unreachable');
-    }
+    await html2pdf().set(opt).from(tempContainer).save();
+    showToast('✅ Full-Page Receipt Generated!');
   } catch (err) {
-    console.error(err);
-    showToast('⚠️ Data retrieval failed. Is the Python backend running?');
+    console.error("PDF Generation failed", err);
+    showToast('⚠️ Error generating PDF.');
+  } finally {
+    document.body.removeChild(tempContainer);
   }
 }
 

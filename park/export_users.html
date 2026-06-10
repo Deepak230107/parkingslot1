@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Export Users Report</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <style>
+        body { background: white; color: black; padding: 40px; font-family: var(--font); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; font-family: var(--font-head); }
+        .logo span { color: #7c3aed; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 12px; text-align: left; }
+        th { background: #f0f0f0; }
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; }
+        }
+        .print-btn { padding: 10px 20px; background: #7c3aed; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button class="print-btn no-print" style="background: #64748b; margin-left: 10px;" onclick="window.close()">Close</button>
+    <div class="header">
+        <div class="logo">Park<span>Ease</span> Admin</div>
+        <div style="text-align: right;">
+            <h2>User Directory Report</h2>
+            <p id="dateSpan"></p>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Registered Vehicle</th>
+                <th>Joined Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="exportTable">
+            <tr><td>Arjun S.</td><td>TN 09 AX 1234</td><td>21 Feb 2026</td><td>Active</td></tr>
+            <tr><td>Priya M.</td><td>KA 04 BZ 5678</td><td>02 Mar 2026</td><td>Active</td></tr>
+            <tr><td>Ravi K.</td><td>MH 12 CD 9012</td><td>15 Jan 2026</td><td>Blocked</td></tr>
+            <tr><td>Kavya T.</td><td>DL 7C E3456</td><td>28 Feb 2026</td><td>Active</td></tr>
+            <tr><td>Arun B.</td><td>AP 28 FG 7890</td><td>05 Mar 2026</td><td>Active</td></tr>
+            <tr><td>Deepa R.</td><td>TS 11 HI 2345</td><td>01 Feb 2026</td><td>Active</td></tr>
+        </tbody>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        document.getElementById('dateSpan').textContent = 'Generated on: ' + new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+        
+        window.onload = () => {
+            const element = document.body;
+            // Hide buttons before generating PDF
+            document.querySelectorAll('.print-btn').forEach(btn => btn.style.display = 'none');
+            
+            const opt = {
+                margin:       0.5,
+                filename:     `ParkEase_User_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // Generate and save PDF, then you can close the tab or leave it open
+            html2pdf().from(element).set(opt).save().then(() => {
+                document.querySelectorAll('.print-btn').forEach(btn => btn.style.display = 'inline-block');
+                // Optional: window.close() after download
+            });
+        };
+    </script>
+</body>
+</html>

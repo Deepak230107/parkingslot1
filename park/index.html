@@ -344,11 +344,16 @@
             </div>
           </div>
           <div class="r-row"><span class="k">Parking Zone</span><span class="v" id="rcZone">Premium B2</span></div>
-          <div class="r-row"><span class="k">Vehicle Plate</span><span class="v" id="lRcPlate">TN 09 AX 1234</span>
-          </div>
-          <div class="r-row"><span class="k">Payment Status</span><span class="v" id="payStatus"
-              style="color:var(--primary)">PENDING</span></div>
-          <div class="r-row total"><span class="k">Grand Total</span><span class="v" id="rTotal">₹1</span></div>
+          <div class="r-row"><span class="k">Vehicle Plate</span><span class="v" id="lRcPlate">TN 09 AX 1234</span></div>
+          <div class="r-row"><span class="k">Vehicle Model</span><span class="v" id="lRcModel">Standard Car</span></div>
+          <div class="r-row"><span class="k">Allotted Slot</span><span class="v" id="lRcSlot">Pending</span></div>
+          <div class="r-row"><span class="k">Duration</span><span class="v" id="lRcDuration">3 Hours</span></div>
+          <div style="border-top: 1px dashed rgba(255,255,255,0.2); margin: 12px 0;"></div>
+          <div class="r-row"><span class="k" style="font-size:0.85rem; color:#9ca3af;">Base Fare</span><span class="v" style="font-size:0.85rem; color:#9ca3af;" id="lRcBase">₹0.80</span></div>
+          <div class="r-row"><span class="k" style="font-size:0.85rem; color:#9ca3af;">Taxes & Fees (20%)</span><span class="v" style="font-size:0.85rem; color:#9ca3af;" id="lRcTax">₹0.20</span></div>
+          <div style="border-top: 1px dashed rgba(255,255,255,0.2); margin: 12px 0;"></div>
+          <div class="r-row"><span class="k">Payment Status</span><span class="v" id="payStatus" style="color:var(--primary); font-weight: bold;">PENDING</span></div>
+          <div class="r-row total"><span class="k">Grand Total</span><span class="v" id="rTotal">₹1.00</span></div>
 
           <button class="btn-receipt" style="margin-top:24px; width:100%; justify-content:center;"
             onclick="downloadReceipt()">
@@ -376,6 +381,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="assets/js/script.js"></script>
 </body>
 

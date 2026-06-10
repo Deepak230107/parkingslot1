@@ -35,25 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (exportBtn) {
         exportBtn.textContent = 'Export PDF Report';
         exportBtn.addEventListener('click', async () => {
-            console.log("Generating Consolidated Revenue Report...");
-            try {
-                const response = await fetch('http://127.0.0.1:5000/api/admin/download-report');
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `ParkEase_Revenue_Report_${new Date().toISOString().split('T')[0]}.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                } else {
-                    alert("No payment data found in SQL database.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Backend Offline. Please ensure app.py is running on port 5000.");
-            }
+            console.log("Opening Consolidated Revenue Report...");
+            window.open('export_revenue.html', '_blank');
         });
     }
 });

@@ -1,6 +1,5 @@
 from flask import Flask, request, send_file, jsonify
 from flask_cors import CORS
-from generate_receipt import generate_parking_receipt
 from generate_report import generate_full_payments_pdf, generate_users_report_pdf
 import os
 import mysql.connector
@@ -82,35 +81,6 @@ def init_db():
 
 init_db()
 
-RECEIPTS_DIR = os.path.join(os.path.dirname(__file__), "generated_receipts")
-if not os.path.exists(RECEIPTS_DIR):
-    os.makedirs(RECEIPTS_DIR)
-
-@app.route('/api/generate-receipt', methods=['POST'])
-def handle_receipt_generation():
-    try:
-        data = request.json
-        user_details = {
-            "name": data.get('name', 'Valued Customer'),
-            "plate": data.get('plate', 'N/A'),
-            "date": data.get('date', 'N/A'),
-            "time": data.get('time', 'N/A'),
-            "type": data.get('type', 'Standard Car'),
-            "location": data.get('location', 'Central Hub - B2'),
-            "slot": data.get('slot', 'B2-14'),
-            "amount": data.get('amount', 'INR 1.00')
-        }
-        
-        import re
-        safe_plate = re.sub(r'[^\w\s-]', '', user_details['plate']).strip().replace(' ', '_')
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"receipt_{safe_plate}_{timestamp}.pdf"
-        file_path = os.path.join(RECEIPTS_DIR, filename)
-        
-        generate_parking_receipt(user_details, file_path)
-        return send_file(file_path, as_attachment=True)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
 
 @app.route('/api/record-transaction', methods=['POST'])
 def record_transaction():

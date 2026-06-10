@@ -108,7 +108,7 @@
               <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </div>
             <div>
-              <div class="recap-val" id="dAvail">—</div>
+              <div class="recap-val" id="dAvail">8</div>
               <div class="recap-lbl">Available</div>
             </div>
           </div>
@@ -117,7 +117,7 @@
               <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9C2.1 11.2 2 11.6 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
             </div>
             <div>
-              <div class="recap-val" id="dOcc">—</div>
+              <div class="recap-val" id="dOcc">0</div>
               <div class="recap-lbl">Occupied</div>
             </div>
           </div>
@@ -135,7 +135,7 @@
               <svg class="recap-ico" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 3v18M16 3v18M2 9h20M2 15h20"/></svg>
             </div>
             <div>
-              <div class="recap-val" id="dTotal">—</div>
+              <div class="recap-val" id="dTotal">8</div>
               <div class="recap-lbl">Capacity</div>
             </div>
           </div>
@@ -181,6 +181,43 @@
               LIVE SYNC
             </div>
           </div>
+        </div>
+
+        <!-- Security & Access Control Grid -->
+        <div class="sec-grid">
+            <!-- Left: Camera Feed & Verification -->
+            <div class="d-card" style="display:flex; flex-direction:column; gap:20px;">
+                <div>
+                    <h3 class="d-card-title">Security Desk — Gate A ANPR Feed</h3>
+                    <div class="camera-feed" style="margin-top: 12px;">
+                        <div class="cam-overlay"><span></span> LIVE REC</div>
+                        <div class="cam-scan-line"></div>
+                        <div style="width: 100%; height: 100%; background: radial-gradient(circle, #1e293b 0%, #0f172a 100%); display: flex; align-items: center; justify-content: center; opacity: 0.8;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                        </div>
+                        <div style="position:absolute; bottom:12px; left:12px; color:white; font-family:monospace; font-size:12px; background:rgba(0,0,0,0.5); padding:4px 8px; border-radius: 4px;">1080P / 60FPS / ZONE-1</div>
+                    </div>
+                </div>
+
+                <div class="verify-box">
+                    <h3 style="font-size: 14px; margin-bottom: 12px; color:#e2e8f0;">Manual Plate Verification</h3>
+                    <input type="text" class="verify-input" id="plateInput" placeholder="ENTER PLATE NO." />
+                    <button class="verify-btn" onclick="verifyPlate()">Verify & Open Gate</button>
+                    <div id="verifyResult" style="margin-top: 12px; text-align: center; font-size: 14px; font-weight: bold; min-height: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Right: Entry/Exit Monitoring -->
+            <div class="d-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 class="d-card-title">Live Entry/Exit Monitoring</h3>
+                    <button class="d-act-btn danger" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="reportIncident()">Report Incident</button>
+                </div>
+                
+                <div class="log-list" id="logList">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
         </div>
 
       </div><!-- /d-content -->

@@ -995,3 +995,34 @@ select option { background: var(--bg-2); color: var(--text); }
   .slot-block { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .quantum-body { padding: 16px; }
 }
+
+/* ══════════════════════════════════════
+   SECURITY MODULE (DASHBOARD)
+══════════════════════════════════════ */
+.sec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+@media(max-width: 900px) { .sec-grid { grid-template-columns: 1fr; } }
+.camera-feed { background: #000; border-radius: 12px; height: 250px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); }
+.cam-overlay { position: absolute; top: 12px; left: 12px; color: #ef4444; font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 6px; z-index: 10; }
+.cam-overlay span { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: blink 1s infinite; }
+.cam-scan-line { position: absolute; width: 100%; height: 2px; background: rgba(16, 185, 129, 0.5); box-shadow: 0 0 10px rgba(16, 185, 129, 0.8); top: 0; animation: scan 3s linear infinite alternate; z-index: 5;}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+.log-list { display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; }
+.log-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 4px solid #3b82f6; }
+.log-item.entry { border-left-color: #10b981; }
+.log-item.exit { border-left-color: #f59e0b; }
+.log-item.incident { border-left-color: #ef4444; }
+.log-info { display: flex; flex-direction: column; }
+.log-plate { font-weight: bold; font-size: 16px; color: #f1f5f9; }
+.log-desc { font-size: 12px; color: #94a3b8; }
+.log-time { font-size: 12px; color: #64748b; font-weight: 600; }
+
+.verify-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 24px; border-radius: 12px; }
+.verify-input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); padding: 12px; color: white; border-radius: 6px; margin-bottom: 16px; font-family: monospace; font-size: 18px; text-align: center; letter-spacing: 2px; outline: none; }
+.verify-input:focus { border-color: #3b82f6; }
+.verify-btn { width: 100%; background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+.verify-btn:hover { background: #2563eb; }
+
+.log-list::-webkit-scrollbar { width: 6px; }
+.log-list::-webkit-scrollbar-track { background: transparent; }
+.log-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
