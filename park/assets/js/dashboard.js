@@ -52,6 +52,7 @@ async function initDashboard() {
             dSlots[b.id].user = b.user;
             dSlots[b.id].plate = b.plate;
             dSlots[b.id].since = b.since;
+            dSlots[b.id].zone = b.zone;
         }
     });
 
@@ -162,9 +163,11 @@ function dOpenPanel(id) {
         ? '<span class="d-badge sl">● Selected</span>'
         : '<span class="d-badge oc">● Occupied</span>';
 
+    const zoneDisplay = s.zone || 'Central Hub B2';
+    
     document.getElementById('dPanelInfo').innerHTML = `
         <div class="d-info-row"><span class="d-info-k">Slot ID</span><span class="d-info-v">${id}</span></div>
-        <div class="d-info-row"><span class="d-info-k">Zone</span><span class="d-info-v">Central Hub B2</span></div>
+        <div class="d-info-row"><span class="d-info-k">Zone</span><span class="d-info-v">${zoneDisplay}</span></div>
         <div class="d-info-row"><span class="d-info-k">Status</span><span class="d-info-v">${badge}</span></div>
         ${state === 'occupied' ? `
         <div class="d-info-row"><span class="d-info-k">Plate</span><span class="d-info-v">${s.plate || '—'}</span></div>
@@ -251,6 +254,7 @@ function updateLocalStorageFromDashboard() {
                 user: dSlots[id].user,
                 plate: dSlots[id].plate,
                 since: dSlots[id].since,
+                zone: dSlots[id].zone,
                 state: 'occupied'
             });
         }

@@ -127,6 +127,21 @@ function confirmReservation() {
         summary.style.display = 'block';
         summary.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
+        // Update the Receipt UI elements immediately so PDF export gets the right data
+        const duration = document.getElementById('lDuration')?.value || '3';
+        const baseFare = (parseFloat(duration) * 0.8).toFixed(2);
+        const taxes = (parseFloat(duration) * 0.2).toFixed(2);
+        const totalAmount = parseFloat(duration).toFixed(2);
+
+        if (document.getElementById('rcZone')) document.getElementById('rcZone').textContent = dest;
+        if (document.getElementById('lRcPlate')) document.getElementById('lRcPlate').textContent = plate.toUpperCase();
+        if (document.getElementById('lRcModel')) document.getElementById('lRcModel').textContent = window.currentVehicle || 'Standard Car';
+        if (document.getElementById('lRcSlot')) document.getElementById('lRcSlot').textContent = currentSlot;
+        if (document.getElementById('lRcDuration')) document.getElementById('lRcDuration').textContent = duration + (duration === '1' ? ' Hour' : ' Hours');
+        if (document.getElementById('lRcBase')) document.getElementById('lRcBase').textContent = `₹${baseFare}`;
+        if (document.getElementById('lRcTax')) document.getElementById('lRcTax').textContent = `₹${taxes}`;
+        if (document.getElementById('rTotal')) document.getElementById('rTotal').textContent = `₹${totalAmount}`;
+
         // MARK AS OCCUPIED IN SYNC
         const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
         // Check if already exists, update or add
@@ -135,6 +150,7 @@ function confirmReservation() {
           id: currentSlot,
           user: name,
           plate: plate.toUpperCase(),
+          zone: dest, // Include zone for dashboard
           since: `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} AM`,
           state: 'occupied'
         };
