@@ -9,10 +9,12 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Insights Overview — ParkEase</title>
-    <link rel="stylesheet" href="assets/css/dashboard.css" />
-    <link rel="stylesheet" href="assets/css/overview.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Payments — Admin Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <link rel="stylesheet" href="../assets/css/payments.css" />
 </head>
 
 <body>
@@ -23,14 +25,13 @@
     <div class="noise"></div>
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
     <div id="dashboard">
-        <!-- SIDEBAR -->
         <aside class="d-sidebar" id="sidebar">
             <div class="d-logo-wrap">
                 <div class="d-logo-box">P</div>
                 <div class="d-logo-name">Park<span>Ease</span></div>
             </div>
             <nav class="d-nav">
-                <a href="overview.html" class="d-nav-item active">
+                <a href="overview.html" class="d-nav-item">
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
                     Insights
                 </a>
@@ -42,7 +43,7 @@
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
                     Staff & Users
                 </a>
-                <a href="payments.html" class="d-nav-item">
+                <a href="payments.html" class="d-nav-item active">
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></span>
                     Revenue
                 </a>
@@ -62,6 +63,7 @@
             </div>
         </aside>
 
+
         <!-- MAIN -->
         <div class="d-main">
             <div class="d-topbar">
@@ -70,7 +72,7 @@
                 </div>
                 <div class="d-search">
                     <span class="d-search-ico">🔍</span>
-                    <input type="text" placeholder="Search operational data..." />
+                    <input type="text" placeholder="Search transactions..." />
                 </div>
                 <div class="d-topbar-r">
                     <span class="d-date-lbl" id="dDateLbl"></span>
@@ -79,39 +81,33 @@
 
             <!-- CONTENT -->
             <div class="d-content">
-                <div class="d-overview-grid">
-                    <div class="d-card span-2">
-                        <div class="d-card-hdr">
-                            <h3 class="d-card-title">Weekly Revenue Stream</h3>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="revenueChart"></canvas>
-                        </div>
+                <div class="d-card">
+                    <div class="d-card-hdr">
+                        <h3 class="d-card-title">Transaction History</h3>
+                        <button class="u-btn">Export CSV</button>
                     </div>
-                    <div class="d-card span-2">
-                        <div class="d-card-hdr">
-                            <h3 class="d-card-title">Traffic Patterns & Peak Hours</h3>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="trafficChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="d-card">
-                        <div class="d-card-hdr">
-                            <h3 class="d-card-title">Live Operational Feed</h3>
-                        </div>
-                        <div class="d-activity-list" id="activityList">
-                            <!-- Activities will be populated by JS -->
-                        </div>
+                    <div class="table-wrap">
+                        <table class="u-table">
+                            <thead>
+                                <tr>
+                                    <th>Ref ID</th>
+                                    <th>User Name</th>
+                                    <th>Amount</th>
+                                    <th>Date & Time</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payTableData">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="assets/js/overview.js"></script>
+    <script src="../assets/js/payments.js"></script>
     <script>
-        document.getElementById('dDateLbl').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-        
         function toggleSidebar(show) {
             document.getElementById('sidebar').classList.toggle('active', show);
             document.getElementById('sidebarOverlay').classList.toggle('active', show);
