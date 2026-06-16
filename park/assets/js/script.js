@@ -322,7 +322,7 @@ async function downloadReceipt() {
       <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%); padding: 40px 50px 32px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #6d28d9;">
         <div>
           <div style="font-size: 34px; font-weight: 900; color: #c4b5fd; letter-spacing: -1px; line-height: 1;">Park<span style="color:#ffffff;">Ease</span></div>
-          <div style="color: #a78bfa; font-size: 12px; margin-top: 6px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">Quantum Prismatic Grid — Authorized Permit</div>
+          <div style="color: #a78bfa; font-size: 12px; margin-top: 6px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">Quantum Prismatic Grid — Authorized Receipt</div>
         </div>
         <div style="text-align: right; color: #c4b5fd; font-size: 13px; line-height: 1.8;">
           <div style="font-weight: 700; color: #fff; font-size: 15px;">Order #${orderNum}</div>
@@ -333,7 +333,7 @@ async function downloadReceipt() {
 
       <!-- Title -->
       <div style="text-align: center; padding: 28px 50px 0;">
-        <div style="display: inline-block; background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; padding: 8px 28px; border-radius: 100px; font-size: 12px; font-weight: 800; color: #c4b5fd; letter-spacing: 3px; text-transform: uppercase;">Authorization Permit</div>
+        <div style="display: inline-block; background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; padding: 8px 28px; border-radius: 100px; font-size: 14px; font-weight: 800; color: #c4b5fd; letter-spacing: 4px; text-transform: uppercase;">OFFICIAL RECEIPT</div>
       </div>
 
       <!-- Details Table -->
@@ -395,7 +395,7 @@ async function downloadReceipt() {
       <!-- Footer -->
       <div style="margin: 32px 50px 0; padding: 20px 0 0; border-top: 1px solid #334155; text-align: center; color: #64748b; font-size: 12px; line-height: 1.8;">
         <div style="font-weight: 700; color: #94a3b8; font-size: 13px; margin-bottom: 4px;">Thank you for choosing ParkEase</div>
-        <div>This is a digitally authorized Quantum Permit — do not share with unauthorized persons.</div>
+        <div>This is a digitally authorized Quantum Receipt — do not share with unauthorized persons.</div>
         <div>Support: help@parkease.systems &nbsp;|&nbsp; Secured with RSA-2048 Encryption</div>
       </div>
 
