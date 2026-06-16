@@ -316,13 +316,13 @@ async function downloadReceipt() {
 
   // ── PDF Receipt HTML — mirrors the on-screen receipt card exactly ──
   const receiptHTML = `
-    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; width: 794px; min-height: 1123px; background: #ffffff; box-sizing: border-box;">
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; width: 794px; min-height: 1123px; background: #0f172a; color: #f8fafc; box-sizing: border-box;">
 
       <!-- Header Band -->
-      <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%); padding: 40px 50px 32px; display: flex; justify-content: space-between; align-items: flex-start;">
+      <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%); padding: 40px 50px 32px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #6d28d9;">
         <div>
-          <div style="font-size: 34px; font-weight: 900; color: #a78bfa; letter-spacing: -1px; line-height: 1;">Park<span style="color:#ffffff;">Ease</span></div>
-          <div style="color: #c4b5fd; font-size: 12px; margin-top: 6px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">Quantum Prismatic Grid — Authorized Permit</div>
+          <div style="font-size: 34px; font-weight: 900; color: #c4b5fd; letter-spacing: -1px; line-height: 1;">Park<span style="color:#ffffff;">Ease</span></div>
+          <div style="color: #a78bfa; font-size: 12px; margin-top: 6px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">Quantum Prismatic Grid — Authorized Permit</div>
         </div>
         <div style="text-align: right; color: #c4b5fd; font-size: 13px; line-height: 1.8;">
           <div style="font-weight: 700; color: #fff; font-size: 15px;">Order #${orderNum}</div>
@@ -333,68 +333,68 @@ async function downloadReceipt() {
 
       <!-- Title -->
       <div style="text-align: center; padding: 28px 50px 0;">
-        <div style="display: inline-block; background: #f5f3ff; border: 1px solid #ddd6fe; padding: 8px 28px; border-radius: 100px; font-size: 12px; font-weight: 800; color: #7c3aed; letter-spacing: 3px; text-transform: uppercase;">Authorization Permit</div>
+        <div style="display: inline-block; background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; padding: 8px 28px; border-radius: 100px; font-size: 12px; font-weight: 800; color: #c4b5fd; letter-spacing: 3px; text-transform: uppercase;">Authorization Permit</div>
       </div>
 
-      <!-- Details Table (mirrors the receipt card) -->
-      <div style="margin: 24px 50px 0; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden;">
+      <!-- Details Table -->
+      <div style="margin: 24px 50px 0; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; background: #1e293b;">
         <!-- Row: Parking Zone -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0; background: #fafafa;">
-          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Parking Zone</span>
-          <span style="font-size: 15px; color: #111827; font-weight: 700;">${zone}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Parking Zone</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 700;">${zone}</span>
         </div>
         <!-- Row: Vehicle Plate -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0;">
-          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Vehicle Plate</span>
-          <span style="font-size: 15px; color: #111827; font-weight: 800; letter-spacing: 1px;">${plate}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Vehicle Plate</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 800; letter-spacing: 1px;">${plate}</span>
         </div>
         <!-- Row: Vehicle Model -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0; background: #fafafa;">
-          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Vehicle Model</span>
-          <span style="font-size: 15px; color: #111827; font-weight: 700;">${model}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Vehicle Model</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 700;">${model}</span>
         </div>
         <!-- Row: Allotted Slot -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0;">
-          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Allotted Slot</span>
-          <span style="font-size: 15px; color: #111827; font-weight: 800;">${slot}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Allotted Slot</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 800;">${slot}</span>
         </div>
         <!-- Row: Duration -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; background: #fafafa;">
-          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Duration</span>
-          <span style="font-size: 15px; color: #111827; font-weight: 700;">${duration}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Duration</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 700;">${duration}</span>
         </div>
       </div>
 
       <!-- Payment Summary Box -->
-      <div style="margin: 20px 50px 0; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden;">
-        <div style="background: #f5f3ff; padding: 14px 28px; border-bottom: 1px solid #ede9fe;">
-          <span style="font-size: 13px; font-weight: 800; color: #7c3aed; letter-spacing: 2px; text-transform: uppercase;">Payment Summary</span>
+      <div style="margin: 20px 50px 0; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; background: #0f172a;">
+        <div style="background: #1e293b; padding: 14px 28px; border-bottom: 1px solid #334155;">
+          <span style="font-size: 13px; font-weight: 800; color: #a78bfa; letter-spacing: 2px; text-transform: uppercase;">Payment Summary</span>
         </div>
         <!-- Base Fare -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px dashed #e5e7eb;">
-          <span style="font-size: 14px; color: #9ca3af;">Base Fare</span>
-          <span style="font-size: 14px; color: #9ca3af; font-weight: 600;">${baseFare}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px dashed #334155;">
+          <span style="font-size: 14px; color: #94a3b8;">Base Fare</span>
+          <span style="font-size: 14px; color: #cbd5e1; font-weight: 600;">${baseFare}</span>
         </div>
         <!-- Taxes -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px dashed #e5e7eb;">
-          <span style="font-size: 14px; color: #9ca3af;">Taxes &amp; Fees (20%)</span>
-          <span style="font-size: 14px; color: #9ca3af; font-weight: 600;">${taxes}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px dashed #334155;">
+          <span style="font-size: 14px; color: #94a3b8;">Taxes &amp; Fees (20%)</span>
+          <span style="font-size: 14px; color: #cbd5e1; font-weight: 600;">${taxes}</span>
         </div>
         <!-- Payment Status -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; border-bottom: 1px solid #e5e7eb; background: #fafafa;">
-          <span style="font-size: 15px; color: #374151; font-weight: 500;">Payment Status</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Payment Status</span>
           <span style="font-size: 15px; font-weight: 800; color: ${statusColor}; letter-spacing: 1px;">${payStatus}</span>
         </div>
         <!-- Grand Total -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; background: #1e1b4b;">
-          <span style="font-size: 18px; color: #c4b5fd; font-weight: 700;">Grand Total</span>
-          <span style="font-size: 28px; color: #a78bfa; font-weight: 900; letter-spacing: -0.5px;">${grandTotal}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; background: #0b0f19;">
+          <span style="font-size: 18px; color: #94a3b8; font-weight: 700;">Grand Total</span>
+          <span style="font-size: 28px; color: #a855f7; font-weight: 900; letter-spacing: -0.5px;">${grandTotal}</span>
         </div>
       </div>
 
       <!-- Footer -->
-      <div style="margin: 32px 50px 0; padding: 20px 0 0; border-top: 1px solid #e5e7eb; text-align: center; color: #9ca3af; font-size: 12px; line-height: 1.8;">
-        <div style="font-weight: 700; color: #374151; font-size: 13px; margin-bottom: 4px;">Thank you for choosing ParkEase</div>
+      <div style="margin: 32px 50px 0; padding: 20px 0 0; border-top: 1px solid #334155; text-align: center; color: #64748b; font-size: 12px; line-height: 1.8;">
+        <div style="font-weight: 700; color: #94a3b8; font-size: 13px; margin-bottom: 4px;">Thank you for choosing ParkEase</div>
         <div>This is a digitally authorized Quantum Permit — do not share with unauthorized persons.</div>
         <div>Support: help@parkease.systems &nbsp;|&nbsp; Secured with RSA-2048 Encryption</div>
       </div>
@@ -414,7 +414,7 @@ async function downloadReceipt() {
     margin:       0,
     filename:     `ParkEase_Invoice_${plate.replace(/\s+/g, '_')}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0f172a' },
     jsPDF:        { unit: 'px', format: [794, 1123], orientation: 'portrait' }
   };
 
