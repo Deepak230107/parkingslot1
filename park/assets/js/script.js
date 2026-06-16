@@ -134,7 +134,13 @@ function confirmReservation() {
         const taxes = (parseFloat(duration) * 0.2).toFixed(2);
         const totalAmount = parseFloat(duration).toFixed(2);
 
+        const rDate = document.getElementById('lDate')?.value || new Date().toISOString().split('T')[0];
+        const rTime = document.getElementById('lArrival')?.value || '12:00';
+
         window.currentBookingDetails = {
+          name: name,
+          date: rDate,
+          arrival: rTime,
           zone: dest,
           plate: plate.toUpperCase(),
           model: window.currentVehicle || 'Standard Car',
@@ -306,6 +312,10 @@ async function downloadReceipt() {
   const taxes     = details.taxes     || '₹0.20';
   const payStatus = details.payStatus || 'PENDING';
   const grandTotal= details.total     || '₹1.00';
+  const cName     = details.name      || document.getElementById('lName')?.value.trim() || 'Guest User';
+  const cDate     = details.date      || document.getElementById('lDate')?.value || new Date().toISOString().split('T')[0];
+  const cTime     = details.arrival   || document.getElementById('lArrival')?.value || '12:00';
+  
   const orderNum  = `PE-${Math.floor(100000 + Math.random() * 900000)}`;
   const dateStr   = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
   const timeStr   = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
@@ -339,6 +349,11 @@ async function downloadReceipt() {
 
       <!-- Details Table -->
       <div style="margin: 24px 50px 0; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; background: #1e293b;">
+        <!-- Row: Customer Name -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Customer Name</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 700;">${cName}</span>
+        </div>
         <!-- Row: Parking Zone -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
           <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Parking Zone</span>
@@ -358,6 +373,11 @@ async function downloadReceipt() {
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
           <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Allotted Slot</span>
           <span style="font-size: 15px; color: #f8fafc; font-weight: 800;">${slot}</span>
+        </div>
+        <!-- Row: Arrival Schedule -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #334155; background: #0f172a;">
+          <span style="font-size: 15px; color: #94a3b8; font-weight: 500;">Scheduled Arrival</span>
+          <span style="font-size: 15px; color: #f8fafc; font-weight: 700;">${cDate} at ${cTime}</span>
         </div>
         <!-- Row: Duration -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; background: #0f172a;">
