@@ -9,12 +9,12 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Settings — Admin Dashboard</title>
+    <title>Payments — Admin Dashboard</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Mulish:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/dashboard.css" />
-    <link rel="stylesheet" href="../assets/css/settings.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/payments.css" />
 </head>
 
 <body>
@@ -43,7 +43,7 @@
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
                     Staff & Users
                 </a>
-                <a href="payments.html" class="d-nav-item">
+                <a href="payments.html" class="d-nav-item active">
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></span>
                     Revenue
                 </a>
@@ -51,7 +51,7 @@
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
                     Strategic Reports
                 </a>
-                <a href="settings.html" class="d-nav-item active">
+                <a href="settings.html" class="d-nav-item">
                     <span class="d-nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
                     System Settings
                 </a>
@@ -63,89 +63,50 @@
             </div>
         </aside>
 
+
         <!-- MAIN -->
         <div class="d-main">
             <div class="d-topbar">
                 <div class="mobile-toggle" onclick="toggleSidebar(true)">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </div>
-                <div class="d-topbar-r" style="margin-left:auto;">
+                <div class="d-search">
+                    <span class="d-search-ico">🔍</span>
+                    <input type="text" placeholder="Search transactions..." />
+                </div>
+                <div class="d-topbar-r">
                     <span class="d-date-lbl" id="dDateLbl"></span>
                 </div>
             </div>
 
+            <!-- CONTENT -->
             <div class="d-content">
-                <div class="settings-wrap">
-                    <div class="d-card">
-                        <div class="d-card-hdr">
-                            <h3 class="d-card-title">Platform Configuration</h3>
-                        </div>
-                        <div class="form-grid">
-                            <div class="fg">
-                                <label>Facility Name</label>
-                                <select class="form-in" id="facilityNameIn">
-                                    <option>Basement 1 - Ultra Zone</option>
-                                    <option selected>Basement 2 - Central Hub</option>
-                                    <option>Surface Lot - Open Air</option>
-                                </select>
-                            </div>
-                            <div class="fg">
-                                <label>Support Email</label>
-                                <input type="email" class="form-in" value="support@parkease.com" />
-                            </div>
-                            <div class="fg">
-                                <label>Base Tariff (per hour)</label>
-                                <input type="number" class="form-in" value="40" />
-                            </div>
-                            <div class="fg">
-                                <label>Time Zone</label>
-                                <select class="form-in">
-                                    <option>Asia/Kolkata (IST)</option>
-                                    <option>UTC</option>
-                                </select>
-                            </div>
-                            <div class="fg">
-                                <label>Total Parking Spots</label>
-                                <input type="number" class="form-in" id="spotCountIn" value="8" min="1" max="15" />
-                            </div>
-                        </div>
-                        <div class="set-row">
-                            <div class="set-info">
-                                <h4>Dynamic Pricing</h4>
-                                <p>Automatically adjust rates based on current occupancy.</p>
-                            </div>
-                            <div class="toggle active" onclick="this.classList.toggle('active')">
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                        <div class="set-row">
-                            <div class="set-info">
-                                <h4>LPR Camera Tracking</h4>
-                                <p>Enable License Plate Recognition alerts at entry gates.</p>
-                            </div>
-                            <div class="toggle active" onclick="this.classList.toggle('active')">
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                        <div class="set-row" style="border:none;">
-                            <div class="set-info">
-                                <h4>Email Notifications</h4>
-                                <p>Send automated receipt and expiry emails to users.</p>
-                            </div>
-                            <div class="toggle" onclick="this.classList.toggle('active')">
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                        <button class="u-btn" id="saveBtn" style="margin-top:20px;">Save Changes</button>
+                <div class="d-card">
+                    <div class="d-card-hdr">
+                        <h3 class="d-card-title">Transaction History</h3>
+                        <button class="u-btn">Export CSV</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="u-table">
+                            <thead>
+                                <tr>
+                                    <th>Ref ID</th>
+                                    <th>User Name</th>
+                                    <th>Amount</th>
+                                    <th>Date & Time</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payTableData">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- TOAST OVERRIDE FOR SETTINGS -->
-    <div class="toast dark-t" id="toast"></div>
-    <script src="../assets/js/settings.js"></script>
+    <script src="assets/js/payments.js"></script>
     <script>
         function toggleSidebar(show) {
             document.getElementById('sidebar').classList.toggle('active', show);

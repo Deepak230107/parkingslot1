@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Export Users Report</title>
-    <link rel="stylesheet" href="../assets/css/dashboard.css" />
+    <title>Export Revenue Report</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
     <style>
         body { background: white; color: black; padding: 40px; font-family: var(--font); }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
@@ -25,28 +25,31 @@
     <div class="header">
         <div class="logo">Park<span>Ease</span> Admin</div>
         <div style="text-align: right;">
-            <h2>User Directory Report</h2>
+            <h2>Revenue & Ledger Report</h2>
             <p id="dateSpan"></p>
         </div>
     </div>
     <table>
         <thead>
             <tr>
-                <th>User Name</th>
-                <th>Registered Vehicle</th>
-                <th>Joined Date</th>
+                <th>Transaction ID</th>
+                <th>User / Plate</th>
+                <th>Amount</th>
+                <th>Date & Time</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody id="exportTable">
-            <tr><td>Arjun S.</td><td>TN 09 AX 1234</td><td>21 Feb 2026</td><td>Active</td></tr>
-            <tr><td>Priya M.</td><td>KA 04 BZ 5678</td><td>02 Mar 2026</td><td>Active</td></tr>
-            <tr><td>Ravi K.</td><td>MH 12 CD 9012</td><td>15 Jan 2026</td><td>Blocked</td></tr>
-            <tr><td>Kavya T.</td><td>DL 7C E3456</td><td>28 Feb 2026</td><td>Active</td></tr>
-            <tr><td>Arun B.</td><td>AP 28 FG 7890</td><td>05 Mar 2026</td><td>Active</td></tr>
-            <tr><td>Deepa R.</td><td>TS 11 HI 2345</td><td>01 Feb 2026</td><td>Active</td></tr>
+            <tr><td>#TRX-001</td><td>TN 09 AX 1234</td><td>₹50.00</td><td>01 Mar 2026, 14:30</td><td>Completed</td></tr>
+            <tr><td>#TRX-002</td><td>KA 04 BZ 5678</td><td>₹120.00</td><td>02 Mar 2026, 09:15</td><td>Completed</td></tr>
+            <tr><td>#TRX-003</td><td>MH 12 CD 9012</td><td>₹30.00</td><td>05 Mar 2026, 18:45</td><td>Refunded</td></tr>
+            <tr><td>#TRX-004</td><td>DL 7C E3456</td><td>₹80.00</td><td>08 Mar 2026, 11:20</td><td>Completed</td></tr>
+            <tr><td>#TRX-005</td><td>AP 28 FG 7890</td><td>₹150.00</td><td>10 Mar 2026, 08:00</td><td>Completed</td></tr>
         </tbody>
     </table>
+    <div style="margin-top: 30px; font-weight: bold; font-size: 18px; text-align: right;">
+        Total Revenue: ₹430.00
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         document.getElementById('dateSpan').textContent = 'Generated on: ' + new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -58,7 +61,7 @@
             
             const opt = {
                 margin:       0.5,
-                filename:     `ParkEase_User_Report_${new Date().toISOString().split('T')[0]}.pdf`,
+                filename:     `ParkEase_Revenue_Report_${new Date().toISOString().split('T')[0]}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2 },
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
