@@ -466,6 +466,10 @@ function openUpi(platform) {
 
 // ════════════ INITIALIZATION ════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // Reset all slots to open on page refresh
+  localStorage.removeItem('parkease_bookings');
+  localStorage.removeItem('parkease_selected_slot');
+
   buildMiniGrid();
   // Live Sync Loop to reflect Admin-level releases/changes
   setInterval(buildMiniGrid, 2000);
