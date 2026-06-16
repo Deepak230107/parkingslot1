@@ -133,14 +133,17 @@ function confirmReservation() {
         const taxes = (parseFloat(duration) * 0.2).toFixed(2);
         const totalAmount = parseFloat(duration).toFixed(2);
 
-        if (document.getElementById('rcZone')) document.getElementById('rcZone').textContent = dest;
-        if (document.getElementById('lRcPlate')) document.getElementById('lRcPlate').textContent = plate.toUpperCase();
-        if (document.getElementById('lRcModel')) document.getElementById('lRcModel').textContent = window.currentVehicle || 'Standard Car';
-        if (document.getElementById('lRcSlot')) document.getElementById('lRcSlot').textContent = currentSlot;
-        if (document.getElementById('lRcDuration')) document.getElementById('lRcDuration').textContent = duration + (duration === '1' ? ' Hour' : ' Hours');
-        if (document.getElementById('lRcBase')) document.getElementById('lRcBase').textContent = `₹${baseFare}`;
-        if (document.getElementById('lRcTax')) document.getElementById('lRcTax').textContent = `₹${taxes}`;
-        if (document.getElementById('rTotal')) document.getElementById('rTotal').textContent = `₹${totalAmount}`;
+        window.currentBookingDetails = {
+          zone: dest,
+          plate: plate.toUpperCase(),
+          model: window.currentVehicle || 'Standard Car',
+          slot: currentSlot,
+          duration: duration + (duration === '1' ? ' Hour' : ' Hours'),
+          baseFare: `₹${baseFare}`,
+          taxes: `₹${taxes}`,
+          total: `₹${totalAmount}`,
+          payStatus: 'PENDING'
+        };
 
         // MARK AS OCCUPIED IN SYNC
         const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
@@ -199,8 +202,11 @@ async function processPayment() {
     btn.style.opacity = '1';
     btn.disabled = true;
 
-    document.getElementById('payStatus').textContent = 'SUCCESSFUL';
-    document.getElementById('payStatus').style.color = '#22c55e';
+    if (window.currentBookingDetails) window.currentBookingDetails.payStatus = 'SUCCESSFUL';
+    if (document.getElementById('payStatus')) {
+      document.getElementById('payStatus').textContent = 'SUCCESSFUL';
+      document.getElementById('payStatus').style.color = '#22c55e';
+    }
 
     showToast('💎 Transaction Verified. Access Granted.');
 
@@ -288,16 +294,17 @@ if ("Notification" in window && Notification.permission !== "denied") {
 }
 
 async function downloadReceipt() {
-  // ── Read live values directly from the on-screen receipt card ──
-  const zone      = document.getElementById('rcZone')?.textContent     || document.getElementById('lDest')?.value || 'Central Park District';
-  const plate     = document.getElementById('lRcPlate')?.textContent   || document.getElementById('lPlate')?.value.trim() || 'NOT_SPECIFIED';
-  const model     = document.getElementById('lRcModel')?.textContent   || window.currentVehicle || 'Standard Car';
-  const slot      = document.getElementById('lRcSlot')?.textContent    || window.lastBookedSlot || 'Pending';
-  const duration  = document.getElementById('lRcDuration')?.textContent || '3 Hours';
-  const baseFare  = document.getElementById('lRcBase')?.textContent    || '₹0.80';
-  const taxes     = document.getElementById('lRcTax')?.textContent     || '₹0.20';
-  const payStatus = document.getElementById('payStatus')?.textContent  || 'PENDING';
-  const grandTotal= document.getElementById('rTotal')?.textContent     || '₹1.00';
+  // ── Read values from global booking details state ──
+  const details   = window.currentBookingDetails || {};
+  const zone      = details.zone      || document.getElementById('lDest')?.value || 'Central Park District';
+  const plate     = details.plate     || document.getElementById('lPlate')?.value.trim() || 'NOT_SPECIFIED';
+  const model     = details.model     || window.currentVehicle || 'Standard Car';
+  const slot      = details.slot      || window.lastBookedSlot || 'Pending';
+  const duration  = details.duration  || '3 Hours';
+  const baseFare  = details.baseFare  || '₹0.80';
+  const taxes     = details.taxes     || '₹0.20';
+  const payStatus = details.payStatus || 'PENDING';
+  const grandTotal= details.total     || '₹1.00';
   const orderNum  = `PE-${Math.floor(100000 + Math.random() * 900000)}`;
   const dateStr   = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
   const timeStr   = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
