@@ -272,94 +272,115 @@ if ("Notification" in window && Notification.permission !== "denied") {
 }
 
 async function downloadReceipt() {
-  const plate = document.getElementById('lPlate')?.value.trim() || 'NOT_SPECIFIED';
-  const dest = document.getElementById('lDest')?.value || 'Central Park District';
-  const duration = document.getElementById('lDuration')?.value || '3';
-  const amountStr = document.getElementById('rTotal')?.textContent || '₹1.00';
-  
-  const numericAmount = parseFloat(amountStr.replace(/[^0-9.]/g, '')) || 1.00;
-  const baseFare = (numericAmount * 0.8).toFixed(2);
-  const taxes = (numericAmount * 0.2).toFixed(2);
+  // ── Read live values directly from the on-screen receipt card ──
+  const zone      = document.getElementById('rcZone')?.textContent     || document.getElementById('lDest')?.value || 'Central Park District';
+  const plate     = document.getElementById('lRcPlate')?.textContent   || document.getElementById('lPlate')?.value.trim() || 'NOT_SPECIFIED';
+  const model     = document.getElementById('lRcModel')?.textContent   || window.currentVehicle || 'Standard Car';
+  const slot      = document.getElementById('lRcSlot')?.textContent    || window.lastBookedSlot || 'Pending';
+  const duration  = document.getElementById('lRcDuration')?.textContent || '3 Hours';
+  const baseFare  = document.getElementById('lRcBase')?.textContent    || '₹0.80';
+  const taxes     = document.getElementById('lRcTax')?.textContent     || '₹0.20';
+  const payStatus = document.getElementById('payStatus')?.textContent  || 'PENDING';
+  const grandTotal= document.getElementById('rTotal')?.textContent     || '₹1.00';
+  const orderNum  = `PE-${Math.floor(100000 + Math.random() * 900000)}`;
+  const dateStr   = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+  const timeStr   = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
 
-  // Update receipt fields dynamically in UI
-  if (document.getElementById('rcZone')) document.getElementById('rcZone').textContent = dest;
-  if (document.getElementById('lRcPlate')) document.getElementById('lRcPlate').textContent = plate.toUpperCase();
-  if (document.getElementById('lRcModel')) document.getElementById('lRcModel').textContent = window.currentVehicle || 'Standard Car';
-  if (document.getElementById('lRcSlot')) document.getElementById('lRcSlot').textContent = window.lastBookedSlot || 'Pending';
-  if (document.getElementById('lRcDuration')) document.getElementById('lRcDuration').textContent = duration + (duration === '1' ? ' Hour' : ' Hours');
-  if (document.getElementById('lRcBase')) document.getElementById('lRcBase').textContent = `₹${baseFare}`;
-  if (document.getElementById('lRcTax')) document.getElementById('lRcTax').textContent = `₹${taxes}`;
+  const isPaid    = payStatus.toUpperCase().includes('SUCCESS');
+  const statusColor = isPaid ? '#16a34a' : '#8b5cf6';
 
   showToast('📜 Generating full-page PDF Receipt...');
 
-  // Create a clean, A4-sized printable receipt HTML
+  // ── PDF Receipt HTML — mirrors the on-screen receipt card exactly ──
   const receiptHTML = `
-    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 50px; color: #1f2937; width: 800px; min-height: 1050px; background: #ffffff; box-sizing: border-box;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; width: 794px; min-height: 1123px; background: #ffffff; box-sizing: border-box;">
+
+      <!-- Header Band -->
+      <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #4c1d95 100%); padding: 40px 50px 32px; display: flex; justify-content: space-between; align-items: flex-start;">
         <div>
-          <h1 style="color: #6366f1; margin: 0; font-size: 32px; letter-spacing: -1px;">ParkEase</h1>
-          <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Quantum Prismatic Grid Authorized</p>
+          <div style="font-size: 34px; font-weight: 900; color: #a78bfa; letter-spacing: -1px; line-height: 1;">Park<span style="color:#ffffff;">Ease</span></div>
+          <div style="color: #c4b5fd; font-size: 12px; margin-top: 6px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;">Quantum Prismatic Grid — Authorized Permit</div>
         </div>
-        <div style="text-align: right; color: #6b7280; font-size: 14px;">
-          <p style="margin: 0;">Order #: PE-${Math.floor(100000 + Math.random() * 900000)}</p>
-          <p style="margin: 4px 0 0 0;">Date: ${new Date().toLocaleDateString()}</p>
-        </div>
-      </div>
-      
-      <hr style="border: none; border-top: 2px solid #6366f1; margin: 30px 0;">
-      
-      <h2 style="text-align: center; color: #111827; font-size: 24px; letter-spacing: 2px; margin-bottom: 40px;">AUTHORIZATION PERMIT</h2>
-      
-      <table style="width: 100%; border-collapse: collapse; font-size: 16px;">
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Parking Zone</td>
-          <td style="padding: 16px 0; text-align: right; color: #111827;">${dest}</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Vehicle Plate</td>
-          <td style="padding: 16px 0; text-align: right; color: #111827;">${plate.toUpperCase()}</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Vehicle Model</td>
-          <td style="padding: 16px 0; text-align: right; color: #111827;">${window.currentVehicle || 'Standard Car'}</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Allotted Slot</td>
-          <td style="padding: 16px 0; text-align: right; color: #111827; font-weight: bold;">${window.lastBookedSlot || 'Pending'}</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #e5e7eb;">
-          <td style="padding: 16px 0; font-weight: bold; color: #4b5563;">Duration</td>
-          <td style="padding: 16px 0; text-align: right; color: #111827;">${duration} Hours</td>
-        </tr>
-      </table>
-      
-      <div style="margin-top: 50px; padding: 30px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
-        <h3 style="margin-top: 0; margin-bottom: 20px; color: #334155; font-size: 18px;">Payment Summary</h3>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; color: #475569;">
-          <span>Base Fare</span><span>₹${baseFare}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; color: #475569;">
-          <span>Taxes & Fees (20%)</span><span>₹${taxes}</span>
-        </div>
-        <hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 20px 0;">
-        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 22px; color: #6366f1;">
-          <span>Grand Total</span><span>₹${numericAmount.toFixed(2)}</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 16px; font-weight: bold; font-size: 16px; color: #22c55e;">
-          <span>Auth Status</span><span>VERIFIED SUCCESSFUL</span>
+        <div style="text-align: right; color: #c4b5fd; font-size: 13px; line-height: 1.8;">
+          <div style="font-weight: 700; color: #fff; font-size: 15px;">Order #${orderNum}</div>
+          <div>${dateStr}</div>
+          <div>${timeStr}</div>
         </div>
       </div>
-      
-      <div style="margin-top: 80px; text-align: center; color: #94a3b8; font-size: 13px; border-top: 1px solid #e2e8f0; padding-top: 30px;">
-        <p style="margin: 0 0 8px 0;">Thank you for choosing ParkEase. This is a digitally signed Quantum Permit.</p>
-        <p style="margin: 0;">Support: help@parkease.systems | Securely encrypted with RSA-2048</p>
+
+      <!-- Title -->
+      <div style="text-align: center; padding: 28px 50px 0;">
+        <div style="display: inline-block; background: #f5f3ff; border: 1px solid #ddd6fe; padding: 8px 28px; border-radius: 100px; font-size: 12px; font-weight: 800; color: #7c3aed; letter-spacing: 3px; text-transform: uppercase;">Authorization Permit</div>
       </div>
+
+      <!-- Details Table (mirrors the receipt card) -->
+      <div style="margin: 24px 50px 0; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden;">
+        <!-- Row: Parking Zone -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0; background: #fafafa;">
+          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Parking Zone</span>
+          <span style="font-size: 15px; color: #111827; font-weight: 700;">${zone}</span>
+        </div>
+        <!-- Row: Vehicle Plate -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0;">
+          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Vehicle Plate</span>
+          <span style="font-size: 15px; color: #111827; font-weight: 800; letter-spacing: 1px;">${plate}</span>
+        </div>
+        <!-- Row: Vehicle Model -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0; background: #fafafa;">
+          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Vehicle Model</span>
+          <span style="font-size: 15px; color: #111827; font-weight: 700;">${model}</span>
+        </div>
+        <!-- Row: Allotted Slot -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; border-bottom: 1px solid #f0f0f0;">
+          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Allotted Slot</span>
+          <span style="font-size: 15px; color: #111827; font-weight: 800;">${slot}</span>
+        </div>
+        <!-- Row: Duration -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; background: #fafafa;">
+          <span style="font-size: 15px; color: #6b7280; font-weight: 500;">Duration</span>
+          <span style="font-size: 15px; color: #111827; font-weight: 700;">${duration}</span>
+        </div>
+      </div>
+
+      <!-- Payment Summary Box -->
+      <div style="margin: 20px 50px 0; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden;">
+        <div style="background: #f5f3ff; padding: 14px 28px; border-bottom: 1px solid #ede9fe;">
+          <span style="font-size: 13px; font-weight: 800; color: #7c3aed; letter-spacing: 2px; text-transform: uppercase;">Payment Summary</span>
+        </div>
+        <!-- Base Fare -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px dashed #e5e7eb;">
+          <span style="font-size: 14px; color: #9ca3af;">Base Fare</span>
+          <span style="font-size: 14px; color: #9ca3af; font-weight: 600;">${baseFare}</span>
+        </div>
+        <!-- Taxes -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 28px; border-bottom: 1px dashed #e5e7eb;">
+          <span style="font-size: 14px; color: #9ca3af;">Taxes &amp; Fees (20%)</span>
+          <span style="font-size: 14px; color: #9ca3af; font-weight: 600;">${taxes}</span>
+        </div>
+        <!-- Payment Status -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; border-bottom: 1px solid #e5e7eb; background: #fafafa;">
+          <span style="font-size: 15px; color: #374151; font-weight: 500;">Payment Status</span>
+          <span style="font-size: 15px; font-weight: 800; color: ${statusColor}; letter-spacing: 1px;">${payStatus}</span>
+        </div>
+        <!-- Grand Total -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; background: #1e1b4b;">
+          <span style="font-size: 18px; color: #c4b5fd; font-weight: 700;">Grand Total</span>
+          <span style="font-size: 28px; color: #a78bfa; font-weight: 900; letter-spacing: -0.5px;">${grandTotal}</span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div style="margin: 32px 50px 0; padding: 20px 0 0; border-top: 1px solid #e5e7eb; text-align: center; color: #9ca3af; font-size: 12px; line-height: 1.8;">
+        <div style="font-weight: 700; color: #374151; font-size: 13px; margin-bottom: 4px;">Thank you for choosing ParkEase</div>
+        <div>This is a digitally authorized Quantum Permit — do not share with unauthorized persons.</div>
+        <div>Support: help@parkease.systems &nbsp;|&nbsp; Secured with RSA-2048 Encryption</div>
+      </div>
+
     </div>
   `;
 
   const tempContainer = document.createElement('div');
   tempContainer.innerHTML = receiptHTML;
-  // Position it to render accurately but hide overflow
   tempContainer.style.position = 'absolute';
   tempContainer.style.top = '0';
   tempContainer.style.left = '0';
@@ -368,15 +389,15 @@ async function downloadReceipt() {
 
   const opt = {
     margin:       0,
-    filename:     `ParkEase_Receipt_${plate.replace(/\s+/g, '_')}.pdf`,
+    filename:     `ParkEase_Invoice_${plate.replace(/\s+/g, '_')}.pdf`,
     image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+    jsPDF:        { unit: 'px', format: [794, 1123], orientation: 'portrait' }
   };
 
   try {
     await html2pdf().set(opt).from(tempContainer).save();
-    showToast('✅ Full-Page Receipt Generated!');
+    showToast('✅ Invoice PDF Generated!');
   } catch (err) {
     console.error("PDF Generation failed", err);
     showToast('⚠️ Error generating PDF.');
@@ -384,6 +405,7 @@ async function downloadReceipt() {
     document.body.removeChild(tempContainer);
   }
 }
+
 
 // ════════════ TOAST SYSTEM ════════════
 function showToast(msg) {
