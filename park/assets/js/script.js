@@ -33,12 +33,13 @@ async function buildMiniGrid() {
     }
   } catch (err) {
     console.warn("Backend offline, using local storage fallback.");
-    // Load existing occupied slots from dashboard sync
-    const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
-    bookings.forEach(b => {
-      if (b.state === 'occupied') occ.add(b.id);
-    });
   }
+
+  // Always load existing occupied slots from local storage to prevent them from disappearing on refresh
+  const bookings = JSON.parse(localStorage.getItem('parkease_bookings') || '[]');
+  bookings.forEach(b => {
+    if (b.state === 'occupied') occ.add(b.id);
+  });
 
   mg.innerHTML = '';
   const totalSlots = parseInt(localStorage.getItem('parkease_total_slots') || '8');
